@@ -4,4 +4,4 @@ Aplikasi yang memberikan wadah bagi pengguna untuk menjual, membeli, atau menuka
 Kelompok 17 - BookSwap
 - Anggota 1:
 - Anggota 2:
-- Anggota 3:
+- Anggota 3: Bulan Aprilia Putri Murela - 22/500326/TK/54834
