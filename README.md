@@ -1,7 +1,7 @@
 # BookSwap
-Aplikasi yang memberikan wadah bagi pengguna untuk menjual, membeli, atau menukar buku bekas (_preloved_) yang dimiliki dengan harga yang lebih terjangkau ataupun buku terbitan lama yang sudah tidak dijual di pasaran.
+BookSwap adalah aplikasi yang memberikan wadah bagi para pengguna untuk saling menukar buku yang dimiliki dengan menerapkan sistem poin. Poin digunakan untuk mengirimkan permintaan (_request_) penukaran buku dengan pengguna lain. Transaksi berjalan jika permintaan disetujui, yaitu jika kedua pihak saling menginginkan buku satu sama lain. 
 
 Kelompok 17 - BookSwap
 - Anggota 1:
-- Anggota 2:
+- Anggota 2: Tsania Galuh Banggash - 22/500322/TK/54832
 - Anggota 3: Bulan Aprilia Putri Murela - 22/500326/TK/54834
