@@ -1,6 +1,10 @@
 # BookSwap
 BookSwap adalah aplikasi yang memberikan wadah bagi para pengguna untuk saling menukar buku yang dimiliki dengan menerapkan sistem poin. Poin digunakan untuk mengirimkan permintaan (_request_) penukaran buku dengan pengguna lain. Transaksi berjalan jika permintaan disetujui, yaitu jika kedua pihak saling menginginkan buku satu sama lain. 
 
+## Class Diagram
+Berikut adalah class diagram untuk aplikasi BookSwap
+![ClassDiagram](https://github.com/bulanmurela/BookSwap/blob/main/BookSwap.drawio.png)
+
 Kelompok 17 - BookSwap
 - Anggota 1: Raudha Nur Hidayatullah Susanto - 22/500044/TK/54789
 - Anggota 2: Tsania Galuh Banggash - 22/500322/TK/54832
