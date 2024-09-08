@@ -12,9 +12,9 @@ namespace BookSwap
         private string Comment { get; set; }
         private int Rating { get; set; }
 
-        public Review(string reviewDate, string comment, int rating)
+        public Review(string comment, int rating)
         {
-            ReviewDate = reviewDate;
+            ReviewDate = DateTime.Now.ToString("yyyy-MM-dd");
             Comment = comment;
             Rating = rating;
         }
