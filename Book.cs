@@ -13,7 +13,6 @@ namespace BookSwap
         private string _genre;
         private string _condition;
         private string _availabilityStatus;
-
         public string Title
         {
             get { return _title; }
@@ -48,7 +47,7 @@ namespace BookSwap
         }
         public string GetBookDetails()
         {
-            return $"Title: {_title}, Author: {_author}, Genre: {_genre}, Condition: {_condition}, Status: {_availabilityStatus}
+            return $"Title: {_title}, Author: {_author}, Genre: {_genre}, Condition: {_condition}, AvailabilityStatus: {_availabilityStatus}
         }
         public void SetCondition(string condition)
         {

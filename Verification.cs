@@ -10,7 +10,6 @@ namespace BookSwap
     {
         private string _verifDate;
         private string _verifStatus;
-
         public string VerificationDate
         {
             get { return _verifDate; }
