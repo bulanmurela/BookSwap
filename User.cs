@@ -56,6 +56,7 @@ namespace BookSwap
         public void UploadBook(Book book)
         {
             uploadedBooks.Add(book);
+            EarnPoints(1);
             Console.WriteLine($"Book '{book.BookTitle}' uploaded successfully.");
         }
 
