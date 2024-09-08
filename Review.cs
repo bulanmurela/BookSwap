@@ -8,5 +8,15 @@ namespace BookSwap
 {
     internal class Review
     {
+        private string ReviewDate { get; set; }
+        private string Comment { get; set; }
+        private int Rating { get; set; }
+
+        public Review(string reviewDate, string comment, int rating)
+        {
+            ReviewDate = reviewDate;
+            Comment = comment;
+            Rating = rating;
+        }
     }
 }
