@@ -3,7 +3,7 @@ BookSwap adalah aplikasi yang memberikan wadah bagi para pengguna untuk saling m
 
 ## Class Diagram
 Berikut adalah class diagram untuk aplikasi BookSwap
-![ClassDiagram](https://github.com/bulanmurela/BookSwap/blob/main/BookSwap.drawio.png)
+![ClassDiagram](https://github.com/bulanmurela/BookSwap/blob/main/images/BookSwap.drawio.png)
 
 Kelompok 17 - BookSwap
 - Anggota 1: Raudha Nur Hidayatullah Susanto - 22/500044/TK/54789
