@@ -19,6 +19,17 @@ namespace BookSwapApp
         public MainWindow()
         {
             InitializeComponent();
+            // halaman default saat aplikasi dibuka
+            // MainFrame.Navigate(new HomePage());
         }
+
+        // contoh untuk navigasi dari satu halaman ke halaman lain dengan button (tombol)
+        //private void BtnProfile_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Navigasi ke halaman profil
+        //    MainFrame.Navigate(new ProfilePage());
+        //}
+
     }
+
 }
