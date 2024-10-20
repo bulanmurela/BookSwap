@@ -34,7 +34,11 @@
         <!-- Page content -->
         <StackPanel Margin="20,88,20,-8">
             <!-- Header -->
-            <TextBlock Text="Swap Request Status" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center" FontFamily="Gill Sans Ultra Bold"/>
+            <TextBlock Text="Swap Request Status" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center" FontFamily="Gill Sans Ultra Bold">
+                <TextBlock.Effect>
+                    <DropShadowEffect/>
+                </TextBlock.Effect>
+            </TextBlock>
 
 
             <!-- List of swap request statuses -->
