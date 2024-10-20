@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookSwapApp"
         mc:Ignorable="d"
-        Title="BookSwap" Height="450" Width="800">
+        Title="BookSwap" Height="450" Width="800" Background="{x:Null}">
     <Grid>
-		<!-- Frame sebagai tempat berpindah-pindah antara halaman -->
-		<!-- Untuk menambahkan Button: <Button Content="Go to Profile" Click="BtnProfile_Click" /> -->
-		<Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
+        <!-- Frame sebagai tempat berpindah-pindah antara halaman -->
+        <!-- Untuk menambahkan Button: <Button Content="Go to Profile" Click="BtnProfile_Click" /> -->
+        
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Margin="0,0,0,40"/>
+
+        <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Bottom">
+            <Button x:Name="btnToHomePage" Content="Home" MinWidth="100" Margin="10,0,0,0" FontSize="18" Background="#FF7CC0FF" FontWeight="Bold" Click="btnToHomePage_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

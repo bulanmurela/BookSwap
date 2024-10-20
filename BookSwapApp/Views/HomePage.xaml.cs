@@ -16,15 +16,21 @@ using System.Windows.Shapes;
 namespace BookSwapApp.Views
 {
     /// <summary>
-    /// Interaction logic for Beranda.xaml
+    /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class Beranda : Page
+    public partial class HomePage : Page
     {
-        public Beranda()
+        public HomePage()
         {
-            InitializeComponent();
+           // InitializeComponent();
         }
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            // Ambil referensi MainWindow
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
-      
+            // Navigasi ke halaman SwapRequest
+            mainWindow.NavigateToPage(new SwapReq());
+        }
     }
 }

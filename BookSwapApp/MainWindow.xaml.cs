@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BookSwapApp.Views;
 
 namespace BookSwapApp
 {
@@ -20,16 +21,20 @@ namespace BookSwapApp
         {
             InitializeComponent();
             // halaman default saat aplikasi dibuka
-            // MainFrame.Navigate(new HomePage());
+            // MainFrame.Navigate(new Views.HomePage());
         }
 
-        // contoh untuk navigasi dari satu halaman ke halaman lain dengan button (tombol)
-        //private void BtnProfile_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Navigasi ke halaman profil
-        //    MainFrame.Navigate(new ProfilePage());
-        //}
+        // navigasi untuk berpindah halaman
+        public void NavigateToPage(Page page)
+        {
+            MainFrame.Navigate(page);
+        }
 
+        private void btnToHomePage_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigasi ke halaman HomePage
+            MainFrame.Navigate(new Views.HomePage());
+        }
     }
 
 }
