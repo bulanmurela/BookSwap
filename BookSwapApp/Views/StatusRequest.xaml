@@ -9,24 +9,48 @@
       Title="StatusRequest"
       Background="White">
 
-    <Grid Margin="20">
-        <!-- Header -->
-        <TextBlock Text="Swap Request Status" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+    <Grid>
+        <!-- Set the background of the page -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Views/BookSwap_bg.png" Stretch="Fill"/>
+        </Grid.Background>
 
-        <!-- Daftar status permintaan pertukaran -->
-        <ListView ItemsSource="{Binding SwapRequests}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Request ID" DisplayMemberBinding="{Binding RequestID}" />
-                    <GridViewColumn Header="Requested Book" DisplayMemberBinding="{Binding RequestedBook.Title}" />
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" />
-                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding RequestDate}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- Header with welcome message and points on the left -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">
+            <!-- Welcome message -->
+            <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
+            <!-- Points -->
+            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
+        </StackPanel>
 
-        <!-- Tombol untuk memperbarui status -->
-        <Button Content="Update Status" Command="{Binding UpdateStatusCommand}" Width="150" HorizontalAlignment="Center" Margin="20"/>
+        <!-- Profile icon on the right -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
+            <!-- Circular Profile Icon -->
+            <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25">
+                <Image Source="/Views/profile.png" Stretch="Fill"/>
+            </Border>
+        </StackPanel>
 
+        <!-- Page content -->
+        <StackPanel Margin="20,88,20,-8">
+            <!-- Header -->
+            <TextBlock Text="Swap Request Status" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center" FontFamily="Gill Sans Ultra Bold"/>
+
+
+            <!-- List of swap request statuses -->
+            <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10" Height="42" Width="749">
+                <ListView ItemsSource="{Binding SwapRequests}" Background="Transparent" Margin="10,0,10,0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
+                            <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding RequestedBook.Title}" />
+                            <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
+                            <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Border>
+
+        </StackPanel>
     </Grid>
 </Page>

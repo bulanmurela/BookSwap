@@ -1,4 +1,4 @@
-﻿<Page x:Class="BookSwapApp.Views.SwapRequest"
+﻿<Page x:Class="BookSwapApp.Views.Beranda"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,33 +6,103 @@
       xmlns:local="clr-namespace:BookSwapApp.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="SwapRequest"
+      Title="Beranda"
       Background="White">
 
-    <Grid Margin="20">
-        <!-- Form untuk membuat swap request -->
-        <StackPanel>
-            <TextBlock Text="Create a Swap Request" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+    <Grid>
+        <!-- Set the background of the page -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Views/BookSwap_bg.png" Stretch="Fill"/>
+        </Grid.Background>
 
-            <!-- Pilihan Buku -->
-            <ComboBox ItemsSource="{Binding UploadedBooks}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedBook}" Width="300" Margin="0,5"/>
-
-            <!-- Pilihan buku lain untuk tukar -->
-            <ComboBox ItemsSource="{Binding AvailableBooks}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedOtherBook}" Width="300" Margin="0,5"/>
-
-            <!-- Tombol untuk submit request -->
-            <Button Content="Submit Swap Request" Command="{Binding SubmitSwapRequestCommand}" Width="200" HorizontalAlignment="Center" Margin="10"/>
+        <!-- Header with welcome message and points on the left -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">
+            <!-- Welcome message -->
+            <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
+            <!-- Points -->
+            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
         </StackPanel>
 
-        <!-- Daftar permintaan pertukaran -->
-        <ListView ItemsSource="{Binding SwapRequests}" Margin="0,100,0,0">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Request ID" DisplayMemberBinding="{Binding RequestID}" />
-                    <GridViewColumn Header="Book Requested" DisplayMemberBinding="{Binding BookRequested.Title}" />
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- Profile icon on the right -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
+            <!-- Circular Profile Icon -->
+            <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25">
+                <Image Source="/Views/profile.png" Stretch="Fill"/>
+            </Border>
+        </StackPanel>
+
+        <!-- Book details and swap request button -->
+        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="15"
+                VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20" Width="440" Height="224" Background="#AAFFFFFF">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Book Cover -->
+                <Image Source="/BookSwapApp;component/Views/booksample.jpg" Grid.Column="0" Width="130" Stretch="UniformToFill" Margin="10,7,10,7"/>
+                <!-- FallbackValue is used to display a default image if no image is provided -->
+
+                <!-- Book Details Section with proper alignment -->
+                <Grid Grid.Column="1" Margin="20">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Label Column -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Colon Column -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Value Column -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Title -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Title" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Book.Title}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
+
+                    <!-- Author -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Author" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Book.Author}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
+
+                    <!-- Genre -->
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Genre" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Book.Genre}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
+
+                    <!-- Condition -->
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Condition" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Book.Condition}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Swap request button -->
+        <Button Content="Request Swap" Width="150" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="321,349,0,0"
+        FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <!-- Rounded border with custom background -->
+                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="20">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
     </Grid>
 </Page>

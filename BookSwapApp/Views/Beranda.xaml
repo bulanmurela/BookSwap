@@ -10,47 +10,80 @@
       Background="White">
 
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+        <!-- Set the background of the page -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Views/BookSwap_bg.png" Stretch="Fill"/>
+        </Grid.Background>
 
-            <!-- Header dengan username dan poin -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Welcome, " FontSize="16" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Username}" FontSize="16"/>
-                <TextBlock Text=" | Points: " FontSize="16" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Points}" FontSize="16"/>
-            </StackPanel>
-
-            <!-- Search Bar -->
-            <StackPanel Orientation="Horizontal" Margin="20">
-                <!-- Search TextBox -->
-                <TextBox x:Name="SearchBox" Width="300" Height="40" VerticalAlignment="Center" Text="Cari berdasarkan judul buku..."/>
-
-                <!-- Search Button -->
-                <Button Content="Cari" Width="100" Height="40" VerticalAlignment="Center" Click="OnSearchClick"/>
-            </StackPanel>
-
-            <!-- ListView untuk Menampilkan Hasil Pencarian -->
-            <ListView x:Name="SearchResults" Margin="20" SelectionChanged="OnBookSelected">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Judul" DisplayMemberBinding="{Binding Title}" Width="200"/>
-                        <GridViewColumn Header="Penulis" DisplayMemberBinding="{Binding Author}" Width="150"/>
-                        <GridViewColumn Header="Genre" DisplayMemberBinding="{Binding Genre}" Width="150"/>
-                        <GridViewColumn Header="Kondisi" DisplayMemberBinding="{Binding Condition}" Width="100"/>
-                        <GridViewColumn Header="Status Ketersediaan" DisplayMemberBinding="{Binding AvailabilityStatus}" Width="150"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-
-            <!-- Tombol Navigasi untuk Upload Buku, Swap Request, dan Status Permintaan -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-                <!-- Tombol Upload Buku -->
-                <Button Content="Upload Buku" Width="150" Height="40" Margin="10" Click="OnUploadBookClick"/>
-                <!-- Tombol Swap Request -->
-                <Button Content="Permintaan Tukar" Width="150" Height="40" Margin="10" Click="OnSwapRequestClick"/>
-                <!-- Tombol Status Permintaan -->
-                <Button Content="Status Permintaan" Width="150" Height="40" Margin="10" Click="OnStatusRequestClick"/>
-            </StackPanel>
+        <!-- Header with welcome message and points on the left -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">
+            <!-- Welcome message -->
+            <TextBlock Text="Welcome, User! " FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
+            <!-- Points -->
+            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
         </StackPanel>
+
+        <!-- Profile icon on the right -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
+            <!-- Circular Profile Icon -->
+            <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25">
+                <Image Source="/Views/profile.png" Stretch="Fill"/>
+            </Border>
+        </StackPanel>
+
+        <!-- Search bar in the center with rounded edges -->
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBox Text="Insert book title / author here" Margin="193,151,307,264" Width="300" Height="35" TextChanged="TextBox_TextChanged" FontSize="14" Padding="5">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="15">
+                                    <ScrollViewer x:Name="PART_ContentHost" Padding="5"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <!-- Rounded search button -->
+        <Button Content="Search" RenderTransformOrigin="1.23,-0.467" Margin="510,151,190,264" Width="100" Height="35" FontSize="14" FontWeight="Bold" Background="#FF3665AA" Foreground="White">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <!-- Rounded upload book button -->
+        <Button Content="Upload Book" RenderTransformOrigin="1.23,-0.467" Margin="34,387,645,23" FontSize="14" FontWeight="Bold" Background="#FF3665AA" Foreground="White">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <!-- BookSwap title -->
+        <TextBox HorizontalAlignment="Center" Margin="0,83,0,0" TextWrapping="Wrap" Text="BOOKSWAP" VerticalAlignment="Top" Width="286" TextChanged="TextBox_TextChanged" FontFamily="Gill Sans Ultra Bold Condensed" FontSize="36" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}"/>
     </Grid>
 </Page>
