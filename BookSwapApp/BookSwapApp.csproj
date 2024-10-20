@@ -9,10 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\booksample.jpg" />
+    <None Remove="Views\profile.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Helpers\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\booksample.jpg" />
+    <Resource Include="Views\BookSwap_bg.png" />
+    <Resource Include="Views\profile.png" />
   </ItemGroup>
 
 </Project>
