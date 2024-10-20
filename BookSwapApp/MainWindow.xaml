@@ -10,10 +10,10 @@
         <!-- Frame sebagai tempat berpindah-pindah antara halaman -->
         <!-- Untuk menambahkan Button: <Button Content="Go to Profile" Click="BtnProfile_Click" /> -->
         
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Margin="0,0,0,40"/>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
 
-        <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Bottom">
+        <!-- StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Bottom">
             <Button x:Name="btnToHomePage" Content="Home" MinWidth="100" Margin="10,0,0,0" FontSize="18" Background="#FF7CC0FF" FontWeight="Bold" Click="btnToHomePage_Click"/>
-        </StackPanel>
+        </StackPanel> -->
     </Grid>
 </Window>
