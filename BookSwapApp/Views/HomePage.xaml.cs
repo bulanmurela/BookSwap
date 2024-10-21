@@ -18,5 +18,11 @@ namespace BookSwapApp.Views
         {
             _navigationService.NavigateTo(typeof(SwapReq));
         }
+
+        private void GoToProfile(object sender, ContextMenuEventArgs e)
+        {
+
+            _navigationService.NavigateTo(typeof(Profil));
+        }
     }
 }
