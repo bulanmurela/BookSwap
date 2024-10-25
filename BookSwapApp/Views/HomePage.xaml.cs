@@ -8,21 +8,31 @@ namespace BookSwapApp.Views
     {
         private NavigationService _navigationService;
 
+        public HomePage() : this(new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame))
+        {
+            // Constructor tanpa parameter
+        }
+
         public HomePage(NavigationService navigationService)
         {
             InitializeComponent();
             _navigationService = navigationService;
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            _navigationService.NavigateTo(typeof(SwapReq));
-        }
-
         private void GoToProfile(object sender, ContextMenuEventArgs e)
         {
 
             _navigationService.NavigateTo(typeof(Profil));
+        }
+
+        private void GoToLoginPage(object sender, ContextMenuEventArgs e)
+        {
+            _navigationService.NavigateTo(typeof(Login));
+        }
+
+        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            _navigationService.NavigateTo(typeof(SwapReq));
         }
     }
 }

@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:BookSwapApp.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SwapReq"
@@ -15,94 +14,112 @@
             <ImageBrush ImageSource="/Views/BookSwap_bg.png" Stretch="Fill"/>
         </Grid.Background>
 
-        <!-- Header with welcome message and points on the left -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">
-            <!-- Welcome message -->
-            <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
-            <!-- Points -->
-            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
-        </StackPanel>
+        <!-- Main container for content, uses grid for responsive layout -->
+        <Grid>
+            <!-- Define rows and columns for layout -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Header row -->
+                <RowDefinition/>
+                <!-- Main content -->
+                <RowDefinition Height="Auto" MinHeight="75"/>
+                <!-- Footer row -->
+            </Grid.RowDefinitions>
 
-        <!-- Profile icon on the right -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
-            <!-- Circular Profile Icon -->
-            <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25">
-                <Image Source="/Views/profile.png" Stretch="Fill"/>
-            </Border>
-        </StackPanel>
-
-        <!-- Book details and swap request button -->
-        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="15"
-                VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20" Width="440" Height="224" Background="#AAFFFFFF">
-            <Grid>
+            <!-- Header section with welcome message and profile icon -->
+            <Grid Grid.Row="0" Margin="10,10,10,10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Book Cover -->
-                <Image Source="/BookSwapApp;component/Views/booksample.jpg" Grid.Column="0" Width="130" Stretch="UniformToFill" Margin="10,7,10,7"/>
-                <!-- FallbackValue is used to display a default image if no image is provided -->
+                <!-- Left side: Welcome message and points -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-                <!-- Book Details Section with proper alignment -->
-                <Grid Grid.Column="1" Margin="20">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <!-- Label Column -->
-                        <ColumnDefinition Width="Auto"/>
-                        <!-- Colon Column -->
-                        <ColumnDefinition Width="*"/>
-                        <!-- Value Column -->
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Title -->
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Title" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Book.Title}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
-
-                    <!-- Author -->
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Author" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Book.Author}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
-
-                    <!-- Genre -->
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Genre" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Book.Genre}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
-
-                    <!-- Condition -->
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Condition" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,10,10,0"/>
-                    <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Book.Condition}" FontSize="16" Foreground="Black" Margin="0,10,0,0"/>
-                </Grid>
+                <!-- Right side: Home button and profile icon -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
+                    <Button x:Name="lblHome" Content="Home" Foreground="White" FontSize="20" FontWeight="Bold" Background="Transparent" BorderBrush="Transparent" ContextMenuOpening="GoToHome" Cursor="Arrow"/>
+                    <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
+                        <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" ContextMenuOpening="GoToProfile" Cursor="Arrow"/>
+                    </Border>
+                </StackPanel>
+                <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,506,7" />
+                <TextBlock Text=" | Points: " FontWeight="Bold" FontSize="20" Foreground="White" Margin="160,7,394,7" />
             </Grid>
-        </Border>
 
-        <!-- Swap request button -->
-        <Button x:Name="btnReqSwap" Content="Request Swap" Width="150" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="321,349,0,0"
-        FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Click="btnReqSwap_Click">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <!-- Rounded border with custom background -->
-                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="20">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
+            <!-- Main content section: Book details and swap request button -->
+            <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Height="375" Width="596" Grid.RowSpan="2" Margin="0,54,0,0">
+                <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="15"
+                        Padding="20" Background="#AAFFFFFF" Width="556" Height="262">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
+                        <!-- Book Cover -->
+                        <Image Source="/Views/booksample.jpg" Grid.Column="0" Stretch="UniformToFill" Margin="5,0,0,1"/>
+
+                        <!-- Book Details Section -->
+                        <Grid Grid.Column="1" Margin="20,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Title -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Title" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,10,10,0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,10,10,0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Book.Title}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+
+                            <!-- Author -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Author" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,27,10,17" Grid.RowSpan="2"/>
+                            <TextBlock Grid.Row="1" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="93,27,10,17" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Book.Author}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+
+                            <!-- Genre -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Genre" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,18,10,-6"/>
+                            <TextBlock Grid.Row="3" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="93,18,10,-6" Grid.ColumnSpan="2"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Book.Genre}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+
+                            <!-- Condition -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Condition" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,69,10,-59"/>
+                            <TextBlock Grid.Row="3" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="93,69,10,-59" Grid.ColumnSpan="2"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Book.Condition}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Swap request button -->
+                <Button x:Name="btnReqSwap" Content="Request Swap" Width="130" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="10" Click="btnReqSwap_Click" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+
+            <!-- Footer section (Back button) -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10,0,10" Width="81">
+                <Label x:Name="lblIconBack" Content="&lt;" FontSize="30" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" Height="55" ContextMenuOpening="IconGoBack" Cursor="Arrow"/>
+                <Label x:Name="lblBack" Content="Back" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" ContextMenuOpening="GoBack" Cursor="Arrow"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

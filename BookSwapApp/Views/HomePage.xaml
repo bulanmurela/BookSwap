@@ -3,101 +3,114 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:BookSwapApp.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePage"
       Background="White">
 
     <Grid>
+
         <!-- Set the background of the page -->
         <Grid.Background>
             <ImageBrush ImageSource="/Views/BookSwap_bg.png" Stretch="Fill"/>
         </Grid.Background>
 
-        <!-- Header with welcome message and points on the left -->
+        <!-- Main container for content, uses grid for responsive layout -->
+        <Grid>
+            <!-- Define rows and columns for layout -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Header row -->
+                <RowDefinition Height="*"/>
+                <!-- Main content -->
+                <RowDefinition Height="Auto"/>
+                <!-- Footer row -->
+            </Grid.RowDefinitions>
 
-        <!-- Header with welcome message and points on the left -->
+            <!-- Header section with welcome message and profile icon -->
+            <Grid Grid.Row="0" Margin="10,12,10,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-        <!-- Header with welcome message and points on the left -->
+                <!-- Left side: Welcome message and points -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-        <!-- Header with welcome message and points on the left -->
+                <!-- Right side: Sign in button and profile icon -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
+                    <Button x:Name="lblSignIn" Content="Sign In" Foreground="White" FontSize="20" FontWeight="Bold" Background="Transparent" BorderBrush="Transparent" ContextMenuOpening="GoToLoginPage" Cursor="Arrow"/>
+                    <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
+                        <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" ContextMenuOpening="GoToProfile" Cursor="Arrow"/>
+                    </Border>
+                </StackPanel>
+                <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,506,7" />
+                <TextBlock Text=" | Points: " FontWeight="Bold" FontSize="20" Foreground="White" Margin="160,7,394,7" />
+            </Grid>
 
-        <!-- Header with welcome message and points on the left -->
+            <!-- Main content section (Search bar, title, etc.) -->
+            <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,30,0,0">
+                <!-- Title -->
+                <TextBlock Text="BOOKSWAP" FontSize="56" FontWeight="Bold" Foreground="White" FontFamily="Gill Sans Ultra Bold Condensed" HorizontalAlignment="Center" Height="117">
+                    <TextBlock.Effect>
+                        <DropShadowEffect/>
+                    </TextBlock.Effect>
+                </TextBlock>
 
-        <!-- Header with welcome message and points on the left -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">
-            <!-- Welcome message -->
-            <TextBlock Text="Welcome, User! " FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
-            <!-- Points -->
-            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
-        </StackPanel>
+                <!-- Search bar and button -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
+                    <TextBox x:Name="txtInsertKeyword" Text="Insert book title / author here" Width="300" Height="35" FontSize="16" Padding="5" VerticalAlignment="Center" Cursor="IBeam">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TextBox">
+                                            <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="15">
+                                                <ScrollViewer x:Name="PART_ContentHost" Padding="5"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
-        <!-- Profile icon on the right -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
-            <!-- Circular Profile Icon -->
-            <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25">
-                <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" ContextMenuOpening="GoToProfile"/>
-            </Border>
-        </StackPanel>
+                    <Button x:Name="btnSearch" Content="Search" Width="100" Height="35" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="10,0,0,0" Click="BtnSearch_Click" Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
 
-        <!-- Search bar in the center with rounded edges -->
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-        <!-- Rounded search button -->
-
-        <!-- Rounded upload book button -->
-
-        <!-- BookSwap title -->
-        <TextBox HorizontalAlignment="Center" Margin="0,83,0,0" TextWrapping="Wrap" Text="BOOKSWAP" VerticalAlignment="Top" Width="286" FontFamily="Gill Sans Ultra Bold Condensed" FontSize="36" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}">
-            <TextBox.Effect>
-                <DropShadowEffect/>
-            </TextBox.Effect>
-        </TextBox>
-        <Button x:Name="btnSearch" Content="Search" RenderTransformOrigin="1.23,-0.467" Margin="510,151,190,264" Width="100" Height="35" FontSize="14" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Click="btnSearch_Click">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
-        <TextBox x:Name="txtInsertKeyword" Text="Insert book title / author here" Margin="193,151,307,264" Width="300" Height="35" FontSize="14" Padding="5">
-            <TextBox.Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type TextBox}">
-                                <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="15">
-                                    <ScrollViewer x:Name="PART_ContentHost" Padding="5"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
-        <Button x:Name="btnUpload" Content="Upload Book" RenderTransformOrigin="1.23,-0.467" Margin="25,385,655,25" FontSize="14" FontWeight="Bold" Background="#FF3665AA" Foreground="White">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
+            <!-- Footer section (Upload Book button) -->
+            <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="20">
+                <Button x:Name="btnUpload" Content="Upload Book" Width="140" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
