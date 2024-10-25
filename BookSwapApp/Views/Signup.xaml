@@ -1,4 +1,4 @@
-﻿<Page x:Class="BookSwapApp.Views.Login"
+﻿<Page x:Class="BookSwapApp.Views.Signup"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:BookSwapApp.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Login"
+      Title="Signup"
       Background="White">
 
     <Grid>
@@ -44,11 +44,11 @@
                         <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" />
                     </Border>
                 </StackPanel>
-                <TextBlock Text="Welcome, Please Log In!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,489,7" />
+                <TextBlock Text="Welcome, Please Create Your Account!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,358,7" />
             </Grid>
 
             <!-- Main content section with Username, Password, and Login button -->
-            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Height="336" Margin="0,54,0,0" Grid.RowSpan="3">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Height="394" Width="468" Margin="0,48,0,0" Grid.RowSpan="3">
 
                 <!-- Title -->
                 <TextBlock Text="BOOKSWAP" FontSize="56" FontWeight="Bold" Foreground="White" FontFamily="Gill Sans Ultra Bold Condensed" HorizontalAlignment="Center" Height="80">
@@ -56,6 +56,21 @@
                         <DropShadowEffect/>
                     </TextBlock.Effect>
                 </TextBlock>
+                <TextBox x:Name="txtEmail" Text="Email" Width="300" Height="35" FontSize="16" Padding="5" HorizontalContentAlignment="Center" Cursor="IBeam">
+                    <TextBox.Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="15">
+                                            <ScrollViewer x:Name="PART_ContentHost" Padding="5"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
 
                 <!-- Username TextBox -->
                 <TextBox x:Name="txtUsername" Text="Username" Width="300" Height="35" FontSize="16" Padding="5" Margin="0,20,0,0" HorizontalContentAlignment="Center" Cursor="IBeam">
@@ -91,8 +106,25 @@
                     </TextBox.Style>
                 </TextBox>
 
+                <!-- Confirm Password TextBox -->
+                <TextBox x:Name="txtConfirmPassword" Text="Confirm Password" Width="300" Height="35" FontSize="16" Padding="5" Margin="0,20,0,0" HorizontalContentAlignment="Center" Cursor="IBeam">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="15">
+                                            <ScrollViewer x:Name="PART_ContentHost" Padding="5"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
                 <!-- Login Button -->
-                <Button x:Name="btnLogin" Content="Log In" Width="150" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="0,30,0,0" Click="btnLogin_Click" Cursor="Hand">
+                <Button x:Name="btnSignup" Content="Sign Up" Width="150" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="0,30,0,0" Click="btnSignup_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -110,10 +142,10 @@
 
                 <!-- Don't Have an Account section -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <TextBlock Text="Don't Have an Account? " Foreground="White" FontSize="14" FontWeight="SemiBold"/>
-                    <TextBlock Text="Sign Up" Foreground="#FF81C8FF" FontSize="14" FontWeight="Bold" FontStyle="Italic" ContextMenuOpening="GoToSignupPage" Cursor="Arrow">
+                    <TextBlock Text="Already Have an Account? " Foreground="White" FontSize="14" FontWeight="SemiBold"/>
+                    <TextBlock Text="Log In" Foreground="#FF81C8FF" FontSize="14" FontWeight="Bold" FontStyle="Italic" ContextMenuOpening="GoToLoginPage" Cursor="Arrow">
                         <TextBlock.Effect>
-                            <DropShadowEffect Color="Black" Opacity="0.8" ShadowDepth="0"/>
+                            <DropShadowEffect Color="Black" Opacity="0.5" ShadowDepth="0"/>
                         </TextBlock.Effect>
                     </TextBlock>
                 </StackPanel>
@@ -124,7 +156,6 @@
                 <Label x:Name="lblIconBack" Content="&lt;" FontSize="30" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" Height="55" ContextMenuOpening="IconGoBack" Cursor="Arrow"/>
                 <Label x:Name="lblBack" Content="Back" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" ContextMenuOpening="GoBack" Cursor="Arrow"/>
             </StackPanel>
-
         </Grid>
     </Grid>
 </Page>

@@ -19,5 +19,25 @@ namespace BookSwapApp.Views
         {
             _navigationService.NavigateTo(typeof(StatusRequest));
         }
+
+        private void GoToProfile(object sender, RoutedEventArgs e)
+        {
+            _navigationService.NavigateTo(typeof(Profil));
+        }
+
+        private void GoToHome(object sender, ContextMenuEventArgs e)
+        {
+            _navigationService.NavigateTo(typeof(HomePage));
+        }
+
+        private void GoBack(object sender, ContextMenuEventArgs e)
+        {
+            _navigationService.GoBack();
+        }
+
+        private void IconGoBack(object sender, ContextMenuEventArgs e)
+        {
+            _navigationService.GoBack();
+        }
     }
 }

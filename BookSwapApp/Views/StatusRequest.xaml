@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:BookSwapApp.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StatusRequest"
@@ -15,46 +14,68 @@
             <ImageBrush ImageSource="/Views/BookSwap_bg.png" Stretch="Fill"/>
         </Grid.Background>
 
-        <!-- Header with welcome message and points on the left -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">
-            <!-- Welcome message -->
-            <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
-            <!-- Points -->
-            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
-        </StackPanel>
+        <!-- Main container -->
+        <Grid>
+            <!-- Define rows for header, content, and footer -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Header -->
+                <RowDefinition Height="*"/>
+                <!-- Content -->
+                <RowDefinition Height="Auto"/>
+                <!-- Footer -->
+            </Grid.RowDefinitions>
 
-        <!-- Profile icon on the right -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
-            <!-- Circular Profile Icon -->
-            <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25">
-                <Image Source="/Views/profile.png" Stretch="Fill"/>
-            </Border>
-        </StackPanel>
+            <!-- Header section with welcome message and profile icon -->
+            <Grid Grid.Row="0" Margin="10,10,10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-        <!-- Page content -->
-        <StackPanel Margin="20,88,20,-8">
-            <!-- Header -->
-            <TextBlock Text="Swap Request Status" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center" FontFamily="Gill Sans Ultra Bold">
-                <TextBlock.Effect>
-                    <DropShadowEffect/>
-                </TextBlock.Effect>
-            </TextBlock>
+                <!-- Left side: Welcome message and points -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
+                <!-- Right side: Home button and profile icon -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
+                    <Button x:Name="lblHome" Content="Home" Foreground="White" FontSize="20" FontWeight="Bold" Background="Transparent" BorderBrush="Transparent" ContextMenuOpening="GoToHome" Cursor="Arrow"/>
+                    <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
+                        <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" ContextMenuOpening="GoToProfile" Cursor="Arrow"/>
+                    </Border>
+                </StackPanel>
+                <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,506,7" />
+                <TextBlock Text=" | Points: " FontWeight="Bold" FontSize="20" Foreground="White" Margin="160,7,394,7" />
+            </Grid>
 
-            <!-- List of swap request statuses -->
-            <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10" Height="42" Width="749">
-                <ListView ItemsSource="{Binding SwapRequests}" Background="Transparent" Margin="10,0,10,0">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
-                            <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding RequestedBook.Title}" />
-                            <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
-                            <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Border>
+            <!-- Content: Title and List of swap requests -->
+            <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Height="331" Margin="0,27,0,0" Grid.RowSpan="2">
+                <!-- Title -->
+                <TextBlock Text="Swap Request Status" FontSize="40" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center" FontFamily="Gill Sans Ultra Bold" Height="58">
+                    <TextBlock.Effect>
+                        <DropShadowEffect/>
+                    </TextBlock.Effect>
+                </TextBlock>
 
-        </StackPanel>
+                <!-- List of swap requests in a ListView with a border -->
+                <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10" Width="749">
+                    <ListView ItemsSource="{Binding SwapRequests}" Background="Transparent" Margin="10,0,10,0" FontSize="14">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
+                                <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding RequestedBook.Title}" />
+                                <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
+                                <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Border>
+            </StackPanel>
+
+            <!-- Footer: Back button -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10">
+                <Label x:Name="lblIconBack" Content="&lt;" FontSize="30" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" Height="55" ContextMenuOpening="IconGoBack" Cursor="Arrow"/>
+                <Label x:Name="lblBack" Content="Back" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" ContextMenuOpening="GoBack" Cursor="Arrow"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
