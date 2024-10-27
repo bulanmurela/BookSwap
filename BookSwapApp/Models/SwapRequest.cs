@@ -3,34 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+
 namespace BookSwapApp
 {
-    internal class SwapRequest
+    internal abstract class SwapRequest
     {
-        public string RequestDate { get; set; }
-        public string RequestID { get; set; }
-        public string Request { get; set; }
-        public string Status { get; set; }
+        public string RequestID { get; private set; }
+        public string RequestDate { get; private set; }
+        public string Status { get; protected set; }
 
-        public bool CreateRequest(string req)
+        protected SwapRequest()
         {
-            if (req == "Bertukar")
-            {
-                Request = req;
-                RequestDate = DateTime.Now.ToString("dd/MM/yyyy"); // tanggal dinamis
-                RequestID = Guid.NewGuid().ToString(); // unique req ID dinamis
-                Status = "Requested";
-                return true;
-            }
-            else
-            { return false; }
+            RequestID = Guid.NewGuid().ToString();
+            RequestDate = DateTime.Now.ToString("dd/MM/yyyy");
+            Status = "Requested";
         }
 
-        public string UpdateStatus(string status)
+        public virtual string UpdateStatus(string newStatus)
         {
-            Status = status;
+            Status = newStatus;
             return Status;
+        }
+
+        public virtual string GetRequestDetails()
+        {
+            return $"Request ID: {RequestID}, Date: {RequestDate}, Status: {Status}";
+        }
+    }
+    internal class Request : SwapRequest
+    {
+        public string RequestedBook { get; private set; }
+        public User RequestingUser { get; private set; }
+
+        public Request(User requestingUser, string requestedBook)
+        {
+            RequestingUser = requestingUser;
+            RequestedBook = requestedBook;
+        }
+
+        public override string GetRequestDetails()
+        {
+            return $"{base.GetRequestDetails()}, Book Requested: {RequestedBook}, Requesting User: {RequestingUser.Username}";
         }
     }
 }
