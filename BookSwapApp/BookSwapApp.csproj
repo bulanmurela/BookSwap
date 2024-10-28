@@ -15,8 +15,11 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Helpers\" />
     <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>
