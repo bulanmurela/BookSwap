@@ -1,34 +1,25 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
-using System.Security.Policy;
-using System.Windows;
 using Npgsql;
 
 namespace BookSwapApp.Helpers
 {
-    public class DatabaseHelper
+    public class DatabaseHelpers
     {
         private readonly string connectionString;
 
-        public DatabaseHelper()
+        public DatabaseHelpers()
         {
-            connectionString = "Host=localhost;Port=5432;Username=postgres;Password=wonwoorideul;Database=bookswap;";
+            // Mengambil connection string dari app.config
+            connectionString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
         }
 
         public NpgsqlConnection OpenConnection()
         {
-            try
-            {
-                var connection = new NpgsqlConnection(connectionString);
-                connection.Open();
-                MessageBox.Show("Database terkoneksi", "Informasi", MessageBoxButton.OK, MessageBoxImage.Information);
-                return connection;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Koneksi gagal: {ex.Message}", "Kesalahan", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw; 
-            }
+            var connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            return connection;
         }
 
         public void ExecuteNonQuery(string query)
@@ -51,5 +42,23 @@ namespace BookSwapApp.Helpers
             }
             return dataTable;
         }
+
+        public bool TestConnection()
+        {
+            try
+            {
+                using (var connection = OpenConnection())
+                {
+                    Console.WriteLine("Database terkoneksi!");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Gagal terhubung ke database: " + ex.Message);
+                return false;
+            }
+        }
+
     }
 }
