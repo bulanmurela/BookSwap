@@ -28,18 +28,17 @@ namespace BookSwapApp
             reviewsWritten = new List<Review>();
         }
 
-        public bool Register(string username, string email, string password)
+        public virtual bool Register(string username, string email, string password)
         {
             Username = username;
             Email = email;
             Password = password;
-            Points = 0;
 
             Console.WriteLine("User registered successfully.");
             return true;
         }
 
-        public bool Login(string username, string password)
+        public virtual bool Login(string username, string password)
         {
             if (Username == username && Password == password)
             {

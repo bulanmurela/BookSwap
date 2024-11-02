@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+
 namespace BookSwapApp
 {
     internal class Book
@@ -13,6 +13,7 @@ namespace BookSwapApp
         public string Genre { get; private set; }
         public string Condition { get; private set; }
         public string AvailabilityStatus { get; private set; }
+        public bool VerificationStatus { get; private set; }
 
         public Book(string title, string author, string genre, string condition, string availabilityStatus)
         {
@@ -21,11 +22,7 @@ namespace BookSwapApp
             Genre = genre;
             Condition = condition;
             AvailabilityStatus = availabilityStatus;
-        }
-
-        public void UpdateAvailabilityStatus(string status)
-        {
-            AvailabilityStatus = status;
+            VerificationStatus = false;
         }
 
         public string GetBookDetails()
@@ -36,6 +33,24 @@ namespace BookSwapApp
         public void SetCondition(string condition)
         {
             Condition = condition;
+        }
+
+        public void UpdateAvailabilityStatus(string status)
+        {
+            AvailabilityStatus = status;
+        }
+
+        public void Verify(Admin admin)
+        {
+            if (!VerificationStatus)
+            {
+                VerificationStatus = true;
+                Console.WriteLine($"Book '{Title}' has been verified by admin: {admin.Username}");
+            }
+            else
+            {
+                Console.WriteLine("This book is already verified.");
+            }
         }
     }
 }
