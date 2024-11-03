@@ -34,7 +34,7 @@ namespace BookSwapApp
             Email = email;
             Password = password;
 
-            Console.WriteLine("User registered successfully.");
+            Console.WriteLine("Pengguna berhasil terdaftar.");
             return true;
         }
 
@@ -42,12 +42,12 @@ namespace BookSwapApp
         {
             if (Username == username && Password == password)
             {
-                Console.WriteLine("Login successful.");
+                Console.WriteLine("Login berhasil.");
                 return true;
             }
             else
             {
-                Console.WriteLine("Login failed. Incorrect username or password.");
+                Console.WriteLine("Login gagal. Username atau password salah.");
                 return false;
             }
         }
@@ -56,25 +56,25 @@ namespace BookSwapApp
         {
             uploadedBooks.Add(book);
             EarnPoints(1);
-            Console.WriteLine($"Book '{book.Title}' uploaded successfully.");
+            Console.WriteLine($"Buku '{book.Title}' berhasill diunggah.");
         }
 
         public void RequestSwap(SwapRequest swapRequest)
         {
             swapRequests.Add(swapRequest);
-            Console.WriteLine("Swap request created successfully.");
+            Console.WriteLine("Permintaan tukar buku berhasil dibuat.");
         }
 
         public void WriteReview(Review review)
         {
             reviewsWritten.Add(review);
-            Console.WriteLine("Review written successfully.");
+            Console.WriteLine("Ulasan berhasil ditulis.");
         }
 
         public void EarnPoints(int points)
         {
             Points += points;
-            Console.WriteLine($"{points} points earned. Total points: {Points}");
+            Console.WriteLine($"{points} poin berhasil ditambahkan. Total poin: {Points}");
         }
     }
 }
