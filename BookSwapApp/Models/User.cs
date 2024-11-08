@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Data;
 using BCrypt.Net;
 
-namespace BookSwapApp
+namespace BookSwapApp.Models
 {
     public class User
     {
@@ -23,6 +23,8 @@ namespace BookSwapApp
         private List<Book> uploadedBooks;
         private List<SwapRequest> swapRequests;
         private List<Review> reviewsWritten;
+
+        public User() { }
 
         internal string GetHashedPassword()
         {
