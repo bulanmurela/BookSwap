@@ -7,6 +7,7 @@ using Dapper;
 using System.Data;
 using BookSwapApp.Helpers;
 using System.Security.Policy;
+using BookSwapApp.Models;
 
 namespace BookSwapApp.Repositories
 {
@@ -19,7 +20,7 @@ namespace BookSwapApp.Repositories
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
-                var query = "SELECT * FROM Users WHERE Username = @Username";
+                var query = "SELECT * FROM public.User WHERE Username = @Username";
                 return db.QueryFirstOrDefault<User>(query, new { Username = username });
             }
         }
@@ -29,7 +30,7 @@ namespace BookSwapApp.Repositories
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
-                var query = "INSERT INTO Users (Username, Email, Password, Address, Points) VALUES (@Username, @Email, @Password, @Address, @Points)";
+                var query = "INSERT INTO public.User (Username, Email, Password, Address, Points) VALUES (@Username, @Email, @Password, @Address, @Points)";
                 var result = db.Execute(query, new
                 {
                     user.Username,
@@ -47,7 +48,7 @@ namespace BookSwapApp.Repositories
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
-                var query = "SELECT * FROM Users WHERE Username = @Username";
+                var query = "SELECT * FROM public.User WHERE Username = @Username";
                 var user = db.QueryFirstOrDefault<User>(query, new { Username = username });
 
                 // Verifikasi password yang diinput dengan password yang di-hash
@@ -69,7 +70,7 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 user.EarnPoints(points); // Perbarui poin pada objek `User`
-                var query = "UPDATE Users SET Points = @Points WHERE Id = @UserId";
+                var query = "UPDATE public.User SET Points = @Points WHERE Id = @UserId";
                 var result = db.Execute(query, new
                 {
                     Points = user.Points,

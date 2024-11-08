@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookSwapApp.Models;
 
 namespace BookSwapApp
 {
@@ -48,11 +49,11 @@ namespace BookSwapApp
             if (!VerificationStatus)
             {
                 VerificationStatus = true;
-                Console.WriteLine($"Book '{Title}' has been verified by admin: {admin.Username}");
+                Console.WriteLine($"Buku '{Title}'sudah terverifikasi oleh admin: {admin.Username}");
             }
             else
             {
-                Console.WriteLine("This book is already verified.");
+                Console.WriteLine("Buku sudah terverifikasi.");
             }
         }
     }

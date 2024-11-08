@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using BookSwapApp.Models;
 
 namespace BookSwapApp.Repositories
 {

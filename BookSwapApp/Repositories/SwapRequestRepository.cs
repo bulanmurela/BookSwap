@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using BookSwapApp.Helpers;
+using BookSwapApp.Models;
 
 namespace BookSwapApp.Repositories
 {
