@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookSwapApp
 {
-    internal abstract class SwapRequest
+    public abstract class SwapRequest
     {
         public string RequestID { get; private set; }
         public string RequestDate { get; private set; }

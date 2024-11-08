@@ -1,15 +1,22 @@
-﻿using System;
+﻿using Dapper;
+using BookSwapApp.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+using System.Data;
+using BCrypt.Net;
+
 namespace BookSwapApp
 {
-    internal class User
+    public class User
     {
+        private readonly DatabaseHelpers dbHelpers = new DatabaseHelpers();
+
         public string Username { get; private set; }
         public string Email { get; private set; }
+        public string Address { get; private set; }
         private string Password { get; set; }
         public int Points { get; private set; }
 
@@ -17,64 +24,36 @@ namespace BookSwapApp
         private List<SwapRequest> swapRequests;
         private List<Review> reviewsWritten;
 
-        public User(string username, string email, string password)
+        internal string GetHashedPassword()
+        {
+            return Password;
+        }
+
+        public User(string username, string email, string address, string plainPassword)
         {
             Username = username;
             Email = email;
-            Password = password;
+            Address = address;
+            Password = HashPassword(plainPassword);
             Points = 0;
             uploadedBooks = new List<Book>();
             swapRequests = new List<SwapRequest>();
             reviewsWritten = new List<Review>();
         }
 
-        public virtual bool Register(string username, string email, string password)
+        public static string HashPassword(string plainPassword)
         {
-            Username = username;
-            Email = email;
-            Password = password;
-
-            Console.WriteLine("Pengguna berhasil terdaftar.");
-            return true;
+            return BCrypt.Net.BCrypt.HashPassword(plainPassword);
         }
 
-        public virtual bool Login(string username, string password)
+        public bool VerifyPassword(string plainPassword)
         {
-            if (Username == username && Password == password)
-            {
-                Console.WriteLine("Login berhasil.");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Login gagal. Username atau password salah.");
-                return false;
-            }
-        }
-
-        public void UploadBook(Book book)
-        {
-            uploadedBooks.Add(book);
-            EarnPoints(1);
-            Console.WriteLine($"Buku '{book.Title}' berhasill diunggah.");
-        }
-
-        public void RequestSwap(SwapRequest swapRequest)
-        {
-            swapRequests.Add(swapRequest);
-            Console.WriteLine("Permintaan tukar buku berhasil dibuat.");
-        }
-
-        public void WriteReview(Review review)
-        {
-            reviewsWritten.Add(review);
-            Console.WriteLine("Ulasan berhasil ditulis.");
+            return BCrypt.Net.BCrypt.Verify(plainPassword, Password);
         }
 
         public void EarnPoints(int points)
         {
             Points += points;
-            Console.WriteLine($"{points} poin berhasil ditambahkan. Total poin: {Points}");
         }
     }
 }

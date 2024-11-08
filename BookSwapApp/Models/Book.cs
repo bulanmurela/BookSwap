@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace BookSwapApp
 {
-    internal class Book
+    public class Book
     {
+        public int Id { get; private set; }
         public string Title { get; private set; }
         public string Author { get; private set; }
         public string Genre { get; private set; }
         public string Condition { get; private set; }
         public string AvailabilityStatus { get; private set; }
         public bool VerificationStatus { get; private set; }
+        public User Owner { get; private set; }
 
-        public Book(string title, string author, string genre, string condition, string availabilityStatus)
+        public Book(string title, string author, string genre, string condition, string availabilityStatus, User owner)
         {
             Title = title;
             Author = author;
@@ -23,6 +25,7 @@ namespace BookSwapApp
             Condition = condition;
             AvailabilityStatus = availabilityStatus;
             VerificationStatus = false;
+            Owner = owner;
         }
 
         public string GetBookDetails()
