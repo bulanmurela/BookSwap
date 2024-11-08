@@ -33,6 +33,7 @@ namespace BookSwapApp.Views
 
             if (user != null)
             {
+                ((App)Application.Current).CurrentUser = user;
                 // Tampilkan message box sukses
                 MessageBox.Show("Login berhasil!", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
                 // Arahkan ke halaman HomePage setelah login berhasil

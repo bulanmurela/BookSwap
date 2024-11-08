@@ -21,6 +21,7 @@
             <TextBlock Text="Welcome, User! " FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
             <!-- Points -->
             <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
+            <TextBox x:Name="txtPoints" TextWrapping="Wrap" Text="" Width="46" Height="26" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}"/>
         </StackPanel>
 
         <!-- Profile icon on the right -->
@@ -39,15 +40,10 @@
                 <SolidColorBrush Color="White" Opacity="0.8"/>
             </Rectangle.Fill>
         </Rectangle>
-        <Label x:Name="lblNamaLengkap" Content="Nama Lengkap" HorizontalAlignment="Left" Height="29" Margin="321,96,0,0" VerticalAlignment="Top" Width="112" FontSize="15"/>
-        <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Height="27" Margin="321,160,0,0" VerticalAlignment="Top" Width="98" FontSize="15"/>
-        <Label Content="Nomor Telepon" HorizontalAlignment="Left" Margin="321,224,0,0" VerticalAlignment="Top" Width="112" FontSize="15"/>
-        <Label x:Name="lblAlamat" Content="Alamat Lengkap" HorizontalAlignment="Left" Margin="321,290,0,0" VerticalAlignment="Top" FontSize="15"/>
-        <Rectangle x:Name="recNamaLengkap" HorizontalAlignment="Left" Height="31" Margin="335,128,0,0" Stroke="Black" VerticalAlignment="Top" Width="381" RadiusX="11" UseLayoutRounding="True"/>
-        <Rectangle x:Name="recEmail" HorizontalAlignment="Left" Height="30" Margin="337,192,0,0" Stroke="Black" VerticalAlignment="Top" Width="381" RadiusX="11" UseLayoutRounding="True"/>
-        <Rectangle x:Name="recNomorTelepon" HorizontalAlignment="Left" Height="31" Margin="339,256,0,0" Stroke="Black" VerticalAlignment="Top" Width="381" RadiusX="11" UseLayoutRounding="True"/>
-        <Rectangle x:Name="recAlamatLengkap" HorizontalAlignment="Left" Height="31" Margin="339,324,0,0" Stroke="Black" VerticalAlignment="Top" Width="381" RadiusX="11" UseLayoutRounding="True"/>
-        <TextBox x:Name="txtUpdate" HorizontalAlignment="Left" Margin="337,372,0,0" TextWrapping="Wrap" Text="Update" VerticalAlignment="Top" Width="84" Background="#FF235996" Foreground="White" Height="26" FontSize="15" RenderTransformOrigin="0.5,0.5" HorizontalContentAlignment="Center" />
+        <Label x:Name="lblUsername" Content="Username" HorizontalAlignment="Left" Height="29" Margin="321,108,0,0" VerticalAlignment="Top" Width="112" FontSize="15"/>
+        <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Height="26" Margin="319,190,0,0" VerticalAlignment="Top" Width="98" FontSize="15"/>
+        <Label x:Name="lblAddress" Content="Alamat" HorizontalAlignment="Left" Margin="321,272,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <TextBox x:Name="txtUpdate" HorizontalAlignment="Left" Margin="657,364,0,0" TextWrapping="Wrap" Text="Edit" VerticalAlignment="Top" Width="63" Background="#FF235996" Foreground="White" Height="26" FontSize="15" RenderTransformOrigin="0.5,0.5" HorizontalContentAlignment="Center" />
         <Button x:Name="btnHomePage" Content="Home" HorizontalAlignment="Left" Margin="704,20,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnHomePage_Click">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
@@ -63,6 +59,9 @@
                 </Style>
             </Button.Style>
         </Button>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="338,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="33" Background="{x:Null}"/>
+        <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Margin="338,226,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}"/>
+        <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Margin="338,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}"/>
 
     </Grid>
 </Page>
