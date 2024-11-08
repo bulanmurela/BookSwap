@@ -6,7 +6,7 @@ using System.Threading.Tasks;
  
 namespace BookSwapApp
 {
-    internal class Review
+    public class Review
     {
         private string ReviewDate { get; set; }
         private string Comment { get; set; }
