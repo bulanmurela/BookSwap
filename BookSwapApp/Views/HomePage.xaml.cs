@@ -34,5 +34,10 @@ namespace BookSwapApp.Views
         {
             _navigationService.NavigateTo(typeof(SwapReq));
         }
+
+        private void btnUpload_Click(object sender, RoutedEventArgs e)
+        {
+            _navigationService.NavigateTo(typeof(UploadBook));
+        }
     }
 }

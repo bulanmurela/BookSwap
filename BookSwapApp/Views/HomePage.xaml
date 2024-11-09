@@ -95,7 +95,7 @@
 
             <!-- Footer section (Upload Book button) -->
             <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="20">
-                <Button x:Name="btnUpload" Content="Upload Book" Width="140" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Cursor="Hand">
+                <Button x:Name="btnUpload" Content="Upload Book" Width="140" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Cursor="Hand" Click="btnUpload_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
