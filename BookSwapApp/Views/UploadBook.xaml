@@ -118,7 +118,7 @@
                 </TextBox>
 
                 <!-- Submit Button -->
-                <Button x:Name="btnSubmit" Content="Submit" Width="150" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="0,30,0,0">
+                <Button x:Name="btnSubmit" Content="Submit" Width="150" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="0,30,0,0" Click="btnSubmit_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">

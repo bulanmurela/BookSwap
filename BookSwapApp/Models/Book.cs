@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using BookSwapApp.Models;
 
 namespace BookSwapApp
@@ -18,13 +19,13 @@ namespace BookSwapApp
         public bool VerificationStatus { get; private set; }
         public User Owner { get; private set; }
 
-        public Book(string title, string author, string genre, string condition, string availabilityStatus, User owner)
+        public Book(string title, string author, string genre, string condition, User owner)
         {
             Title = title;
             Author = author;
             Genre = genre;
             Condition = condition;
-            AvailabilityStatus = availabilityStatus;
+            AvailabilityStatus = "Available";
             VerificationStatus = false;
             Owner = owner;
         }
@@ -44,16 +45,16 @@ namespace BookSwapApp
             AvailabilityStatus = status;
         }
 
+        public void MarkAsVerified()
+        {
+            VerificationStatus = true;
+        }
+
         public void Verify(Admin admin)
         {
             if (!VerificationStatus)
             {
-                VerificationStatus = true;
-                Console.WriteLine($"Buku '{Title}'sudah terverifikasi oleh admin: {admin.Username}");
-            }
-            else
-            {
-                Console.WriteLine("Buku sudah terverifikasi.");
+                MarkAsVerified();
             }
         }
     }
