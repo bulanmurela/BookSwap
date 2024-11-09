@@ -22,7 +22,6 @@ namespace BookSwapApp.Services
                    $"- Author: {book.Author}\n" +
                    $"- Genre: {book.Genre}\n" +
                    $"- Condition: {book.Condition}\n" +
-                   $"- Availability: {book.AvailabilityStatus}\n" +
                    $"\nOwner Details:\n" +
                    $"- Username: {book.Owner.Username}\n" +
                    $"- Email: {book.Owner.Email}\n" +
