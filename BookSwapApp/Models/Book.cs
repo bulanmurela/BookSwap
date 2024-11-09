@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using BookSwapApp.Models;
 
 namespace BookSwapApp
@@ -15,9 +17,12 @@ namespace BookSwapApp
         public string Author { get; private set; }
         public string Genre { get; private set; }
         public string Condition { get; private set; }
-        public bool VerificationStatus { get; private set; }
+        public bool VerificationStatus { get; set; }
         public User Owner { get; private set; }
+        public byte[] CoverImage { get;  set; }
 
+        [NotMapped]
+        public BitmapImage CoverImageSource { get; set; }
         public Book(string title, string author, string genre, string condition, User owner)
         {
             Title = title;
