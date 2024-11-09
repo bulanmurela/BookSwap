@@ -47,6 +47,20 @@ namespace BookSwapApp.Repositories
             }
         }
 
+        // Method to get all unverified books
+        public List<Book> GetUnverifiedBooks()
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = @"
+                    SELECT id, title, author, genre, condition, verification_status, owner_username, cover_image 
+                    FROM public.Books 
+                    WHERE verification_status = false";
+
+                return db.Query<Book>(query).ToList();
+            }
+        }
+
         // Method for admin to verify the book and award points to the user
         public bool VerifyBook(int bookId, Admin admin, Book book)
         {
