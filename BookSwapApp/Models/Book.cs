@@ -15,7 +15,6 @@ namespace BookSwapApp
         public string Author { get; private set; }
         public string Genre { get; private set; }
         public string Condition { get; private set; }
-        public string AvailabilityStatus { get; private set; }
         public bool VerificationStatus { get; private set; }
         public User Owner { get; private set; }
 
@@ -25,24 +24,18 @@ namespace BookSwapApp
             Author = author;
             Genre = genre;
             Condition = condition;
-            AvailabilityStatus = "Available";
             VerificationStatus = false;
             Owner = owner;
         }
 
         public string GetBookDetails()
         {
-            return $"Title: {Title}, Author: {Author}, Genre: {Genre}, Condition: {Condition}, AvailabilityStatus: {AvailabilityStatus}";
+            return $"Title: {Title}, Author: {Author}, Genre: {Genre}, Condition: {Condition}";
         }
 
         public void SetCondition(string condition)
         {
             Condition = condition;
-        }
-
-        public void UpdateAvailabilityStatus(string status)
-        {
-            AvailabilityStatus = status;
         }
 
         public void MarkAsVerified()

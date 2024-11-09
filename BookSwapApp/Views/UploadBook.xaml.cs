@@ -55,6 +55,12 @@ namespace BookSwapApp.Views
 
         private bool SaveBookData(string title, string author, string genre, string condition, User user, string coverFilePath)
         {
+            if (user == null)
+            {
+                MessageBox.Show("User information is missing. Please log in again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
             try
             {
                 byte[] coverImageBytes = ConvertImageToByteArray(coverFilePath);

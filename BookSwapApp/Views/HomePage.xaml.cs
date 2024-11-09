@@ -43,6 +43,17 @@ namespace BookSwapApp.Views
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
         {
+            var app = (App)Application.Current;
+            var currentUser = app.CurrentUser;
+
+            if (currentUser == null)
+            {
+                MessageBox.Show("User information is missing. Please log in again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _navigationService.NavigateTo(typeof(Login)); // Redirect to login if currentUser is null
+                return;
+            }
+
+            // Navigate to UploadBook with currentUser
             _navigationService.NavigateTo(typeof(UploadBook), currentUser, _navigationService);
         }
     }

@@ -28,8 +28,8 @@ namespace BookSwapApp.Repositories
             {
                 var query = @"
                     INSERT INTO public.Books 
-                    (title, author, genre, condition, availability_status, verification_status, owner_username, cover_image) 
-                    VALUES (@Title, @Author, @Genre, @Condition, @AvailabilityStatus, @VerificationStatus, @OwnerUsername, @CoverImage)";
+                    (title, author, genre, condition, verification_status, owner_username, cover_image) 
+                    VALUES (@Title, @Author, @Genre, @Condition, @VerificationStatus, @OwnerUsername, @CoverImage)";
 
                 var result = db.Execute(query, new
                 {
@@ -37,7 +37,6 @@ namespace BookSwapApp.Repositories
                     book.Author,
                     book.Genre,
                     book.Condition,
-                    book.AvailabilityStatus,
                     VerificationStatus = false,
                     OwnerUsername = user.Username,
                     CoverImage = coverImageBytes
