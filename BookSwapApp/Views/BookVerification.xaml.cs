@@ -14,9 +14,8 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using BookSwapApp.Models;
-using BookSwapApp.Converter;
 using BookSwapApp.Commands;
+using BookSwapApp.Models;
 using BookSwapApp.Repositories;
 
 namespace BookSwapApp.Views
@@ -32,9 +31,13 @@ namespace BookSwapApp.Views
         public BookVerification()
         {
             InitializeComponent();
-            LoadUnverifiedBooks();
-        }
+            DataContext = this;
 
+            LoadUnverifiedBooks(); 
+
+            VerifyBookCommand = new RelayCommand(parameter => VerifyBook((Book)parameter));
+        }
+      
         private BitmapImage ConvertToImage(byte[] imageData)
         {
             if (imageData == null || imageData.Length == 0) return null;
@@ -57,7 +60,7 @@ namespace BookSwapApp.Views
 
             foreach (var book in unverifiedBooks)
             {
-                book.CoverImageSource = ConvertToImage(book.CoverImage);
+                book.SetCoverImageSource(book.CoverImage);  
             }
 
             UnverifiedBooks = new ObservableCollection<Book>(unverifiedBooks);

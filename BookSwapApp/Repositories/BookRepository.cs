@@ -57,7 +57,20 @@ namespace BookSwapApp.Repositories
                     FROM public.Books 
                     WHERE verification_status = false";
 
-                return db.Query<Book>(query).ToList();
+                var books = db.Query<Book>(query).ToList();
+
+                // Retrieve each book's owner details and set the Owner property
+                foreach (var book in books)
+                {
+                    var ownerQuery = "SELECT * FROM public.User WHERE username = @Username";
+                    var owner = db.QuerySingleOrDefault<User>(ownerQuery, new { Username = book.OwnerUsername });
+                    if (owner != null)
+                    {
+                        book.Owner = owner; // Set the owner details
+                    }
+                }
+
+                return books;
             }
         }
 
@@ -87,7 +100,10 @@ namespace BookSwapApp.Repositories
                         var ownerUsername = db.QuerySingle<string>(getUserQuery, new { BookId = bookId }, transaction: transaction);
 
                         // Step 3: Update the user's points in the database
-                        var updatePointsQuery = "UPDATE public.user SET points = points + 1 WHERE username = @OwnerUsername";
+                        var updatePointsQuery = 
+                            "UPDATE public.User " +
+                            "SET points = points + 1 " +
+                            "WHERE username = @OwnerUsername";
                         db.Execute(updatePointsQuery, new { OwnerUsername = ownerUsername }, transaction: transaction);
 
                         transaction.Commit();
@@ -104,6 +120,13 @@ namespace BookSwapApp.Repositories
                     MessageBox.Show("Verification failed. Please try again.", "Verification Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
                 }
+            }
+        }
+        private User GetUserByUsername(string username)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                return db.QuerySingleOrDefault<User>("SELECT * FROM public.Users WHERE username = @Username", new { Username = username });
             }
         }
     }

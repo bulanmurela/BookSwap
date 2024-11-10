@@ -33,7 +33,7 @@ namespace BookSwapApp.Views
             if (admin.AdminLogin(username, password))
             {
                 // Arahkan ke halaman BookVerification jika login sebagai admin berhasil
-                MessageBox.Show("Login berhasil sebagai Admin!", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Login successful as admin!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 _navigationService.NavigateTo(typeof(BookVerification));
                 return;
             }
@@ -44,13 +44,13 @@ namespace BookSwapApp.Views
             {
                 ((App)Application.Current).CurrentUser = user;
                 // Tampilkan message box sukses
-                MessageBox.Show("Login berhasil!", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Login successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 // Arahkan ke halaman HomePage setelah login berhasil
                 _navigationService.NavigateTo(typeof(HomePage));
             }
             else
             {
-                MessageBox.Show("Login gagal. Username atau password salah.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Login failed. Incorrect username or password.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
