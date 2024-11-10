@@ -38,7 +38,7 @@ namespace BookSwapApp.Views
             // Validasi sederhana untuk memastikan password sesuai
             if (password != confirmPassword)
             {
-                MessageBox.Show("Password tidak cocok. Silakan coba lagi.");
+                MessageBox.Show("Password doesn't match. Please try again.");
                 return;
             }
 
@@ -51,12 +51,12 @@ namespace BookSwapApp.Views
             // Tampilkan pesan berhasil/gagal dan arahkan ke halaman login jika berhasil
             if (isRegistered)
             {
-                MessageBox.Show("Berhasil mendaftar");
+                MessageBox.Show("Registered succesfully");
                 _navigationService.NavigateTo(typeof(Login)); // Navigasi ke halaman login
             }
             else
             {
-                MessageBox.Show("Pendaftaran gagal. Coba lagi.");
+                MessageBox.Show("Register failed. Please try again.");
             }
         }
 

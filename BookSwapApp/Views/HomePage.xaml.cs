@@ -11,7 +11,6 @@ namespace BookSwapApp.Views
         private readonly User currentUser;
         public HomePage() : this(new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame))
         {
-            // Constructor tanpa parameter
         }
 
         public HomePage(User user, NavigationService navigationService) : this(navigationService)

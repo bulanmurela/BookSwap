@@ -71,18 +71,8 @@ namespace BookSwapApp.Views
                 BookRepository bookRepository = new BookRepository();
 
                 // Call the UploadBook method in the repository
-                bool isUploaded = bookRepository.UploadBook(currentUser, book, coverImageBytes);
+                return bookRepository.UploadBook(currentUser, book, coverImageBytes);
 
-                if (isUploaded)
-                {
-                    MessageBox.Show("Data has been saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return true;
-                }
-                else
-                {
-                    MessageBox.Show("Failed to save data.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
             }
             catch (Exception ex)
             {
@@ -123,8 +113,6 @@ namespace BookSwapApp.Views
 
             if (isSaved)
             {
-                MessageBox.Show("Data has saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 // Navigate back to the homepage
                 _navigationService.NavigateTo(typeof(HomePage));
             }
