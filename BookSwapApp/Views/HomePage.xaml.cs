@@ -31,11 +31,6 @@ namespace BookSwapApp.Views
             _navigationService.NavigateTo(typeof(Profil));
         }
 
-        private void GoToLoginPage(object sender, ContextMenuEventArgs e)
-        {
-            _navigationService.NavigateTo(typeof(Login));
-        }
-
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
             _navigationService.NavigateTo(typeof(SwapReq));

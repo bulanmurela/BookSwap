@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using BookSwapApp.Models;
 
-namespace BookSwapApp
+namespace BookSwapApp.Models
 {
     public class Book
     {
@@ -23,6 +23,11 @@ namespace BookSwapApp
 
         [NotMapped]
         public BitmapImage CoverImageSource { get; set; }
+
+        public Book()
+        {   // constructor tanpa parameter
+        }
+
         public Book(string title, string author, string genre, string condition, User owner)
         {
             Title = title;

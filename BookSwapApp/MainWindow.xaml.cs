@@ -17,7 +17,7 @@ namespace BookSwapApp
             InitializeComponent();
             _navigationService = new NavigationService(MainFrame);
             _currentUser = new User();
-            _navigationService.NavigateTo(typeof(HomePage), _navigationService);
+            _navigationService.NavigateTo(typeof(Signup), _navigationService);
 
             var dbHelper = new DatabaseHelpers();
             bool isConnected = dbHelper.TestConnection();

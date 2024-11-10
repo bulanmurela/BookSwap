@@ -28,9 +28,18 @@ namespace BookSwapApp.Views
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
-            // Panggil metode Login di UserRepository
-            var user = _userRepository.Login(username, password);
+            // login sebagai admin
+            Admin admin = new Admin();
+            if (admin.AdminLogin(username, password))
+            {
+                // Arahkan ke halaman BookVerification jika login sebagai admin berhasil
+                MessageBox.Show("Login berhasil sebagai Admin!", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+                _navigationService.NavigateTo(typeof(BookVerification));
+                return;
+            }
 
+            // Panggil metode Login untuk user biasa di UserRepository
+            var user = _userRepository.Login(username, password);
             if (user != null)
             {
                 ((App)Application.Current).CurrentUser = user;

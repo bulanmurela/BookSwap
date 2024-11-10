@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
+using BookSwapApp.Models;
 
 namespace BookSwapApp.ViewModels
 {

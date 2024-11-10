@@ -15,10 +15,15 @@ namespace BookSwapApp.Views
         private NavigationService _navigationService;
         private UserRepository _userRepository;
 
-        public Signup()
+        public Signup() : this(new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame))
+        {
+            // Constructor tanpa parameter
+        }
+
+        public Signup(NavigationService navigationService)
         {
             InitializeComponent();
-            _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
+            _navigationService = navigationService;
             _userRepository = new UserRepository();
         }
 

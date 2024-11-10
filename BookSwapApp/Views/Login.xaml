@@ -39,11 +39,7 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
                 <!-- Right side: Profile icon -->
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
-                    <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
-                        <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" />
-                    </Border>
-                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1"/>
                 <TextBlock Text="Welcome, Please Log In!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,489,7" />
             </Grid>
 

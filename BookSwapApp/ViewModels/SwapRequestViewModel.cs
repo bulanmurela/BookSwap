@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookSwapApp.Services;
+using BookSwapApp.Models;
 
 namespace BookSwapApp.ViewModels
 {
