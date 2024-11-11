@@ -129,5 +129,20 @@ namespace BookSwapApp.Repositories
                 return db.QuerySingleOrDefault<User>("SELECT * FROM public.Users WHERE username = @Username", new { Username = username });
             }
         }
+
+        public List<Book> GetVerifiedBooksByUser(string username)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = @"
+            SELECT id, title, author, condition
+            FROM public.Books
+            WHERE verification_status = true AND owner_username = @Username";
+
+                var books = db.Query<Book>(query, new { Username = username }).ToList();
+                return books;
+            }
+        }
+
     }
 }

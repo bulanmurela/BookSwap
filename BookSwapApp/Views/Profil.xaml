@@ -17,9 +17,7 @@
 
         <!-- Header with welcome message and points on the left -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">
-            <!-- Welcome message -->
             <TextBlock Text="Welcome, User! " FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
-            <!-- Points -->
             <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
             <TextBox x:Name="txtPoints" TextWrapping="Wrap" Text="" Width="46" Height="26" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}"/>
         </StackPanel>
@@ -62,6 +60,17 @@
         <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="338,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="33" Background="{x:Null}"/>
         <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Margin="338,226,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}"/>
         <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Margin="338,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}"/>
+
+        <!-- Verified Books ListView -->
+        <ListView x:Name="VerifiedBooksListView" Margin="44,430,44,20" VerticalAlignment="Top">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="150"/>
+                    <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author}" Width="150"/>
+                    <GridViewColumn Header="Condition" DisplayMemberBinding="{Binding Condition}" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Page>

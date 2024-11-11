@@ -10,11 +10,13 @@ namespace BookSwapApp.Views
     {
         private NavigationService _navigationService;
         private User _currentUser;
+        private BookService _bookService;
 
         public Profil()
         {
             InitializeComponent();
             _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
+            _bookService = new BookService();
 
             _currentUser = ((App)Application.Current).CurrentUser;
 
@@ -25,6 +27,18 @@ namespace BookSwapApp.Views
                 txtEmail.Text = _currentUser.Email;
                 txtAddress.Text = _currentUser.Address ?? "";
                 txtPoints.Text = _currentUser.Points.ToString();
+
+                // Ambil dan tampilkan buku yang sudah diverifikasi
+                LoadVerifiedBooks();
+            }
+        }
+
+        private void LoadVerifiedBooks()
+        {
+            if (_currentUser != null)
+            {
+                var verifiedBooks = _bookService.GetVerifiedBooksByUser(_currentUser.Username);
+                VerifiedBooksListView.ItemsSource = verifiedBooks;
             }
         }
 
