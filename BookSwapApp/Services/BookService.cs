@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Policy;
 using BookSwapApp.Models;
+using BookSwapApp.Repositories;
 
 namespace BookSwapApp.Services
 {
     internal class BookService
     {
+        private BookRepository _bookRepository;
         public string GetBookAndOwnerDetails(Book book)
         {
             if (book.Owner == null)
@@ -27,6 +29,16 @@ namespace BookSwapApp.Services
                    $"- Username: {book.Owner.Username}\n" +
                    $"- Email: {book.Owner.Email}\n" +
                    $"- Address: {book.Owner.Address}";
+        }
+
+        public BookService()
+        {
+            _bookRepository = new BookRepository();
+        }
+
+        public List<Book> GetVerifiedBooksByUser(string username)
+        {
+            return _bookRepository.GetVerifiedBooksByUser(username);
         }
     }
 }
