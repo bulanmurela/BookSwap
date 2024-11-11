@@ -145,5 +145,19 @@ namespace BookSwapApp.Repositories
             }
         }
 
+        public List<Book> SearchVerifiedBooks(string keyword)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = @"
+                SELECT id, title, author, genre, condition
+                FROM public.Books
+                WHERE verification_status = true
+                AND (title ILIKE @Keyword OR author ILIKE @Keyword)";
+
+                var books = db.Query<Book>(query, new { Keyword = "%" + keyword + "%" }).ToList();
+                return books;
+            }
+        }
     }
 }

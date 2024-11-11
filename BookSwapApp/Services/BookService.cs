@@ -40,5 +40,10 @@ namespace BookSwapApp.Services
         {
             return _bookRepository.GetVerifiedBooksByUser(username);
         }
+
+        public List<Book> SearchVerifiedBooks(string keyword)
+        {
+            return _bookRepository.SearchVerifiedBooks(keyword);
+        }
     }
 }

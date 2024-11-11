@@ -9,6 +9,7 @@ namespace BookSwapApp.Views
     {
         private NavigationService _navigationService;
         private readonly User currentUser;
+        private readonly BookService _bookService;
         public HomePage() : this(new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame))
         {
         }
@@ -16,12 +17,14 @@ namespace BookSwapApp.Views
         public HomePage(User user, NavigationService navigationService) : this(navigationService)
         {
             currentUser = user;
+            _bookService = new BookService();
         }
 
         public HomePage(NavigationService navigationService)
         {
             InitializeComponent();
             _navigationService = navigationService;
+            _bookService = new BookService();
         }
 
         private void GoToProfile(object sender, ContextMenuEventArgs e)
@@ -32,7 +35,18 @@ namespace BookSwapApp.Views
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
-            _navigationService.NavigateTo(typeof(SwapReq));
+            string keyword = txtInsertKeyword.Text; // Assuming SearchBox is the name of the search input
+            var books = _bookService.SearchVerifiedBooks(keyword);
+
+            if (books.Any())
+            {
+                // Display the list of books, e.g., in a ListView or DataGrid
+                BookList.ItemsSource = books; // Assuming BookList is a ListView or similar control in HomePage.xaml
+            }
+            else
+            {
+                MessageBox.Show("No books found with the given keyword.", "Search Result", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
