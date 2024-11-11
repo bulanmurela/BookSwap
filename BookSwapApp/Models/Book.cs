@@ -21,7 +21,7 @@ namespace BookSwapApp.Models
         public bool VerificationStatus { get; set; }
         [NotMapped] // Prevent mapping in the database
         public User Owner { get; internal set; }
-        public string OwnerUsername { get; private set; }
+        public string OwnerUsername { get; set; }
 
         private byte[] _coverImage;
         public byte[] CoverImage

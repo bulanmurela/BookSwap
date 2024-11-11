@@ -47,27 +47,28 @@ namespace BookSwapApp.Repositories
             }
         }
 
-        // Method to get all unverified books
         public List<Book> GetUnverifiedBooks()
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-                    SELECT id, title, author, genre, condition, verification_status, owner_username, cover_image 
-                    FROM public.Books 
-                    WHERE verification_status = false";
+                    SELECT 
+                        id, 
+                        title, 
+                        author, 
+                        cover_image AS CoverImage, 
+                        owner_username AS OwnerUsername
+                    FROM 
+                        public.Books
+                    WHERE 
+                        verification_status = false";
 
                 var books = db.Query<Book>(query).ToList();
 
-                // Retrieve each book's owner details and set the Owner property
+                // Set the cover image source for each book, if needed
                 foreach (var book in books)
                 {
-                    var ownerQuery = "SELECT * FROM public.User WHERE username = @Username";
-                    var owner = db.QuerySingleOrDefault<User>(ownerQuery, new { Username = book.OwnerUsername });
-                    if (owner != null)
-                    {
-                        book.Owner = owner; // Set the owner details
-                    }
+                    book.SetCoverImageSource(book.CoverImage);
                 }
 
                 return books;
