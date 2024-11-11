@@ -78,7 +78,7 @@ namespace BookSwapApp.Views
             if (isVerified)
             {
                 MessageBox.Show("Book verified successfully!", "Verification", MessageBoxButton.OK, MessageBoxImage.Information);
-                UnverifiedBooks.Remove(book); // Remove the verified book from the list
+                UnverifiedBooks.Remove(book);
             }
             else
             {
