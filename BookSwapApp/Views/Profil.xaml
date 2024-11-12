@@ -41,7 +41,6 @@
         <Label x:Name="lblUsername" Content="Username" HorizontalAlignment="Left" Height="29" Margin="321,108,0,0" VerticalAlignment="Top" Width="112" FontSize="15"/>
         <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Height="26" Margin="319,190,0,0" VerticalAlignment="Top" Width="98" FontSize="15"/>
         <Label x:Name="lblAddress" Content="Alamat" HorizontalAlignment="Left" Margin="321,272,0,0" VerticalAlignment="Top" FontSize="15"/>
-        <TextBox x:Name="txtUpdate" HorizontalAlignment="Left" Margin="657,364,0,0" TextWrapping="Wrap" Text="Edit" VerticalAlignment="Top" Width="63" Background="#FF235996" Foreground="White" Height="26" FontSize="15" RenderTransformOrigin="0.5,0.5" HorizontalContentAlignment="Center" />
         <Button x:Name="btnHomePage" Content="Home" HorizontalAlignment="Left" Margin="704,20,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnHomePage_Click">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
@@ -71,6 +70,36 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="btnLogout" Content="Log out" HorizontalAlignment="Left" Margin="644,351,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnLogout_Click">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="10" Margin="0,7,4,0">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="330,351,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="10" Margin="0,7,4,0">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
 
     </Grid>
 </Page>

@@ -47,5 +47,19 @@ namespace BookSwapApp.Views
         {
             _navigationService.NavigateTo(typeof(HomePage)); // Pastikan HomePage memiliki constructor tanpa parameter
         }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            // Show a confirmation message box
+            var result = MessageBox.Show("Are you sure you want to logout?", "Warning!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                // If the user clicks "Yes", log out and navigate to the login page
+                _navigationService.NavigateTo(typeof(Login)); // Assumes Login is the name of the login page class
+                ((App)Application.Current).CurrentUser = null; // Clear the current user session
+            }
+            // If the user clicks "No", do nothing and stay on the profile page
+        }
     }
 }
