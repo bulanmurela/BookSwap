@@ -9,14 +9,17 @@ using System.Windows.Input;
 using System.Windows;
 using BookSwapApp.Models;
 using BookSwapApp.Commands;
+using BookSwapApp.Services;
 
 namespace BookSwapApp.ViewModels
 {
     public class BookVerificationViewModel : ViewModelBase
     {
         private readonly BookRepository _bookRepository;
+
         public ObservableCollection<Book> Books { get; set; }
         public ICommand VerifyBookCommand { get; }
+        public ICommand LogoutCommand { get; }  
 
         public BookVerificationViewModel()
         {
