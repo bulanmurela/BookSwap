@@ -16,7 +16,7 @@ namespace BookSwapApp.Models
 
         public string Username { get; private set; }
         public string Email { get; private set; }
-        public string Address { get; private set; }
+        public string Address { get; set; }
         private string Password { get; set; }
         public int Points { get; private set; }
 

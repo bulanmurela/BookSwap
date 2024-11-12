@@ -49,13 +49,13 @@ namespace BookSwapApp.Helpers
             {
                 using (var connection = OpenConnection())
                 {
-                    Console.WriteLine("Database terkoneksi!");
+                    Console.WriteLine("Database Connected!");
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Gagal terhubung ke database: " + ex.Message);
+                Console.WriteLine("Failed to connect database: " + ex.Message);
                 return false;
             }
         }
