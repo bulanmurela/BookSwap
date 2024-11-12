@@ -23,11 +23,11 @@ namespace BookSwapApp
             bool isConnected = dbHelper.TestConnection();
             if (isConnected)
             {
-                MessageBox.Show("Database terkoneksi!", "Sukses");
+                MessageBox.Show("Database connected!", "Success!");
             }
             else
             {
-                MessageBox.Show("Gagal terhubung ke database.", "Kesalahan");
+                MessageBox.Show("Database connection failed.", "Failure!");
             }
         }
     }

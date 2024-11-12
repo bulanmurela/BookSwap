@@ -82,5 +82,20 @@ namespace BookSwapApp.Repositories
                 return result > 0;
             }
         }
+
+        public bool UpdateUserAddress(User user)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = "UPDATE public.User SET Address = @Address WHERE Username = @Username";
+                var result = db.Execute(query, new
+                {
+                    Address = user.Address,
+                    Username = user.Username
+                });
+                return result > 0; // Returns true if at least one row was updated
+            }
+        }
+
     }
 }
