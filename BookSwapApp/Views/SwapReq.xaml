@@ -48,9 +48,9 @@
             </Grid>
 
             <!-- Main content section: Book details and swap request button -->
-            <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Height="375" Width="596" Grid.RowSpan="2" Margin="0,54,0,0">
+            <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Height="375" Width="713" Grid.RowSpan="2" Margin="0,54,0,0">
                 <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="15"
-                        Padding="20" Background="#AAFFFFFF" Width="556" Height="262">
+                        Padding="20" Background="#AAFFFFFF" Width="688" Height="322">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
@@ -58,10 +58,10 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Book Cover -->
-                        <Image Source="/Views/booksample.jpg" Grid.Column="0" Stretch="UniformToFill" Margin="5,0,0,1"/>
+                        <Image Name="imgBookCover" Grid.Column="0" Stretch="UniformToFill" Margin="0,10,458,17" Grid.ColumnSpan="2"/>
 
                         <!-- Book Details Section -->
-                        <Grid Grid.Column="1" Margin="20,0,0,0">
+                        <Grid Grid.Column="1" Margin="57,0,-29,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -78,21 +78,32 @@
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Title" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,10,10,0"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,10,10,0"/>
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Book.Title}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+                            <TextBox x:Name="txtTitle" Grid.Column="2" HorizontalAlignment="Left" Margin="9,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="281" Height="24" Grid.RowSpan="2" Background="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="White" FontSize="16" FontWeight="Medium" BorderBrush="{x:Null}"/>
 
                             <!-- Author -->
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Author" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,27,10,17" Grid.RowSpan="2"/>
-                            <TextBlock Grid.Row="1" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="93,27,10,17" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Book.Author}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Author" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,16,10,28" Grid.RowSpan="2"/>
+                            <TextBlock Grid.Row="1" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="2,16,199,28" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1"/>
+                            <TextBox x:Name="txtAuthor" Grid.Column="2" HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="281" Height="24" Grid.RowSpan="2" Background="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="White" FontSize="16" FontWeight="Medium" Grid.Row="1" BorderBrush="{x:Null}"/>
 
                             <!-- Genre -->
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Genre" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,18,10,-6"/>
-                            <TextBlock Grid.Row="3" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="93,18,10,-6" Grid.ColumnSpan="2"/>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Book.Genre}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Genre" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,28,10,18" Grid.RowSpan="2"/>
+                            <TextBlock Grid.Row="2" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,28,202,18" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1"/>
+                            <TextBox x:Name="txtGenre" Grid.Column="2" HorizontalAlignment="Left" Margin="10,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="280" Height="24" Background="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="White" FontSize="16" FontWeight="Medium" Grid.Row="2" BorderBrush="{x:Null}" Grid.RowSpan="2"/>
 
                             <!-- Condition -->
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Condition" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,69,10,-59"/>
-                            <TextBlock Grid.Row="3" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="93,69,10,-59" Grid.ColumnSpan="2"/>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Book.Condition}" FontSize="18" Foreground="Black" Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Condition" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,39,10,-29"/>
+                            <TextBlock Grid.Row="3" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="138,39,201,-29" Grid.ColumnSpan="3"/>
+                            <TextBox x:Name="txtCondition" Grid.Column="2" HorizontalAlignment="Left" Margin="9,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="281" Height="24" Background="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="White" FontSize="16" FontWeight="Medium" Grid.Row="3" BorderBrush="{x:Null}"/>
+
+                            <!-- Oner Email -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Owner Email" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,83,10,-73"/>
+                            <TextBlock Grid.Row="3" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,83,201,-73" Grid.ColumnSpan="2" Grid.Column="1"/>
+                            <TextBox x:Name="txtOwnerEmail" IsReadOnly="True" Grid.Column="2" HorizontalAlignment="Left" Margin="9,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="281" Height="24" Background="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="White" FontSize="16" FontWeight="Medium" Grid.Row="3" BorderBrush="{x:Null}"/>
+
+                            <!-- Owner Address-->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Owner Address" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,130,10,-120"/>
+                            <TextBlock Grid.Row="3" Text=":" FontWeight="Bold" FontSize="18" Foreground="Black" Margin="0,130,201,-120" Grid.ColumnSpan="2" Grid.Column="1"/>
+                            <TextBox x:Name="txtOwnerAddress" IsReadOnly="True" Grid.Column="2" HorizontalAlignment="Left" Margin="9,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="281" Height="24" Background="{x:Null}" SelectionBrush="{x:Null}" SelectionTextBrush="White" FontSize="16" FontWeight="Medium" Grid.Row="3" BorderBrush="{x:Null}"/>
                         </Grid>
                     </Grid>
                 </Border>

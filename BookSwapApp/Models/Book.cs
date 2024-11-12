@@ -19,9 +19,13 @@ namespace BookSwapApp.Models
         public string Genre { get; private set; }
         public string Condition { get; private set; }
         public bool VerificationStatus { get; set; }
+
         [NotMapped] // Prevent mapping in the database
         public User Owner { get; internal set; }
         public string OwnerUsername { get; set; }
+        public string OwnerEmail { get; set; }
+        public string OwnerAddress { get; set; }
+
 
         private byte[] _coverImage;
         public byte[] CoverImage
@@ -101,5 +105,12 @@ namespace BookSwapApp.Models
                 Owner = user;
             }
         }
+
+        public void SetOwnerContactInfo(string email, string address)
+        {
+            OwnerEmail = email;
+            OwnerAddress = address;
+        }
+
     }
 }
