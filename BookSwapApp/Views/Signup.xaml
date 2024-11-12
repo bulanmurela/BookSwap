@@ -148,10 +148,7 @@
             </StackPanel>
 
             <!-- Footer section (Back button) -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10,0,10" Width="81">
-                <Label x:Name="lblIconBack" Content="&lt;" FontSize="30" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" Height="55" ContextMenuOpening="IconGoBack" Cursor="Arrow"/>
-                <Label x:Name="lblBack" Content="Back" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" ContextMenuOpening="GoBack" Cursor="Arrow"/>
-            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10,0,10" Width="81"/>
         </Grid>
     </Grid>
 </Page>
