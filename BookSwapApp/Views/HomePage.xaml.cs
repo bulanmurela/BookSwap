@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using BookSwapApp.Models;
 using BookSwapApp.Services;
+using BookSwapApp.Views;
 
 namespace BookSwapApp.Views
 {
@@ -46,6 +47,17 @@ namespace BookSwapApp.Views
             else
             {
                 MessageBox.Show("No books found with the given keyword.", "Search Result", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        // Event handler for when a book is selected from the list
+        private void BookList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (BookList.SelectedItem is Book selectedBook)
+            {
+                int selectedBookId = selectedBook.Id;
+                // Navigate to SwapReq page with the selected book details
+                _navigationService.NavigateTo(typeof(SwapReq), selectedBookId);
             }
         }
 

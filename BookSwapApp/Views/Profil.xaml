@@ -33,9 +33,9 @@
                 <SolidColorBrush Color="White" Opacity="0.8"/>
             </Rectangle.Fill>
         </Rectangle>
-        <Label x:Name="lblUsername" Content="Username" HorizontalAlignment="Left" Height="29" Margin="77,118,0,0" VerticalAlignment="Top" Width="112" FontSize="15"/>
-        <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Height="26" Margin="75,200,0,0" VerticalAlignment="Top" Width="98" FontSize="15"/>
-        <Label x:Name="lblAddress" Content="Alamat" HorizontalAlignment="Left" Margin="77,282,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="lblUsername" Content="Username" HorizontalAlignment="Left" Height="29" Margin="77,121,0,0" VerticalAlignment="Top" Width="112" FontSize="18" FontWeight="SemiBold"/>
+        <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Height="32" Margin="77,198,0,0" VerticalAlignment="Top" Width="98" FontSize="18" FontWeight="SemiBold"/>
+        <Label x:Name="lblAddress" Content="Address" HorizontalAlignment="Left" Margin="77,282,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="SemiBold"/>
         <Button x:Name="btnHomePage" Content="Home" HorizontalAlignment="Left" Margin="704,20,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnHomePage_Click">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
@@ -65,7 +65,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="btnLogout" Content="Logout" HorizontalAlignment="Left" Margin="400,361,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnLogout_Click">
+        <Button x:Name="btnLogout" Content="Logout" HorizontalAlignment="Left" Margin="400,366,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="SemiBold" Foreground="White" Click="btnLogout_Click" FontSize="14">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -80,7 +80,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="86,361,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnEdit_Click">
+        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="86,366,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="SemiBold" Foreground="White" Click="btnEdit_Click" FontSize="14">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
