@@ -12,8 +12,8 @@ namespace BookSwapApp
 {  
     public class Admin : User
     {
-        private static readonly string fixedUsername = "adminBookSwap";
-        private static readonly string fixedPassword = "onlyadminBookSwap123";
+        private static readonly string fixedUsername = "admin";
+        private static readonly string fixedPassword = "adminBS";
 
         public Admin() : base(fixedUsername, "adminBookSwap@bookswap.com", "Admin Address", fixedPassword)
         {
@@ -23,12 +23,10 @@ namespace BookSwapApp
         {
             if (username == fixedUsername && password == fixedPassword)
             {
-                Console.WriteLine("Login berhasil sebagai admin!");
                 return true;
             }
             else
             {
-                Console.WriteLine("Login gagal. Username atau password salah untuk admin.");
                 return false;
             }
         }

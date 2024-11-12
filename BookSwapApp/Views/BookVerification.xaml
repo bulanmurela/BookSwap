@@ -51,5 +51,20 @@
                 </ListView>
             </Border>
         </StackPanel>
+        <Button x:Name="btnLogout" Content="Log out" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnLogout_Click">
+            <Button.Style>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Page>

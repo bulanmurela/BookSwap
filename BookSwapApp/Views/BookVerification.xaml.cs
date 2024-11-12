@@ -12,11 +12,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.IO;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BookSwapApp.Commands;
-using BookSwapApp.Models;
 using BookSwapApp.Repositories;
+using BookSwapApp.Services;
+using BookSwapApp.Models;
 
 namespace BookSwapApp.Views
 {
@@ -25,12 +25,14 @@ namespace BookSwapApp.Views
     /// </summary>
     public partial class BookVerification : Page
     {
+        private NavigationService _navigationService;
         public ObservableCollection<Book> UnverifiedBooks { get; set; }
         public ICommand VerifyBookCommand { get; private set; }
 
         public BookVerification()
         {
             InitializeComponent();
+            _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
             DataContext = this;
 
             LoadUnverifiedBooks(); 
@@ -83,6 +85,17 @@ namespace BookSwapApp.Views
             else
             {
                 MessageBox.Show("Failed to verify the book.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to logout?", "Warning!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _navigationService.NavigateTo(typeof(Login)); 
+                ((App)Application.Current).CurrentUser = null; 
             }
         }
     }
