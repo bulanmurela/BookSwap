@@ -14,19 +14,64 @@ namespace BookSwapApp.Repositories
     {
         private readonly DatabaseHelpers dbHelpers = new DatabaseHelpers();
 
-        public bool RequestSwap(User requestingUser, Book requestedBook, Book offeredBook)
+        // Method to create a new swap request
+        public bool CreateSwapRequest(SwapRequest request)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
-                var query = "INSERT INTO SwapRequests (RequestingUserId, RequestedBookId, OfferedBookId, Status) VALUES (@RequestingUserId, @RequestedBookId, @OfferedBookId, 'Pending')";
+                var query = @"
+                    INSERT INTO public.SwapRequest 
+                    (requester_username, owner_username, book_id, status) 
+                    VALUES (@RequesterId, @OwnerId, @BookId, @Status)";
+
                 var result = db.Execute(query, new
                 {
-                    RequestingUserUsername = requestingUser.Username,
-                    RequestedBookId = requestedBook.Id,
-                    OfferedBookId = offeredBook.Id
+                    RequesterUsername = request.Requester.Username,
+                    OwnerUsername = request.Owner.Username,
+                    BookId = request.Book.Id,
+                    Status = request.Status
                 });
-                Console.WriteLine("Permintaan tukar buku berhasil dibuat.");
+
+                if (result > 0)
+                {
+                    // Deduct 1 point from the requester
+                    var pointQuery = "UPDATE public.User SET points = points - 1 WHERE username = @RequesterUsername";
+                    db.Execute(pointQuery, new { RequesterUsername = request.Requester.Username});
+                }
+
                 return result > 0;
+            }
+        }
+
+        // Method for the owner to respond to a swap request
+        public bool UpdateSwapRequestStatus(int requestId, string newStatus)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = @"
+                    UPDATE public.SwapRequest 
+                    SET status = @Status, response_date = CURRENT_TIMESTAMP 
+                    WHERE id = @RequestId";
+
+                return db.Execute(query, new { Status = newStatus, RequestId = requestId }) > 0;
+            }
+        }
+
+        public List<SwapRequest> GetSentRequests(string requesterUsername)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = "SELECT * FROM public.SwapRequest WHERE requester_username = @RequesterUsername";
+                return db.Query<SwapRequest>(query, new { RequesterUsername = requesterUsername }).ToList();
+            }
+        }
+
+        public List<SwapRequest> GetReceivedRequests(string ownerUsername)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = "SELECT * FROM public.SwapRequest WHERE owner_username = @OwnerUsername";
+                return db.Query<SwapRequest>(query, new { OwnerUsername = ownerUsername }).ToList();
             }
         }
     }

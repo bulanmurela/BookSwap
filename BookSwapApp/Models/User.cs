@@ -14,9 +14,9 @@ namespace BookSwapApp.Models
     {
         private readonly DatabaseHelpers dbHelpers = new DatabaseHelpers();
 
-        public string Username { get; private set; }
-        public string Email { get; private set; }
-        public string Address { get; private set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
         private string Password { get; set; }
         public int Points { get; private set; }
 

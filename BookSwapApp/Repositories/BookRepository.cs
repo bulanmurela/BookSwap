@@ -159,5 +159,41 @@ namespace BookSwapApp.Repositories
                 return books;
             }
         }
+
+        public Book GetBookDetails(int bookId)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = @"
+            SELECT 
+                b.id, 
+                b.title, 
+                b.author, 
+                b.genre, 
+                b.condition, 
+                b.cover_image AS CoverImage, 
+                b.owner_username AS OwnerUsername, 
+                u.email AS OwnerEmail, 
+                u.address AS OwnerAddress
+            FROM 
+                public.Books b
+            JOIN 
+                public.User u ON b.owner_username = u.username
+            WHERE 
+                b.id = @BookId
+                AND b.verification_status = true";
+
+                var book = db.QuerySingleOrDefault<Book>(query, new { BookId = bookId });
+
+                // Set cover image source from byte array
+                if (book != null)
+                {
+                    book.SetCoverImageSource(book.CoverImage);
+                }
+
+                return book;
+            }
+        }
+
     }
 }

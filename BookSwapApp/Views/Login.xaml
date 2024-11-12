@@ -88,7 +88,7 @@
                 </TextBox>
 
                 <!-- Login Button -->
-                <Button x:Name="btnLogin" Content="Log In" Width="150" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="0,30,0,0" Click="btnLogin_Click" Cursor="Hand">
+                <Button x:Name="btnLogin" Content="Login" Width="150" Height="40" FontSize="16" FontWeight="Bold" Background="#FF3665AA" Foreground="White" Margin="0,30,0,0" Click="btnLogin_Click" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">

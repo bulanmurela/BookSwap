@@ -91,7 +91,7 @@
                     </Button>
                 </StackPanel>
 
-                <ListView x:Name="BookList" Margin="20,10,20,20" Width="400" Height="200">
+                <ListView x:Name="BookList" Margin="20,10,20,20" Width="400" Height="200" SelectionChanged="BookList_SelectionChanged">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="200"/>

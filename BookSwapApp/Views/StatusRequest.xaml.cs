@@ -2,12 +2,15 @@
 using System.Windows.Controls;
 using BookSwapApp.Views;
 using BookSwapApp.Services;
+using BookSwapApp.Repositories;
+using BookSwapApp.Models;
 
 namespace BookSwapApp.Views
 {
     public partial class StatusRequest : Page
     {
         private NavigationService _navigationService;
+        private readonly SwapRequestRepository _swapRequestRepository;
 
         public StatusRequest()
         {
@@ -34,12 +37,18 @@ namespace BookSwapApp.Views
         {
             _navigationService.NavigateTo(typeof(Profil));
         }
+        public StatusRequest(User currentUser)
+        {
+            InitializeComponent();
+            _swapRequestRepository = new SwapRequestRepository();
 
-        // Sama jika ada parameter:
-        //public StatusRequest(string requestData)
-        //{
-        //    InitializeComponent();
-        //    // Gunakan 'requestData' sesuai kebutuhan
-        //}
+            // Populate Sent Requests
+            var sentRequests = _swapRequestRepository.GetSentRequests(currentUser.Username);
+            SentRequestsGrid.ItemsSource = sentRequests;
+
+            // Populate Received Requests
+            var receivedRequests = _swapRequestRepository.GetReceivedRequests(currentUser.Username);
+            ReceivedRequestsGrid.ItemsSource = receivedRequests;
+        }
     }
 }
