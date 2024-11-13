@@ -86,5 +86,10 @@ namespace BookSwapApp.Views
             // Navigate to UploadBook with currentUser
             _navigationService.NavigateTo(typeof(UploadBook), currentUser, _navigationService);
         }
+
+        private void btnStatus_Click(object sender, RoutedEventArgs e)
+        {
+            _navigationService.NavigateTo(typeof(StatusRequest));
+        }
     }
 }

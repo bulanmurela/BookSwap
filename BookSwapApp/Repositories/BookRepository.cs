@@ -195,5 +195,18 @@ namespace BookSwapApp.Repositories
             }
         }
 
+        public User GetBookOwnerByBookId(int bookId)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = @"
+            SELECT u.* FROM public.User u
+            JOIN public.Books b ON b.owner_username = u.username
+            WHERE b.id = @BookId";
+                return db.Query<User>(query, new { BookId = bookId }).FirstOrDefault();
+            }
+        }
+
+
     }
 }

@@ -45,5 +45,11 @@ namespace BookSwapApp.Services
         {
             return _bookRepository.SearchVerifiedBooks(keyword);
         }
+
+        public User GetBookOwner(int bookId)
+        {
+            return _bookRepository.GetBookOwnerByBookId(bookId);
+        }
+
     }
 }
