@@ -22,14 +22,26 @@ namespace BookSwapApp.Repositories
                 var query = @"
                     INSERT INTO public.SwapRequest 
                     (requester_username, owner_username, book_id, status) 
-                    VALUES (@RequesterId, @OwnerId, @BookId, @Status)";
+                    VALUES (@RequesterUsername, @OwnerUsername, @BookId, @Status)";
+
+                var validStatuses = new[] { "Notifying Owner", "Approved", "Denied"};
+
+                if (!validStatuses.Contains(request.Status))
+                {
+                    throw new ArgumentException($"Invalid status value: {request.Status}");
+                }
+
+                if (!validStatuses.Contains(request.Status))
+                {
+                    throw new ArgumentException($"Invalid status value: {request.Status}");
+                }
 
                 var result = db.Execute(query, new
                 {
                     RequesterUsername = request.Requester.Username,
                     OwnerUsername = request.Owner.Username,
                     BookId = request.Book.Id,
-                    Status = request.Status
+                    Status = "Notifying Owner"
                 });
 
                 if (result > 0)
@@ -49,13 +61,24 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-                    UPDATE public.SwapRequest 
-                    SET status = @Status, response_date = CURRENT_TIMESTAMP 
-                    WHERE id = @RequestId";
+            UPDATE public.SwapRequest 
+            SET status = @Status, response_date = CURRENT_TIMESTAMP 
+            WHERE id = @RequestId";
 
-                return db.Execute(query, new { Status = newStatus, RequestId = requestId }) > 0;
+                var result = db.Execute(query, new { Status = newStatus, RequestId = requestId });
+
+                // Jika statusnya 'Process', tambahkan logika tombol 'Complete'
+                if (newStatus == "Process")
+                {
+                    // Ubah status menjadi 'Completed' jika tombol complete diklik
+                    var completeQuery = "UPDATE public.SwapRequest SET status = 'Completed' WHERE id = @RequestId";
+                    db.Execute(completeQuery, new { RequestId = requestId });
+                }
+
+                return result > 0;
             }
         }
+
 
         public List<SwapRequest> GetSentRequests(string requesterUsername)
         {

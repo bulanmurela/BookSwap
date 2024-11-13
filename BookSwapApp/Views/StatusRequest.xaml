@@ -64,10 +64,20 @@
                             <ListView x:Name="SentRequestsGrid" Background="Transparent" FontSize="14">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
-                                        <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding Book.Title}" />
-                                        <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
-                                        <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
+                                        <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding RequestID}" />
+                                        <GridViewColumn Header="Requested Book" Width="300" DisplayMemberBinding="{Binding Book.Title}" />
+                                        <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}" />
+                                        <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding RequestDate}" />
+                                        <GridViewColumn Header="Action" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="Complete" 
+                                                            Visibility="{Binding SwapActionVisibility}" 
+                                                            Command="{Binding CompleteCommand}" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+
                                     </GridView>
                                 </ListView.View>
                             </ListView>

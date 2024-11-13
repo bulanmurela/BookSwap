@@ -53,14 +53,18 @@ namespace BookSwapApp.ViewModels
                 return false;
             }
 
-            // Check if the owner information is missing
+            // Pastikan owner sudah ada, jika tidak ambil dari database
             if (selectedBook.Owner == null)
             {
-                MessageBox.Show("Owner information is missing for the selected book.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
+                selectedBook.Owner = bookService.GetBookOwner(selectedBook.Id);
+                if (selectedBook.Owner == null)
+                {
+                    MessageBox.Show("Owner information is missing for the selected book.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
             }
 
-            // Check if the owner and requester are the same user
+            // Cek apakah pemilik buku dan pengguna saat ini adalah orang yang sama
             if (selectedBook.Owner.Username == currentUser.Username)
             {
                 MessageBox.Show("You cannot request to swap your own book.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -72,11 +76,11 @@ namespace BookSwapApp.ViewModels
                 Requester = currentUser,
                 Owner = selectedBook.Owner,
                 Book = selectedBook,
-                Status = "Pending",
-                RequestDate = DateTime.Now // Set request date
+                Status = "Notifying Owner", // Status awal
+                RequestDate = DateTime.Now
             };
 
-            // Attempt to create the swap request
+            // Coba membuat request swap
             bool isCreated = _swapRequestRepository.CreateSwapRequest(swapRequest);
 
             if (!isCreated)
@@ -88,6 +92,7 @@ namespace BookSwapApp.ViewModels
             MessageBox.Show("Swap request successfully created.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
         }
+
 
 
         public bool ApproveSwapRequest(SwapRequest request)
@@ -141,5 +146,6 @@ namespace BookSwapApp.ViewModels
         {
             string details = bookService.GetBookAndOwnerDetails(book);
         }
+
     }
 }
