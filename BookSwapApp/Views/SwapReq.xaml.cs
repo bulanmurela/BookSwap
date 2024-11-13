@@ -8,12 +8,12 @@ using BookSwapApp.Repositories;
 using System.Windows.Automation;
 using System.Windows.Media.Imaging;
 
-
 namespace BookSwapApp.Views
 {
     public partial class SwapReq : Page
     {
         private NavigationService _navigationService;
+
         private readonly SwapRequestViewModel _swapRequestViewModel;
         private readonly BookRepository _bookRepository;
         private Book _selectedBook;
