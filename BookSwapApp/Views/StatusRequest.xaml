@@ -56,16 +56,16 @@
                     </TextBlock.Effect>
                 </TextBlock>
 
-                <!-- Tabs for Sent and Received Requests -->
+                <!-- Tab Control for Sent and Received Requests -->
                 <TabControl Width="749" Background="Transparent" FontSize="16">
-                    <!-- Sent Requests Tab -->
+                    <!-- Sent Requests Tab (No changes needed here) -->
                     <TabItem Header="Sent Requests">
                         <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
-                            <ListView x:Name="SentRequestsGrid" ItemsSource="{Binding SentRequests}" Background="Transparent" Margin="10,0,10,0" FontSize="14">
+                            <ListView x:Name="SentRequestsGrid" Background="Transparent" FontSize="14">
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
-                                        <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding RequestedBook.Title}" />
+                                        <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding Book.Title}" />
                                         <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
                                         <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
                                     </GridView>
@@ -74,16 +74,28 @@
                         </Border>
                     </TabItem>
 
-                    <!-- Received Requests Tab -->
+                    <!-- Received Requests Tab (Updated to show email, address, and buttons) -->
                     <TabItem Header="Received Requests">
                         <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
-                            <ListView x:Name="ReceivedRequestsGrid" ItemsSource="{Binding ReceivedRequests}" Background="Transparent" Margin="10,0,10,0" FontSize="14">
+                            <ListView x:Name="ReceivedRequestsGrid" Background="Transparent" FontSize="14">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
-                                        <GridViewColumn Header="Requesting User" Width="250" DisplayMemberBinding="{Binding RequestingUser.Username}" />
-                                        <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
-                                        <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
+                                        <GridViewColumn Header="Request ID" Width="100" DisplayMemberBinding="{Binding RequestID}" />
+                                        <GridViewColumn Header="Requested Book" Width="120" DisplayMemberBinding="{Binding Book.Title}" />
+                                        <GridViewColumn Header="Requester Email" Width="120" DisplayMemberBinding="{Binding RequesterEmail}" />
+                                        <GridViewColumn Header="Requester Address" Width="120" DisplayMemberBinding="{Binding RequesterAddress}" />
+                                        <GridViewColumn Header="Status" Width="80" DisplayMemberBinding="{Binding Status}" />
+                                        <GridViewColumn Header="Date" Width="80" DisplayMemberBinding="{Binding RequestDate}" />
+                                        <GridViewColumn Header="Actions" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button Content="Accept" Width="80" Margin="5" Command="{Binding AcceptCommand}" />
+                                                        <Button Content="Deny" Width="80" Margin="5" Command="{Binding DenyCommand}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
                             </ListView>

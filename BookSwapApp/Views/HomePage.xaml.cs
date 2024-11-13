@@ -56,10 +56,20 @@ namespace BookSwapApp.Views
             if (BookList.SelectedItem is Book selectedBook)
             {
                 int selectedBookId = selectedBook.Id;
-                // Navigate to SwapReq page with the selected book details
-                _navigationService.NavigateTo(typeof(SwapReq), selectedBookId);
+                var app = (App)Application.Current;
+                var currentUser = app.CurrentUser;
+
+                if (currentUser != null)
+                {
+                    _navigationService.NavigateTo(typeof(SwapReq), selectedBookId, currentUser);
+                }
+                else
+                {
+                    MessageBox.Show("Please log in again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
+
 
         private void btnUpload_Click(object sender, RoutedEventArgs e)
         {

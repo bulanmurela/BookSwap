@@ -29,8 +29,10 @@ namespace BookSwapApp.Views
 
         public SwapReq(int bookId, User currentUser) : this()
         {
-            _selectedBook = new BookRepository().GetBookDetails(bookId);
+            _selectedBook = _bookRepository.GetBookDetails(bookId);
+
             _currentUser = currentUser;
+            _swapRequestViewModel = new SwapRequestViewModel();
 
             if (_selectedBook != null)
             {
@@ -59,16 +61,19 @@ namespace BookSwapApp.Views
         private void btnReqSwap_Click(object sender, RoutedEventArgs e)
         {
             // Use the ViewModel to request a swap and pass in current user details
-            bool success = _swapRequestViewModel.RequestSwap(_selectedBook, _currentUser);
+            if (_swapRequestViewModel != null)
+            {
+                bool success = _swapRequestViewModel.RequestSwap(_selectedBook, _currentUser);
 
-            if (success)
-            {
-                MessageBox.Show("Swap request submitted successfully.");
-                _navigationService.NavigateTo(typeof(StatusRequest));
-            }
-            else
-            {
-                MessageBox.Show("Failed to submit swap request.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (success)
+                {
+                    MessageBox.Show("Swap request submitted successfully.");
+                    _navigationService.NavigateTo(typeof(StatusRequest));
+                }
+                else
+                {
+                    MessageBox.Show("Failed to submit swap request.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 

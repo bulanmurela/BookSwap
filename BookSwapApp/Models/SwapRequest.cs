@@ -12,6 +12,8 @@ namespace BookSwapApp.Models
         public User Requester { get; set; }
         public User Owner { get; set; }
         public Book Book { get; set; }
+        public string RequesterEmail { get; set; }  // New field
+        public string RequesterAddress { get; set; }  // New field
         public string Status { get; set; }
         public DateTime RequestDate { get; set; }
         public DateTime? ResponseDate { get; set; }
