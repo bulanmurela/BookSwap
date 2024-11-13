@@ -36,7 +36,7 @@ namespace BookSwapApp.Repositories
                 {
                     // Deduct 1 point from the requester
                     var pointQuery = "UPDATE public.User SET points = points - 1 WHERE username = @RequesterUsername";
-                    db.Execute(pointQuery, new { RequesterUsername = request.Requester.Username});
+                    db.Execute(pointQuery, new { RequesterUsername = request.Requester.Username });
                 }
 
                 return result > 0;

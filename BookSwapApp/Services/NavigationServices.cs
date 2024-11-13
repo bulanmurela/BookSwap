@@ -29,7 +29,6 @@ namespace BookSwapApp.Services
         {
             if (typeof(Page).IsAssignableFrom(pageType))
             {
-                // If pageType is a Page, navigate as usual
                 var page = Activator.CreateInstance(pageType, parameters) as Page;
                 if (page != null)
                 {
