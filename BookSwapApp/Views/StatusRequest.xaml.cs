@@ -39,15 +39,18 @@ namespace BookSwapApp.Views
         }
         public StatusRequest(User currentUser)
         {
-            InitializeComponent();
             _swapRequestRepository = new SwapRequestRepository();
 
             // Populate Sent Requests
             var sentRequests = _swapRequestRepository.GetSentRequests(currentUser.Username);
             SentRequestsGrid.ItemsSource = sentRequests;
 
-            // Populate Received Requests
-            var receivedRequests = _swapRequestRepository.GetReceivedRequests(currentUser.Username);
+            // Populate Received Requests with email and address info
+            var receivedRequests = _swapRequestRepository.GetReceivedRequests(currentUser.Username).Select(request => {
+                request.RequesterEmail = request.Requester.Email;
+                request.RequesterAddress = request.Requester.Address;
+                return request;
+            }).ToList();
             ReceivedRequestsGrid.ItemsSource = receivedRequests;
         }
     }
