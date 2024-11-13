@@ -47,8 +47,8 @@
                 <TextBlock Text=" | Points: " FontWeight="Bold" FontSize="20" Foreground="White" Margin="160,7,394,7" />
             </Grid>
 
-            <!-- Content: Title and List of swap requests -->
-            <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Height="331" Margin="0,27,0,0" Grid.RowSpan="2">
+            <!-- Content: Title and Tabs for Sent Requests and Received Requests -->
+            <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,27,0,0" Grid.RowSpan="2">
                 <!-- Title -->
                 <TextBlock Text="Swap Request Status" FontSize="40" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center" FontFamily="Gill Sans Ultra Bold" Height="58">
                     <TextBlock.Effect>
@@ -56,19 +56,40 @@
                     </TextBlock.Effect>
                 </TextBlock>
 
-                <!-- List of swap requests in a ListView with a border -->
-                <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10" Width="749">
-                    <ListView ItemsSource="{Binding SwapRequests}" Background="Transparent" Margin="10,0,10,0" FontSize="14">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
-                                <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding RequestedBook.Title}" />
-                                <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
-                                <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Border>
+                <!-- Tabs for Sent and Received Requests -->
+                <TabControl Width="749" Background="Transparent" FontSize="16">
+                    <!-- Sent Requests Tab -->
+                    <TabItem Header="Sent Requests">
+                        <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
+                            <ListView x:Name="SentRequestsGrid" ItemsSource="{Binding SentRequests}" Background="Transparent" Margin="10,0,10,0" FontSize="14">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
+                                        <GridViewColumn Header="Requested Book" Width="250" DisplayMemberBinding="{Binding RequestedBook.Title}" />
+                                        <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
+                                        <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Border>
+                    </TabItem>
+
+                    <!-- Received Requests Tab -->
+                    <TabItem Header="Received Requests">
+                        <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
+                            <ListView x:Name="ReceivedRequestsGrid" ItemsSource="{Binding ReceivedRequests}" Background="Transparent" Margin="10,0,10,0" FontSize="14">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Request ID" Width="120" DisplayMemberBinding="{Binding RequestID}" />
+                                        <GridViewColumn Header="Requesting User" Width="250" DisplayMemberBinding="{Binding RequestingUser.Username}" />
+                                        <GridViewColumn Header="Status" Width="180" DisplayMemberBinding="{Binding Status}" />
+                                        <GridViewColumn Header="Date" Width="180" DisplayMemberBinding="{Binding RequestDate}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Border>
+                    </TabItem>
+                </TabControl>
             </StackPanel>
 
             <!-- Footer: Back button -->

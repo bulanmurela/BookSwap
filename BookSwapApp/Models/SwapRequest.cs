@@ -4,30 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookSwapApp
+namespace BookSwapApp.Models
 {
-    public abstract class SwapRequest
+    public class SwapRequest
     {
-        public string RequestID { get; private set; }
-        public string RequestDate { get; private set; }
-        public string Status { get; protected set; }
+        public int Id { get; set; }
+        public User Requester { get; set; }
+        public User Owner { get; set; }
+        public Book Book { get; set; }
+        public string Status { get; set; }
+        public DateTime RequestDate { get; set; }
+        public DateTime? ResponseDate { get; set; }
 
-        protected SwapRequest()
+        public SwapRequest() { }
+
+        public SwapRequest(User requester, User owner, Book book)
         {
-            RequestID = Guid.NewGuid().ToString();
-            RequestDate = DateTime.Now.ToString("dd/MM/yyyy");
-            Status = "Requested";
+            Requester = requester;
+            Owner = owner;
+            Book = book;
+            Status = "Notifying Owner";
+            RequestDate = DateTime.Now;
         }
 
-        public virtual string UpdateStatus(string newStatus)
+        public void ApproveRequest()
         {
-            Status = newStatus;
-            return Status;
+            Status = "Approved";
+            ResponseDate = DateTime.Now;
         }
 
-        public virtual string GetRequestDetails()
+        public void DenyRequest()
         {
-            return $"Request ID: {RequestID}, Date: {RequestDate}, Status: {Status}";
+            Status = "Denied";
+            ResponseDate = DateTime.Now;
         }
     }
 }

@@ -13,8 +13,11 @@ namespace BookSwapApp.Views
     public partial class SwapReq : Page
     {
         private NavigationService _navigationService;
-        private Book _selectedBook;
+
+        private readonly SwapRequestViewModel _swapRequestViewModel;
         private readonly BookRepository _bookRepository;
+        private Book _selectedBook;
+        private readonly User _currentUser;
         private int _bookId;
 
         public SwapReq()
@@ -24,12 +27,13 @@ namespace BookSwapApp.Views
             _bookRepository = new BookRepository();
         }
 
-        public SwapReq(int bookId) : this()
+        public SwapReq(int bookId, User currentUser) : this()
         {
-            _selectedBook = _bookRepository.GetBookDetails(bookId);
+            _selectedBook = new BookRepository().GetBookDetails(bookId);
+            _currentUser = currentUser;
+
             if (_selectedBook != null)
             {
-                AssignOwnerToBook();
                 DisplayBookDetails();
             }
             else
@@ -52,24 +56,22 @@ namespace BookSwapApp.Views
             }
         }
 
-        private void AssignOwnerToBook()
+        private void btnReqSwap_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedBook != null && _selectedBook.Owner == null)
+            // Use the ViewModel to request a swap and pass in current user details
+            bool success = _swapRequestViewModel.RequestSwap(_selectedBook, _currentUser);
+
+            if (success)
             {
-                var owner = new User
-                {
-                    Username = _selectedBook.OwnerUsername,
-                    Email = _selectedBook.OwnerEmail,
-                    Address = _selectedBook.OwnerAddress
-                };
-                _selectedBook.AssignOwner(owner);
+                MessageBox.Show("Swap request submitted successfully.");
+                _navigationService.NavigateTo(typeof(StatusRequest));
+            }
+            else
+            {
+                MessageBox.Show("Failed to submit swap request.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void btnReqSwap_Click(object sender, RoutedEventArgs e)
-        {
-            _navigationService.NavigateTo(typeof(StatusRequest));
-        }
 
         private void GoToProfile(object sender, RoutedEventArgs e)
         {
