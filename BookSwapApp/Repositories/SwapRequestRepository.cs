@@ -96,8 +96,23 @@ namespace BookSwapApp.Repositories
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
-                var query = "SELECT * FROM public.SwapRequest WHERE requester_username = @RequesterUsername";
-                return db.Query<SwapRequest>(query, new { RequesterUsername = requesterUsername }).ToList();
+                var query = @"
+            SELECT sr.*, b.Id AS BookId, b.*, u.Username AS OwnerUsername, u.*
+            FROM public.SwapRequest sr
+            JOIN public.Books b ON sr.book_id = b.id
+            JOIN public.User u ON sr.owner_username = u.username
+            WHERE sr.requester_username = @RequesterUsername";
+
+                return db.Query<SwapRequest, Book, User, SwapRequest>(
+                    query,
+                    (swapRequest, book, owner) =>
+                    {
+                        swapRequest.Book = book;
+                        swapRequest.Owner = owner;
+                        return swapRequest;
+                    },
+                    new { RequesterUsername = requesterUsername },
+                    splitOn: "BookId,OwnerUsername").ToList();
             }
         }
 
@@ -105,8 +120,23 @@ namespace BookSwapApp.Repositories
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
-                var query = "SELECT * FROM public.SwapRequest WHERE owner_username = @OwnerUsername";
-                return db.Query<SwapRequest>(query, new { OwnerUsername = ownerUsername }).ToList();
+                var query = @"
+            SELECT sr.*, b.Id AS BookId, b.*, u.Username AS RequesterUsername, u.*
+            FROM public.SwapRequest sr
+            JOIN public.Books b ON sr.book_id = b.id
+            JOIN public.User u ON sr.requester_username = u.username
+            WHERE sr.owner_username = @OwnerUsername";
+
+                return db.Query<SwapRequest, Book, User, SwapRequest>(
+                    query,
+                    (swapRequest, book, requester) =>
+                    {
+                        swapRequest.Book = book;
+                        swapRequest.Requester = requester;
+                        return swapRequest;
+                    },
+                    new { OwnerUsername = ownerUsername },
+                    splitOn: "BookId,RequesterUsername").ToList();
             }
         }
     }
