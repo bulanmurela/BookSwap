@@ -37,7 +37,7 @@ namespace BookSwapApp.Views
             }
 
             _statusRequestViewModel = new StatusRequestViewModel(currentUser);
-            this.DataContext = _statusRequestViewModel; // Set DataContext in code-behind
+            this.DataContext = new SwapRequestRepository(); // Set DataContext in code-behind
 
             LoadSwapRequests();
         }

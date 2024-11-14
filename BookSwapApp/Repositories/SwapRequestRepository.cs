@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Dapper;
 using BookSwapApp.Helpers;
 using BookSwapApp.Models;
+using System.Windows;
 
 namespace BookSwapApp.Repositories
 {
@@ -34,6 +35,16 @@ namespace BookSwapApp.Repositories
                 if (!validStatuses.Contains(request.Status))
                 {
                     throw new ArgumentException($"Invalid status value: {request.Status}");
+                }
+
+                // Cek apakah requester memiliki cukup poin
+                var pointsQuery = "SELECT points FROM public.User WHERE username = @RequesterUsername";
+                var requesterPoints = db.QueryFirstOrDefault<int>(pointsQuery, new { RequesterUsername = request.Requester.Username });
+
+                if (requesterPoints <= 0)
+                {
+                    MessageBox.Show("You don't have enough point to send a request.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;  
                 }
 
                 var result = db.Execute(query, new

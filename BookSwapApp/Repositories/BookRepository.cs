@@ -152,7 +152,7 @@ namespace BookSwapApp.Repositories
                 var query = @"
                 SELECT id, title, author, genre, condition
                 FROM public.Books
-                WHERE verification_status = true
+                WHERE verification_status = true AND is_visible=true
                 AND (title ILIKE @Keyword OR author ILIKE @Keyword)";
 
                 var books = db.Query<Book>(query, new { Keyword = "%" + keyword + "%" }).ToList();
@@ -207,15 +207,13 @@ namespace BookSwapApp.Repositories
             }
         }
 
-        public List<Book> GetVisibleBooks()
-        {
-            using (IDbConnection db = dbHelpers.OpenConnection())
-            {
-                var query = "SELECT * FROM public.Books WHERE is_visible = true";
-                return db.Query<Book>(query).ToList();
-            }
-        }
-
-
+        //public List<Book> GetVisibleBooks()
+        //{
+        //    using (IDbConnection db = dbHelpers.OpenConnection())
+        //    {
+        //        var query = "SELECT * FROM public.Books WHERE is_visible = true";
+        //        return db.Query<Book>(query).ToList();
+        //    }
+        //}
     }
 }
