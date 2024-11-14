@@ -14,29 +14,47 @@ namespace BookSwapApp.Views
         private NavigationService _navigationService;
         private readonly SwapRequestRepository _swapRequestRepository;
         private readonly User _currentUser;
+        private readonly StatusRequestViewModel _statusRequestViewModel;
 
-        //public StatusRequest()
-        //{
-        //    InitializeComponent();
-        //    this.DataContext = new StatusRequestViewModel(); // Setting DataContext in code-behind
-        //}
+        public StatusRequest()
+        {
+            InitializeComponent();
+            _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
+            _swapRequestRepository = new SwapRequestRepository();
+            _currentUser = new User { Username = "defaultUser" }; // Default user (ganti sesuai kebutuhan
+            this.DataContext = new StatusRequestViewModel(_currentUser);
+        }
 
         public StatusRequest(User currentUser)
         {
-            //InitializeComponent(); // Ensure UI components are initialized
-            _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
-            _swapRequestRepository = new SwapRequestRepository();
-            _currentUser = currentUser;
-            this.DataContext = new StatusRequestViewModel(currentUser);
+            InitializeComponent();
+
+            // Check if currentUser is null
+            if (currentUser == null)
+            {
+                MessageBox.Show("Error: currentUser is null", "Initialization Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            _statusRequestViewModel = new StatusRequestViewModel(currentUser);
+            this.DataContext = _statusRequestViewModel; // Set DataContext in code-behind
 
             LoadSwapRequests();
         }
 
+        // kode di bawah ini sudah ada di ViewModel
         private void LoadSwapRequests()
         {
+            // Ensure data is refreshed after every load
+            SentRequestsGrid.ItemsSource = null;
+            ReceivedRequestsGrid.ItemsSource = null;
+
             // Load Sent Requests
             var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
-            SentRequestsGrid.ItemsSource = sentRequests;
+            if (sentRequests != null)
+            {
+                SentRequestsGrid.ItemsSource = sentRequests;
+            }
 
             // Load Received Requests with email and address info
             var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username).Select(request =>
@@ -49,7 +67,10 @@ namespace BookSwapApp.Views
                 }
                 return request;
             }).ToList();
-            ReceivedRequestsGrid.ItemsSource = receivedRequests;
+            if (receivedRequests != null)
+            {
+                ReceivedRequestsGrid.ItemsSource = receivedRequests;
+            }
         }
 
         private void GoToHome(object sender, RoutedEventArgs e)
