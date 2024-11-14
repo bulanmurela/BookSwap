@@ -207,6 +207,15 @@ namespace BookSwapApp.Repositories
             }
         }
 
+        public List<Book> GetVisibleBooks()
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = "SELECT * FROM public.Books WHERE is_visible = true";
+                return db.Query<Book>(query).ToList();
+            }
+        }
+
 
     }
 }
