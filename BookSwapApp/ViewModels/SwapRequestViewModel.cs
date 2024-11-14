@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace BookSwapApp.ViewModels
 {
-    internal class SwapRequestViewModel
+    public class SwapRequestViewModel
     {
         private readonly BookService bookService;
         private readonly SwapRequestRepository _swapRequestRepository;
@@ -101,14 +101,19 @@ namespace BookSwapApp.ViewModels
             {
                 request.Status = "Approved";
                 request.ResponseDate = DateTime.Now;
-
-                bool success = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, request.Status);
-
-                if (success)
+                // Ensure the book ID is passed when approving a swap request
+                if (request.Book != null)
                 {
-                    LoadSwapRequests(request.Requester); // Reload requests to reflect changes
-                    return true;
+                    int bookId = request.Book.Id;
+                    bool success = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, request.Status, bookId);
+
+                    if (success)
+                    {
+                        LoadSwapRequests(request.Requester); // Reload requests to reflect changes
+                        return true;
+                    }
                 }
+
                 return false;
             }
             catch (Exception ex)
@@ -125,14 +130,19 @@ namespace BookSwapApp.ViewModels
             {
                 request.Status = "Denied";
                 request.ResponseDate = DateTime.Now;
-
-                bool success = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, request.Status);
-
-                if (success)
+                // Ensure the book ID is passed when denying a swap request
+                if (request.Book != null)
                 {
-                    LoadSwapRequests(request.Requester); // Reload requests to reflect changes
-                    return true;
+                    int bookId = request.Book.Id;
+                    bool success = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, request.Status, bookId);
+
+                    if (success)
+                    {
+                        LoadSwapRequests(request.Requester); // Reload requests to reflect changes
+                        return true;
+                    }
                 }
+
                 return false;
             }
             catch (Exception ex)

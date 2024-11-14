@@ -1,12 +1,17 @@
 ﻿<Page x:Class="BookSwapApp.Views.StatusRequest"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:BookSwapApp.ViewModels"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StatusRequest"
       Background="White">
+
+    <Page.DataContext>
+        <local:StatusRequestViewModel />
+    </Page.DataContext>
 
     <Grid>
         <!-- Set the background of the page -->
@@ -61,23 +66,23 @@
                     <!-- Sent Requests Tab (No changes needed here) -->
                     <TabItem Header="Sent Requests">
                         <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
-                            <ListView x:Name="SentRequestsGrid" Background="Transparent" FontSize="14">
+                            <ListView x:Name="SentRequestsGrid" ItemsSource="{Binding SentRequests}" Background="Transparent" FontSize="14">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding RequestID}" />
+                                        <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding Id}" />
                                         <GridViewColumn Header="Requested Book" Width="300" DisplayMemberBinding="{Binding Book.Title}" />
                                         <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}" />
                                         <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding RequestDate}" />
                                         <GridViewColumn Header="Action" Width="100">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Button Content="Complete" 
-                                                            Visibility="{Binding SwapActionVisibility}" 
-                                                            Command="{Binding CompleteCommand}" />
+                                                    <Button Content="Complete"
+                                                            Visibility="{Binding SwapActionVisibility}"
+                                                            Command="{Binding DataContext.CompleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                            CommandParameter="{Binding}" />
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
-
                                     </GridView>
                                 </ListView.View>
                             </ListView>
@@ -87,21 +92,28 @@
                     <!-- Received Requests Tab (Updated to show email, address, and buttons) -->
                     <TabItem Header="Received Requests">
                         <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
-                            <ListView x:Name="ReceivedRequestsGrid" Background="Transparent" FontSize="14">
+                            <ListView x:Name="ReceivedRequestsGrid" ItemsSource="{Binding ReceivedRequests}" Background="Transparent" FontSize="14">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Request ID" Width="100" DisplayMemberBinding="{Binding RequestID}" />
+                                        <GridViewColumn Header="Request ID" Width="100" DisplayMemberBinding="{Binding Id}" />
                                         <GridViewColumn Header="Requested Book" Width="120" DisplayMemberBinding="{Binding Book.Title}" />
-                                        <GridViewColumn Header="Requester Email" Width="120" DisplayMemberBinding="{Binding RequesterEmail}" />
-                                        <GridViewColumn Header="Requester Address" Width="120" DisplayMemberBinding="{Binding RequesterAddress}" />
+                                        <GridViewColumn Header="Requester Email" Width="120" DisplayMemberBinding="{Binding Requester.Email}" />
+                                        <GridViewColumn Header="Requester Address" Width="120" DisplayMemberBinding="{Binding Requester.Address}" />
                                         <GridViewColumn Header="Status" Width="80" DisplayMemberBinding="{Binding Status}" />
                                         <GridViewColumn Header="Date" Width="80" DisplayMemberBinding="{Binding RequestDate}" />
-                                        <GridViewColumn Header="Actions" Width="100">
+                                        <GridViewColumn Header="Actions" Width="150">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Button Content="Accept" Width="80" Margin="5" Command="{Binding AcceptCommand}" />
-                                                        <Button Content="Deny" Width="80" Margin="5" Command="{Binding DenyCommand}" />
+                                                        <Button Content="Accept"
+                                                                Width="70" Margin="5"
+                                                                Command="{Binding DataContext.AcceptCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                                CommandParameter="{Binding}" />
+
+                                                        <Button Content="Deny"
+                                                                Width="70" Margin="5"
+                                                                Command="{Binding DataContext.DenyCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                                CommandParameter="{Binding}" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>

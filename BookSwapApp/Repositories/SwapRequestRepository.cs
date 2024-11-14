@@ -49,6 +49,10 @@ namespace BookSwapApp.Repositories
                     // Deduct 1 point from the requester
                     var pointQuery = "UPDATE public.User SET points = points - 1 WHERE username = @RequesterUsername";
                     db.Execute(pointQuery, new { RequesterUsername = request.Requester.Username });
+
+                    // Mark the book as hidden (unavailable) until the swap is accepted or denied
+                    var hideBookQuery = "UPDATE public.Books SET is_visible = false WHERE id = @BookId";
+                    db.Execute(hideBookQuery, new { BookId = request.Book.Id });
                 }
 
                 return result > 0;
@@ -56,23 +60,31 @@ namespace BookSwapApp.Repositories
         }
 
         // Method for the owner to respond to a swap request
-        public bool UpdateSwapRequestStatus(int requestId, string newStatus)
+        public bool UpdateSwapRequestStatus(int requestId, string newStatus, int bookId)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-            UPDATE public.SwapRequest 
-            SET status = @Status, response_date = CURRENT_TIMESTAMP 
-            WHERE id = @RequestId";
+                    UPDATE public.SwapRequest 
+                    SET status = @Status, response_date = CURRENT_TIMESTAMP 
+                    WHERE id = @RequestId";
 
                 var result = db.Execute(query, new { Status = newStatus, RequestId = requestId });
 
-                // Jika statusnya 'Process', tambahkan logika tombol 'Complete'
-                if (newStatus == "Process")
+                if (result > 0)
                 {
-                    // Ubah status menjadi 'Completed' jika tombol complete diklik
-                    var completeQuery = "UPDATE public.SwapRequest SET status = 'Completed' WHERE id = @RequestId";
-                    db.Execute(completeQuery, new { RequestId = requestId });
+                    if (newStatus == "Approved")
+                    {
+                        // Remove book from the database if the swap is approved
+                        var deleteBookQuery = "DELETE FROM public.Books WHERE id = @BookId";
+                        db.Execute(deleteBookQuery, new { BookId = bookId });
+                    }
+                    else if (newStatus == "Denied")
+                    {
+                        // Make the book visible again if the swap is denied
+                        var makeVisibleQuery = "UPDATE public.Books SET is_visible = true WHERE id = @BookId";
+                        db.Execute(makeVisibleQuery, new { BookId = bookId });
+                    }
                 }
 
                 return result > 0;
