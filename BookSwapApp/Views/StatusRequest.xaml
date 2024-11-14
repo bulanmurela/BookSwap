@@ -94,9 +94,9 @@
                                         <GridViewColumn Header="Request ID" Width="100" DisplayMemberBinding="{Binding Id}" />
                                         <GridViewColumn Header="Requested Book" Width="120" DisplayMemberBinding="{Binding Book.Title}" />
                                         <GridViewColumn Header="Requester Email" Width="120" 
-                                                        DisplayMemberBinding="{Binding RequesterEmail, TargetNullValue='N/A'}" />
+                                                        DisplayMemberBinding="{Binding Requester.Email, TargetNullValue='N/A'}" />
                                         <GridViewColumn Header="Requester Address" Width="120" 
-                                                        DisplayMemberBinding="{Binding RequesterAddress, TargetNullValue='N/A'}" />
+                                                        DisplayMemberBinding="{Binding Requester.Address, TargetNullValue='N/A'}" />
                                         <GridViewColumn Header="Status" Width="80" DisplayMemberBinding="{Binding Status}" />
                                         <GridViewColumn Header="Date" Width="80" DisplayMemberBinding="{Binding RequestDate}" />
                                         <GridViewColumn Header="Actions" Width="150">
