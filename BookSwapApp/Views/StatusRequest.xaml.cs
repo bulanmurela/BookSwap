@@ -28,9 +28,9 @@ namespace BookSwapApp.Views
             InitializeComponent();
             _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
             _swapRequestRepository = new SwapRequestRepository();
-            _currentUser = new User { Username = "defaultUser" }; // Default user (ganti sesuai kebutuhan
+            _currentUser = ((App)Application.Current).CurrentUser; // Default user (ganti sesuai kebutuhan
             _viewModel = new StatusRequestViewModel();
-            DataContext = _viewModel;
+            this.DataContext = _viewModel;
 
             CombinedRequestsCommand = new RelayCommand(parameter => LoadCombinedRequests());
 
@@ -45,19 +45,23 @@ namespace BookSwapApp.Views
             _swapRequest = swapRequest;
             _viewModel = new StatusRequestViewModel(_currentUser, swapRequest);
             CombinedRequestsCommand = new RelayCommand(parameter => LoadCombinedRequests());
-            DataContext = _viewModel;
+            this.DataContext = _viewModel;
 
             LoadCombinedRequests();
         }
 
-        // kode di bawah ini sudah ada di ViewModel
+        
         private void LoadCombinedRequests()
         {
             SwapRequestRepository swapRequestRepository = new SwapRequestRepository();
+
             // Load Sent Requests
             var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username).Select(request =>
             {
                 request.RequestType = "Sent";  // Mark type as 'Sent'
+                request.IsCompleteVisible = (request.RequestType == "Sent" && request.Status == "Approved") ? Visibility.Visible : Visibility.Collapsed;
+                request.IsApproveVisible = Visibility.Collapsed;
+                request.IsDenyVisible = Visibility.Collapsed;
                 return request;
             }).ToList();
 
@@ -65,6 +69,9 @@ namespace BookSwapApp.Views
             var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username).Select(request =>
             {
                 request.RequestType = "Requested";  // Mark type as 'Requested'
+                request.IsApproveVisible = (request.RequestType == "Requested") ? Visibility.Visible : Visibility.Collapsed;
+                request.IsDenyVisible = (request.RequestType == "Requested") ? Visibility.Visible : Visibility.Collapsed;
+                request.IsCompleteVisible = Visibility.Collapsed;
                 return request;
             }).ToList();
 
@@ -75,8 +82,9 @@ namespace BookSwapApp.Views
             _viewModel.CombinedRequests = new ObservableCollection<SwapRequest>(combinedRequests);
 
             Debug.WriteLine($"Sent requests count: {sentRequests.Count}");
+            Debug.WriteLine($"Received requests count: {receivedRequests.Count}");
 
-            StatusRequestsListView.ItemsSource = combinedRequests;
+            StatusRequestsListView.ItemsSource = _viewModel.CombinedRequests;
         }
 
 
@@ -99,21 +107,6 @@ namespace BookSwapApp.Views
         {
             _navigationService.NavigateTo(typeof(Profil));
         }
-        //public StatusRequest(User currentUser)
-        //{
-        //    _swapRequestRepository = new SwapRequestRepository();
-
-        //    // Populate Sent Requests
-        //    var sentRequests = _swapRequestRepository.GetSentRequests(currentUser.Username);
-        //    SentRequestsGrid.ItemsSource = sentRequests;
-
-        //    // Populate Received Requests with email and address info
-        //    var receivedRequests = _swapRequestRepository.GetReceivedRequests(currentUser.Username).Select(request => {
-        //        request.RequesterEmail = request.Requester.Email;
-        //        request.RequesterAddress = request.Requester.Address;
-        //        return request;
-        //    }).ToList();
-        //    ReceivedRequestsGrid.ItemsSource = receivedRequests;
-        //}
+        
     }
 }

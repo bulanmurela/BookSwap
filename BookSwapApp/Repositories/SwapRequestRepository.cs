@@ -26,7 +26,7 @@ namespace BookSwapApp.Repositories
                     (requester_username, owner_username, book_id, status) 
                     VALUES (@RequesterUsername, @OwnerUsername, @BookId, @Status)";
 
-                var validStatuses = new[] { "Notifying Owner", "Approved", "Denied"};
+                var validStatuses = new[] { "Notifying Owner", "Approved", "Denied", "Completed"};
 
                 if (!validStatuses.Contains(request.Status))
                 {
@@ -71,115 +71,164 @@ namespace BookSwapApp.Repositories
             }
         }
 
-        // Method for the owner to respond to a swap request
-        public bool UpdateSwapRequestStatus(int requestId, string newStatus, int bookId)
-        {
-            using (IDbConnection db = dbHelpers.OpenConnection())
-            {
-                var query = @"
-                    UPDATE public.SwapRequest 
-                    SET status = @Status, response_date = CURRENT_TIMESTAMP 
-                    WHERE id = @RequestId";
-
-                var result = db.Execute(query, new { Status = newStatus, RequestId = requestId });
-
-                if (result > 0)
-                {
-                    if (newStatus == "Approved")
-                    {
-                        // Remove book from the database if the swap is approved
-                        var deleteBookQuery = "DELETE FROM public.Books WHERE id = @BookId";
-                        db.Execute(deleteBookQuery, new { BookId = bookId });
-                    }
-                    else if (newStatus == "Denied")
-                    {
-                        // Make the book visible again if the swap is denied
-                        var makeVisibleQuery = "UPDATE public.Books SET is_visible = true WHERE id = @BookId";
-                        db.Execute(makeVisibleQuery, new { BookId = bookId });
-                    }
-                }
-
-                return result > 0;
-            }
-        }
-
-
         public List<SwapRequest> GetSentRequests(string requesterUsername)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-        SELECT sr.id AS Id,
-                b.title AS BookTitle,
-                u.email AS OwnerEmail,
-                u.address AS OwnerAddress,
-                sr.status,
-                sr.request_date AS RequestDate
-        FROM public.SwapRequest sr
-        JOIN public.Books b ON sr.book_id = b.id
-        JOIN public.User u ON sr.owner_username = u.username
-        WHERE sr.requester_username = @RequesterUsername";
+                SELECT sr.id AS Id,
+                       sr.status AS Status,
+                       sr.request_date AS RequestDate,
+                       b.title AS Title,
+                       u.email AS Email,
+                       u.address AS Address
+                FROM public.SwapRequest sr
+                JOIN public.Books b ON sr.book_id = b.id
+                JOIN public.User u ON sr.owner_username = u.username
+                WHERE sr.requester_username = @RequesterUsername";
 
                 Debug.WriteLine($"Executing GetSentRequests for requesterUsername: {requesterUsername}");
 
-                var results = db.Query<SwapRequest>(query, new { RequesterUsername = requesterUsername }).ToList();
-
-
-                // Set the request type to "Sent"
-                foreach (var request in results)
-                {
-                    request.RequestType = "Sent";
-                }
+                var results = db.Query<SwapRequest, Book, User, SwapRequest>(
+                    query,
+                    (swapRequest, book, owner) =>
+                    {
+                        swapRequest.Book = book;
+                        swapRequest.Owner = owner;
+                        swapRequest.RequestType = "Sent";  // Menandai tipe request sebagai "Sent"
+                        return swapRequest;
+                    },
+                    new { RequesterUsername = requesterUsername },
+                    splitOn: "Title,Email").ToList();
 
                 // Debugging output for CombinedRequests content
-                Debug.WriteLine("SentRequests content:");
-                foreach (var request in results)
-                {
-                    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
-                }
+                //Debug.WriteLine("SentRequests content:");
+                //foreach (var request in results)
+                //{
+                //    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
+                //}
 
                 return results;
-
             }
         }
-
 
         public List<SwapRequest> GetReceivedRequests(string ownerUsername)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-        SELECT sr.id AS Id,
-                b.title AS BookTitle,
-                u.email AS RequesterEmail,
-                u.address AS RequesterAddress,
-                sr.status,
-                sr.request_date AS RequestDate
-        FROM public.SwapRequest sr
-        JOIN public.Books b ON sr.book_id = b.id
-        JOIN public.User u ON sr.requester_username = u.username
-        WHERE sr.owner_username = @OwnerUsername";
+                SELECT sr.id AS Id,
+                       sr.status AS Status,
+                       sr.request_date AS RequestDate,
+                       b.title AS Title,
+                       u.email AS Email,
+                       u.address AS Address
+                FROM public.SwapRequest sr
+                JOIN public.Books b ON sr.book_id = b.id
+                JOIN public.User u ON sr.requester_username = u.username
+                WHERE sr.owner_username = @OwnerUsername";
 
                 Debug.WriteLine($"Executing GetReceivedRequests for ownerUsername: {ownerUsername}");
 
-                var results = db.Query<SwapRequest>(query, new { OwnerUsername = ownerUsername }).ToList();
-
-                // Set the request type to "Requested"
-                foreach (var request in results)
-                {
-                    request.RequestType = "Requested";
-                }
+                var results = db.Query<SwapRequest, Book, User, SwapRequest>(
+                    query,
+                    (swapRequest, book, requester) =>
+                    {
+                        swapRequest.Book = book;
+                        swapRequest.Requester = requester;
+                        swapRequest.RequestType = "Requested";  // Menandai tipe request sebagai "Requested"
+                        return swapRequest;
+                    },
+                    new { OwnerUsername = ownerUsername },
+                    splitOn: "Title,Email").ToList();
 
                 // Debugging output for CombinedRequests content
-                Debug.WriteLine("ReceivedRequests content:");
-                foreach (var request in results)
-                {
-                    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
-                }
+                //Debug.WriteLine("ReceivedRequests content:");
+                //foreach (var request in results)
+                //{
+                //    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
+                //}
 
                 return results;
             }
         }
 
+        // Method for the owner to respond to a swap request
+        public bool UpdateSwapRequestStatus(int requestId, string newStatus, int bookId)
+        {
+            using (IDbConnection db = dbHelpers.OpenConnection())
+            {
+                var query = @"
+                            UPDATE public.SwapRequest 
+                            SET status = @Status, response_date = CURRENT_TIMESTAMP 
+                            WHERE id = @RequestId";
+
+                var validStatuses = new[] { "Notifying Owner", "Approved", "Denied", "Completed" };
+                if (!validStatuses.Contains(newStatus))
+                {
+                    throw new ArgumentException($"Invalid status value: {newStatus}");
+                }
+
+                var result = db.Execute(query, new { Status = newStatus, RequestId = requestId });
+                Debug.WriteLine($"Updated SwapRequest. Rows affected: {result}");
+
+                if (result > 0)
+                {
+                    if (newStatus == "Denied")
+                    {
+                        // Make the book visible again
+                        var getBookIdQuery = @"
+                                            SELECT book_id 
+                                            FROM public.SwapRequest 
+                                            WHERE id = @RequestId";
+                        var fetchedBookId = db.QueryFirstOrDefault<int>(getBookIdQuery, new { RequestId = requestId });
+
+                        Debug.WriteLine($"BookId found for requestId {requestId}: {fetchedBookId}");
+
+                        if (fetchedBookId > 0)
+                        {
+                            var makeVisibleQuery = "UPDATE public.Books SET is_visible = true WHERE id = @BookId";
+                            var updateVisibilityResult = db.Execute(makeVisibleQuery, new { BookId = fetchedBookId });
+
+                            // Logging the result of the update visibility operation
+                            if (updateVisibilityResult > 0)
+                            {
+                                Debug.WriteLine($"Successfully set is_visible to true for Denied book with BookId: {fetchedBookId}. Rows affected: {updateVisibilityResult}");
+                            }
+                            else
+                            {
+                                Debug.WriteLine($"Failed to update is_visible for BookId: {fetchedBookId}. No rows were affected.");
+                            }
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"BookId not found for requestId: {requestId}");
+                        }
+
+
+                        // Return the point to the requester
+                        var getRequesterQuery = @"
+                                                SELECT requester_username 
+                                                FROM public.SwapRequest 
+                                                WHERE id = @RequestId";
+                        var requesterUsername = db.QueryFirstOrDefault<string>(getRequesterQuery, new { RequestId = requestId });
+                        Debug.WriteLine($"Requester username found: {requesterUsername}");
+
+                        if (!string.IsNullOrEmpty(requesterUsername))
+                        {
+                            var returnPointQuery = "UPDATE public.User SET points = points + 1 WHERE username = @RequesterUsername";
+                            var updatePointsResult = db.Execute(returnPointQuery, new { RequesterUsername = requesterUsername });
+                            Debug.WriteLine($"Returned 1 point to requester. Rows affected: {updatePointsResult}");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Requester username not found for requestId: {requestId}");
+                        }
+                    }
+                }
+                return result > 0;
+            }
+        }
+        
     }
 }

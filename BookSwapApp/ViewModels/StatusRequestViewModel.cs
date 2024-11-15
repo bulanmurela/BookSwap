@@ -26,7 +26,7 @@ namespace BookSwapApp.ViewModels
         // Parameterless constructor (required for XAML)
         public StatusRequestViewModel()
         {
-            _currentUser = new User { Username = "dowoon" }; // Mock user
+            _currentUser = ((App)Application.Current).CurrentUser;
             _swapRequestRepository = new SwapRequestRepository();
 
             CombinedRequests = new ObservableCollection<SwapRequest>();
@@ -41,7 +41,6 @@ namespace BookSwapApp.ViewModels
         // Constructor that accepts a User object
         public StatusRequestViewModel(User currentUser, SwapRequest swapRequest)
         {
-            _currentUser = currentUser;
             _swapRequestRepository = new SwapRequestRepository();
 
             _swapRequest = swapRequest;
@@ -59,31 +58,43 @@ namespace BookSwapApp.ViewModels
         {
             MessageBox.Show("LoadCombinedRequests called", "Debugging"); // Debugging
 
-            if (_currentUser != null)
+            if (_currentUser == null || string.IsNullOrEmpty(_currentUser.Username))
             {
-                CombinedRequests.Clear(); // Clear sebelum memuat ulang data
-
-                var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
-                foreach (var request in sentRequests)
-                {
-                    CombinedRequests.Add(request);
-                }
-
-                var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username);
-                foreach (var request in receivedRequests)
-                {
-                    CombinedRequests.Add(request);
-                }
-
-                // Debug log to output the content of CombinedRequests
-                //Debug.WriteLine("CombinedRequests content:");
-                //foreach (var request in CombinedRequests)
-                //{
-                //    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}");
-                //}
-
-                OnPropertyChanged(nameof(CombinedRequests));
+                MessageBox.Show("User is not logged in.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+
+            CombinedRequests.Clear();
+
+            // Load and combine sent and received requests
+            var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
+            var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username);
+
+            foreach (var request in sentRequests)
+            {
+                request.RequestType = "Sent";
+                request.IsCompleteVisible = request.Status == "Approved" ? Visibility.Visible : Visibility.Collapsed;
+                request.IsApproveVisible = Visibility.Collapsed;
+                request.IsDenyVisible = Visibility.Collapsed;
+                CombinedRequests.Add(request);
+            }
+
+            foreach (var request in receivedRequests)
+            {
+                request.RequestType = "Requested";
+                request.IsApproveVisible = Visibility.Visible;
+                request.IsDenyVisible = Visibility.Visible;
+                request.IsCompleteVisible = Visibility.Collapsed;
+                CombinedRequests.Add(request);
+            }
+            // Debug log to output the content of CombinedRequests
+            Debug.WriteLine("CombinedRequests content:");
+            foreach (var request in CombinedRequests)
+            {
+                Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
+            }
+
+            OnPropertyChanged(nameof(CombinedRequests));
         }
 
 
@@ -146,6 +157,7 @@ namespace BookSwapApp.ViewModels
             {
                 try
                 {
+                    Debug.WriteLine($"DenyRequest: Book Id is {request.Book?.Id}");
                     bool isUpdated = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, "Denied", request.Book.Id);
                     if (isUpdated)
                     {
@@ -155,6 +167,7 @@ namespace BookSwapApp.ViewModels
                     else
                     {
                         MessageBox.Show("Failed to deny the request.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Debug.WriteLine("Update for SwapRequest or visibility failed.");
                     }
                 }
                 catch (Exception ex)

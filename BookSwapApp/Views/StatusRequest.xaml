@@ -56,37 +56,33 @@
                         <DropShadowEffect/>
                     </TextBlock.Effect>
                 </TextBlock>
-
-                <!-- Tab Control for Sent and Received Requests -->
-                <ListView Name="StatusRequestsListView">
-                   <!-- <TextBlock Text="{Binding CombinedRequests.Count}" /> -->
+                <ListView Name="StatusRequestsListView" ItemsSource="{Binding CombinedRequests}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding CombinedRequests.Id}" />
-                            <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding CombinedRequests.RequestType}" />
-                            <GridViewColumn Header="Book Title" Width="220" DisplayMemberBinding="{Binding CombinedRequests.BookTitle}" />
-                            <GridViewColumn Header="Owner Email" Width="150" DisplayMemberBinding="{Binding CombinedRequests.OwnerEmail}" />
-                            <GridViewColumn Header="Owner Address" Width="150" DisplayMemberBinding="{Binding CombinedRequests.OwnerAddress, TargetNullValue='N/A'}" />
-                            <GridViewColumn Header="Requester Email" Width="150" DisplayMemberBinding="{Binding CombinedRequests.RequesterEmail, TargetNullValue='N/A'}" />
-                            <GridViewColumn Header="Requester Address" Width="150" DisplayMemberBinding="{Binding CombinedRequests.RequesterAddress, TargetNullValue='N/A'}" />
-                            <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding CombinedRequests.Status}" />
-                            <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding CombinedRequests.RequestDate}" />
+                            <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding Id}" />
+                            <GridViewColumn Header="Book Title" Width="220" DisplayMemberBinding="{Binding Book.Title}" />
+                            <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding RequestType}" />
+                            <GridViewColumn Header="Owner Email" Width="150" DisplayMemberBinding="{Binding Owner.Email}" />
+                            <GridViewColumn Header="Owner Address" Width="150" DisplayMemberBinding="{Binding Owner.Address, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Requester Email" Width="150" DisplayMemberBinding="{Binding Requester.Email, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Requester Address" Width="150" DisplayMemberBinding="{Binding Requester.Address, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}" />
+                            <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding RequestDate, StringFormat='dd/MM/yyyy'}" />
                             <GridViewColumn Header="Action" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <!-- If Type is 'Sent' and status is 'Approved', show 'Complete' button -->
+                                            <!-- Button logic based on Type and Status -->
                                             <Button Content="Complete"
-                                    Visibility="{Binding SwapRequest.IsCompleteVisible}"
+                                    Visibility="{Binding IsCompleteVisible}"
                                     Command="{Binding DataContext.CompleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                     CommandParameter="{Binding}" />
-                                            <!-- If Type is 'Requested', show 'Approve' and 'Deny' buttons -->
                                             <Button Content="Approve"
-                                    Visibility="{Binding SwapRequest.IsApproveVisible}"
+                                    Visibility="{Binding IsApproveVisible}"
                                     Command="{Binding DataContext.ApproveCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                     CommandParameter="{Binding}" />
                                             <Button Content="Deny"
-                                    Visibility="{Binding SwapRequest.IsDenyVisible}"
+                                    Visibility="{Binding IsDenyVisible}"
                                     Command="{Binding DataContext.DenyCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                     CommandParameter="{Binding}" />
                                         </StackPanel>

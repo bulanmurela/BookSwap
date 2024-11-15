@@ -22,9 +22,11 @@ namespace BookSwapApp.Models
         public DateTime RequestDate { get; set; }
         public DateTime? ResponseDate { get; set; }
 
-        public Visibility IsCompleteVisible => RequestType == "Sent" && Status == "Approved" ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility IsApproveVisible => RequestType == "Requested" && Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility IsDenyVisible => RequestType == "Requested" && Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
+        private List<SwapRequest> swapRequests;
+
+        public Visibility IsCompleteVisible { get; set; }
+        public Visibility IsApproveVisible { get; set; }
+        public Visibility IsDenyVisible { get; set; }
     
 
     public Visibility SwapActionVisibility
@@ -49,7 +51,7 @@ namespace BookSwapApp.Models
         public void UpdateStatus(string newStatus)
         {
             // Ensure that only valid statuses are allowed
-            if (newStatus == "Notifying Owner" || newStatus == "Approved" || newStatus == "Denied")
+            if (newStatus == "Notifying Owner" || newStatus == "Approved" || newStatus == "Denied" || newStatus == "Completed")
             {
                 Status = newStatus;
             }
@@ -68,6 +70,12 @@ namespace BookSwapApp.Models
         public void DenyRequest()
         {
             Status = "Denied";
+            ResponseDate = DateTime.Now;
+        }
+
+        public void CompleteRequest()
+        {
+            Status = "Completed";
             ResponseDate = DateTime.Now;
         }
     }
