@@ -14,7 +14,7 @@ namespace BookSwapApp.Models
     public class Book
     {
         public int Id { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; set; }
         public string Author { get; private set; }
         public string Genre { get; private set; }
         public string Condition { get; private set; }

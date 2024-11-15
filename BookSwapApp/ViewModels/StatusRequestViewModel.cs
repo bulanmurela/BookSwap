@@ -5,24 +5,28 @@ using BookSwapApp.Repositories;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Diagnostics;
 
 namespace BookSwapApp.ViewModels
 {
     public class StatusRequestViewModel : INotifyPropertyChanged
     {
         private readonly SwapRequestRepository _swapRequestRepository;
+        private SwapRequest _swapRequest;
         private readonly User _currentUser;
+
         // Observable collections for data binding
         public ObservableCollection<SwapRequest> CombinedRequests { get; set; }
         public ICommand CombinedRequestsCommand { get; set; }
-        public ICommand CompleteCommand { get; set; }
-        public ICommand ApproveCommand { get; set; }
-        public ICommand DenyCommand { get; set; }
+        public ICommand CompleteCommand { get; }
+        public ICommand ApproveCommand { get; }
+        public ICommand DenyCommand { get; }
+        public SwapRequest SwapRequest { get => _swapRequest; set => _swapRequest = value; }
 
         // Parameterless constructor (required for XAML)
         public StatusRequestViewModel()
         {
-            _currentUser = new User { Username = "defaultUser" }; // Mock user
+            _currentUser = ((App)Application.Current).CurrentUser;
             _swapRequestRepository = new SwapRequestRepository();
 
             CombinedRequests = new ObservableCollection<SwapRequest>();
@@ -35,10 +39,11 @@ namespace BookSwapApp.ViewModels
         }
 
         // Constructor that accepts a User object
-        public StatusRequestViewModel(User currentUser)
+        public StatusRequestViewModel(User currentUser, SwapRequest swapRequest)
         {
-            _currentUser = currentUser;
             _swapRequestRepository = new SwapRequestRepository();
+
+            _swapRequest = swapRequest;
 
             CombinedRequests = new ObservableCollection<SwapRequest>();
 
@@ -51,29 +56,52 @@ namespace BookSwapApp.ViewModels
 
         private void LoadCombinedRequests()
         {
-            if(_currentUser != null)
+            MessageBox.Show("LoadCombinedRequests called", "Debugging"); // Debugging
+
+            if (_currentUser == null || string.IsNullOrEmpty(_currentUser.Username))
             {
-                // Ambil sent requests
-                var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
-                foreach (var request in sentRequests)
-                {
-                    request.RequestType = "Sent";  // Menandai tipe request
-                    CombinedRequests.Add(request);
-                }
-
-                // Ambil received requests
-                var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username);
-                foreach (var request in receivedRequests)
-                {
-                    request.RequestType = "Requested";  // Menandai tipe request
-                    CombinedRequests.Add(request);
-                }
-
-                OnPropertyChanged(nameof(CombinedRequests)); // Update UI jika data berubah
+                MessageBox.Show("User is not logged in.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+
+            CombinedRequests.Clear();
+
+            // Load and combine sent and received requests
+            var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
+            var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username);
+
+            foreach (var request in sentRequests)
+            {
+                request.RequestType = "Sent";
+                request.IsCompleteVisible = request.Status == "Approved" ? Visibility.Visible : Visibility.Collapsed;
+                request.IsApproveVisible = Visibility.Collapsed;
+                request.IsDenyVisible = Visibility.Collapsed;
+                CombinedRequests.Add(request);
+            }
+
+            foreach (var request in receivedRequests)
+            {
+                request.RequestType = "Requested";
+                request.IsApproveVisible = Visibility.Visible;
+                request.IsDenyVisible = Visibility.Visible;
+                request.IsCompleteVisible = Visibility.Collapsed;
+                CombinedRequests.Add(request);
+            }
+            // Debug log to output the content of CombinedRequests
+            Debug.WriteLine("CombinedRequests content:");
+            foreach (var request in CombinedRequests)
+            {
+                Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
+            }
+
+            OnPropertyChanged(nameof(CombinedRequests));
         }
+
+
         private void CompleteRequest(SwapRequest request)
         {
+            MessageBox.Show("CompleteRequest called", "Debugging"); // Debugging
+
             if (request != null)
             {
                 try
@@ -99,6 +127,7 @@ namespace BookSwapApp.ViewModels
         // Logika untuk menerima (Approve) request
         private void ApproveRequest(SwapRequest request)
         {
+            MessageBox.Show("ApproveRequest called", "Debugging"); // Debugging
             if (request != null)
             {
                 try
@@ -128,6 +157,7 @@ namespace BookSwapApp.ViewModels
             {
                 try
                 {
+                    Debug.WriteLine($"DenyRequest: Book Id is {request.Book?.Id}");
                     bool isUpdated = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, "Denied", request.Book.Id);
                     if (isUpdated)
                     {
@@ -137,6 +167,7 @@ namespace BookSwapApp.ViewModels
                     else
                     {
                         MessageBox.Show("Failed to deny the request.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Debug.WriteLine("Update for SwapRequest or visibility failed.");
                     }
                 }
                 catch (Exception ex)

@@ -56,31 +56,27 @@
                         <DropShadowEffect/>
                     </TextBlock.Effect>
                 </TextBlock>
-
-                <!-- Tab Control for Sent and Received Requests -->
-                <ListView x:Name="RequestsGrid" ItemsSource="{Binding CombinedRequests}" Background="Transparent" FontSize="14">
+                <ListView Name="StatusRequestsListView" ItemsSource="{Binding CombinedRequests}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding Id}" />
+                            <GridViewColumn Header="Book Title" Width="220" DisplayMemberBinding="{Binding Book.Title}" />
                             <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding RequestType}" />
-                            <GridViewColumn Header="Book Title" Width="220" DisplayMemberBinding="{Binding BookTitle}" />
-                            <GridViewColumn Header="Owner Email" Width="150" DisplayMemberBinding="{Binding OwnerEmail}" />
-                            <GridViewColumn Header="Owner Address" Width="150" DisplayMemberBinding="{Binding OwnerAddress, TargetNullValue='N/A'}" />
-                            <GridViewColumn Header="Requester Email" Width="150" DisplayMemberBinding="{Binding RequesterEmail, TargetNullValue='N/A'}" />
-                            <GridViewColumn Header="Requester Address" Width="150" DisplayMemberBinding="{Binding RequesterAddress, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Owner Email" Width="150" DisplayMemberBinding="{Binding Owner.Email}" />
+                            <GridViewColumn Header="Owner Address" Width="150" DisplayMemberBinding="{Binding Owner.Address, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Requester Email" Width="150" DisplayMemberBinding="{Binding Requester.Email, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Requester Address" Width="150" DisplayMemberBinding="{Binding Requester.Address, TargetNullValue='N/A'}" />
                             <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}" />
-                            <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding RequestDate}" />
+                            <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding RequestDate, StringFormat='dd/MM/yyyy'}" />
                             <GridViewColumn Header="Action" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <!-- If Type is 'Sent' and status is 'Approved', show 'Complete' button -->
+                                            <!-- Button logic based on Type and Status -->
                                             <Button Content="Complete"
                                     Visibility="{Binding IsCompleteVisible}"
                                     Command="{Binding DataContext.CompleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                     CommandParameter="{Binding}" />
-
-                                            <!-- If Type is 'Requested', show 'Approve' and 'Deny' buttons -->
                                             <Button Content="Approve"
                                     Visibility="{Binding IsApproveVisible}"
                                     Command="{Binding DataContext.ApproveCommand, RelativeSource={RelativeSource AncestorType=ListView}}"

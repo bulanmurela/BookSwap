@@ -94,7 +94,7 @@ namespace BookSwapApp.Views
 
             if (result == MessageBoxResult.Yes)
             {
-                _navigationService.NavigateTo(typeof(Login)); 
+                _navigationService.NavigateTo(typeof(Login));
                 ((App)Application.Current).CurrentUser = null; 
             }
         }

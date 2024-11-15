@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace BookSwapApp.Models
 {
@@ -13,17 +16,17 @@ namespace BookSwapApp.Models
         public string RequestType { get; set; }
         public User Requester { get; set; }
         public User Owner { get; set; }
-        public string BookTitle { get; set; }
-        public Book Book { get; set; }
-        public string RequesterEmail { get; set; }  // New field
-        public string RequesterAddress { get; set; }  // New field
+        public Book Book { get; set; } 
+
         public string Status { get; set; }
         public DateTime RequestDate { get; set; }
         public DateTime? ResponseDate { get; set; }
 
-        public Visibility IsCompleteVisible => RequestType == "Sent" && Status == "Approved" ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility IsApproveVisible => RequestType == "Requested" && Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility IsDenyVisible => RequestType == "Requested" && Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
+        private List<SwapRequest> swapRequests;
+
+        public Visibility IsCompleteVisible { get; set; }
+        public Visibility IsApproveVisible { get; set; }
+        public Visibility IsDenyVisible { get; set; }
     
 
     public Visibility SwapActionVisibility
@@ -48,7 +51,7 @@ namespace BookSwapApp.Models
         public void UpdateStatus(string newStatus)
         {
             // Ensure that only valid statuses are allowed
-            if (newStatus == "Notifying Owner" || newStatus == "Approved" || newStatus == "Denied")
+            if (newStatus == "Notifying Owner" || newStatus == "Approved" || newStatus == "Denied" || newStatus == "Completed")
             {
                 Status = newStatus;
             }
@@ -67,6 +70,12 @@ namespace BookSwapApp.Models
         public void DenyRequest()
         {
             Status = "Denied";
+            ResponseDate = DateTime.Now;
+        }
+
+        public void CompleteRequest()
+        {
+            Status = "Completed";
             ResponseDate = DateTime.Now;
         }
     }
