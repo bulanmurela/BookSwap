@@ -108,11 +108,17 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-            SELECT sr.*, b.Id AS BookId, b.*, u.Username AS OwnerUsername, u.*
-            FROM public.SwapRequest sr
-            JOIN public.Books b ON sr.book_id = b.id
-            JOIN public.User u ON sr.owner_username = u.username
-            WHERE sr.requester_username = @RequesterUsername";
+                        SELECT sr.id AS Id,
+                                b.title AS BookTitle,
+                                u.email AS OwnerEmail,
+                                u.address AS OwnerAddress,
+                                sr.status,
+                                sr.request_date AS RequestDate,
+                                'Sent' AS RequestType
+                        FROM public.SwapRequest sr
+                        JOIN public.Books b ON sr.book_id = b.id
+                        JOIN public.User u ON sr.owner_username = u.username
+                        WHERE sr.requester_username = @RequesterUsername";
 
                 return db.Query<SwapRequest, Book, User, SwapRequest>(
                     query,
@@ -120,23 +126,31 @@ namespace BookSwapApp.Repositories
                     {
                         swapRequest.Book = book;
                         swapRequest.Owner = owner;
+                        swapRequest.RequestType = "Sent";  // Menandai tipe request sebagai "Sent"
                         return swapRequest;
                     },
                     new { RequesterUsername = requesterUsername },
-                    splitOn: "BookId,OwnerUsername").ToList();
+                    splitOn: "BookTitle,OwnerEmail").ToList();
             }
         }
+
 
         public List<SwapRequest> GetReceivedRequests(string ownerUsername)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-            SELECT sr.*, b.Id AS BookId, b.*, u.Username AS RequesterUsername, u.*
-            FROM public.SwapRequest sr
-            JOIN public.Books b ON sr.book_id = b.id
-            JOIN public.User u ON sr.requester_username = u.username
-            WHERE sr.owner_username = @OwnerUsername";
+                        SELECT sr.id AS Id,
+                                b.title AS BookTitle,
+                                u.email AS RequesterEmail,
+                                u.address AS RequesterAddress,
+                                sr.status,
+                                sr.request_date AS RequestDate,
+                                'Requested' AS RequestType  -- Menambahkan tipe request
+                        FROM public.SwapRequest sr
+                        JOIN public.Books b ON sr.book_id = b.id
+                        JOIN public.User u ON sr.requester_username = u.username
+                        WHERE sr.owner_username = @OwnerUsername";
 
                 return db.Query<SwapRequest, Book, User, SwapRequest>(
                     query,
@@ -144,11 +158,13 @@ namespace BookSwapApp.Repositories
                     {
                         swapRequest.Book = book;
                         swapRequest.Requester = requester;
+                        swapRequest.RequestType = "Requested";  // Menandai tipe request sebagai "Requested"
                         return swapRequest;
                     },
                     new { OwnerUsername = ownerUsername },
-                    splitOn: "BookId,RequesterUsername").ToList();
+                    splitOn: "BookTitle,RequesterEmail").ToList();
             }
         }
+
     }
 }

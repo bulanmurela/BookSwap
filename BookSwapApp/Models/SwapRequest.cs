@@ -10,8 +10,10 @@ namespace BookSwapApp.Models
     public class SwapRequest
     {
         public int Id { get; set; }
+        public string RequestType { get; set; }
         public User Requester { get; set; }
         public User Owner { get; set; }
+        public string BookTitle { get; set; }
         public Book Book { get; set; }
         public string RequesterEmail { get; set; }  // New field
         public string RequesterAddress { get; set; }  // New field
@@ -19,7 +21,12 @@ namespace BookSwapApp.Models
         public DateTime RequestDate { get; set; }
         public DateTime? ResponseDate { get; set; }
 
-        public Visibility SwapActionVisibility
+        public Visibility IsCompleteVisible => RequestType == "Sent" && Status == "Approved" ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility IsApproveVisible => RequestType == "Requested" && Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility IsDenyVisible => RequestType == "Requested" && Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
+    
+
+    public Visibility SwapActionVisibility
         {
             get
             {

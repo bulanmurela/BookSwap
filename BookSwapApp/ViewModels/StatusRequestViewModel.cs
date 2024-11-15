@@ -12,49 +12,26 @@ namespace BookSwapApp.ViewModels
     {
         private readonly SwapRequestRepository _swapRequestRepository;
         private readonly User _currentUser;
-
         // Observable collections for data binding
-        public ObservableCollection<SwapRequest> _sentRequests { get; set; }
-        public ObservableCollection<SwapRequest> _receivedRequests { get; set; }
-
-        // Public properties for binding
-        public ObservableCollection<SwapRequest> SentRequests
-        {
-            get => _sentRequests;
-            set
-            {
-                if (_sentRequests != value)
-                {
-                    _sentRequests = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public ObservableCollection<SwapRequest> ReceivedRequests
-        {
-            get => _receivedRequests;
-            set
-            {
-                if (_receivedRequests != value)
-                {
-                    _receivedRequests = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public ObservableCollection<SwapRequest> CombinedRequests { get; set; }
+        public ICommand CombinedRequestsCommand { get; set; }
+        public ICommand CompleteCommand { get; set; }
+        public ICommand ApproveCommand { get; set; }
+        public ICommand DenyCommand { get; set; }
 
         // Parameterless constructor (required for XAML)
         public StatusRequestViewModel()
         {
-            // Initialize with mock user or handle this case properly
-            _currentUser = new User { Username = "defaultUser" }; // For testing
+            _currentUser = new User { Username = "defaultUser" }; // Mock user
             _swapRequestRepository = new SwapRequestRepository();
 
-            SentRequests = new ObservableCollection<SwapRequest>();
-            ReceivedRequests = new ObservableCollection<SwapRequest>();
+            CombinedRequests = new ObservableCollection<SwapRequest>();
 
-            LoadSwapRequests();
+            CompleteCommand = new RelayCommand<SwapRequest>(CompleteRequest);
+            ApproveCommand = new RelayCommand<SwapRequest>(ApproveRequest);
+            DenyCommand = new RelayCommand<SwapRequest>(DenyRequest);
+
+            LoadCombinedRequests();
         }
 
         // Constructor that accepts a User object
@@ -63,91 +40,113 @@ namespace BookSwapApp.ViewModels
             _currentUser = currentUser;
             _swapRequestRepository = new SwapRequestRepository();
 
-            // Initialize collections
-            _sentRequests = new ObservableCollection<SwapRequest>();
-            _receivedRequests = new ObservableCollection<SwapRequest>();
+            CombinedRequests = new ObservableCollection<SwapRequest>();
 
-            // Load data into observable collections
-            LoadSwapRequests();
+            CompleteCommand = new RelayCommand<SwapRequest>(CompleteRequest);
+            ApproveCommand = new RelayCommand<SwapRequest>(ApproveRequest);
+            DenyCommand = new RelayCommand<SwapRequest>(DenyRequest);
+
+            LoadCombinedRequests();
         }
 
-        private void LoadSwapRequests()
+        private void LoadCombinedRequests()
         {
-            if (_currentUser != null)
+            if(_currentUser != null)
             {
+                // Ambil sent requests
                 var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
-                SentRequests.Clear();
                 foreach (var request in sentRequests)
-                    SentRequests.Add(request);
+                {
+                    request.RequestType = "Sent";  // Menandai tipe request
+                    CombinedRequests.Add(request);
+                }
 
+                // Ambil received requests
                 var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username);
-                ReceivedRequests.Clear();
                 foreach (var request in receivedRequests)
-                    ReceivedRequests.Add(request);
+                {
+                    request.RequestType = "Requested";  // Menandai tipe request
+                    CombinedRequests.Add(request);
+                }
+
+                OnPropertyChanged(nameof(CombinedRequests)); // Update UI jika data berubah
             }
         }
-
-
-
-        // Command to accept a swap request
-        public ICommand AcceptCommand => new RelayCommand<SwapRequest>(AcceptRequest);
-
-        // Command to deny a swap request
-        public ICommand DenyCommand => new RelayCommand<SwapRequest>(DenyRequest);
-
-        // Logic to handle accepting a swap request
-        private void AcceptRequest(SwapRequest request)
+        private void CompleteRequest(SwapRequest request)
         {
             if (request != null)
             {
                 try
                 {
-                    // Update the request status to 'Approved'
-                    bool isUpdated = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, "Approved", request.Book.Id);
+                    bool isUpdated = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, "Completed", request.Book.Id);
                     if (isUpdated)
                     {
-                        LoadSwapRequests(); // Reload the requests after updating
+                        MessageBox.Show("Request marked as Completed.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadCombinedRequests(); // Reload setelah update
                     }
                     else
                     {
-                        // Notifikasi jika gagal
-                        MessageBox.Show("Failed to update the request status to Approved.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Failed to complete the request.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error while accepting the request: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error while completing the request: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
-        // Logic to handle denying a swap request
+        // Logika untuk menerima (Approve) request
+        private void ApproveRequest(SwapRequest request)
+        {
+            if (request != null)
+            {
+                try
+                {
+                    bool isUpdated = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, "Approved", request.Book.Id);
+                    if (isUpdated)
+                    {
+                        MessageBox.Show("Request approved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadCombinedRequests(); // Reload setelah update
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to approve the request.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error while approving the request: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        // Logika untuk menolak (Deny) request
         private void DenyRequest(SwapRequest request)
         {
             if (request != null)
             {
                 try
                 {
-                    // Update the request status to 'Denied'
                     bool isUpdated = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, "Denied", request.Book.Id);
                     if (isUpdated)
                     {
-                        LoadSwapRequests(); // Reload the requests after updating
+                        MessageBox.Show("Request denied successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadCombinedRequests(); // Reload setelah update
                     }
                     else
                     {
-                        // Notifikasi jika gagal
-                        MessageBox.Show("Failed to update the request status to Approved.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Failed to deny the request.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error while accepting the request: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error while denying the request: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
-        // INotifyPropertyChanged implementation for data binding
+        // INotifyPropertyChanged implementation untuk menginformasikan perubahan properti ke UI
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -156,7 +155,7 @@ namespace BookSwapApp.ViewModels
         }
     }
 
-    // Basic implementation of a RelayCommand class for ICommand
+    // Implementasi RelayCommand untuk ICommand
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;
