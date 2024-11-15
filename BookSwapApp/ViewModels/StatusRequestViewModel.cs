@@ -5,24 +5,28 @@ using BookSwapApp.Repositories;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Diagnostics;
 
 namespace BookSwapApp.ViewModels
 {
     public class StatusRequestViewModel : INotifyPropertyChanged
     {
         private readonly SwapRequestRepository _swapRequestRepository;
+        private SwapRequest _swapRequest;
         private readonly User _currentUser;
+
         // Observable collections for data binding
         public ObservableCollection<SwapRequest> CombinedRequests { get; set; }
         public ICommand CombinedRequestsCommand { get; set; }
-        public ICommand CompleteCommand { get; set; }
-        public ICommand ApproveCommand { get; set; }
-        public ICommand DenyCommand { get; set; }
+        public ICommand CompleteCommand { get; }
+        public ICommand ApproveCommand { get; }
+        public ICommand DenyCommand { get; }
+        public SwapRequest SwapRequest { get => _swapRequest; set => _swapRequest = value; }
 
         // Parameterless constructor (required for XAML)
         public StatusRequestViewModel()
         {
-            _currentUser = new User { Username = "defaultUser" }; // Mock user
+            _currentUser = new User { Username = "dowoon" }; // Mock user
             _swapRequestRepository = new SwapRequestRepository();
 
             CombinedRequests = new ObservableCollection<SwapRequest>();
@@ -35,10 +39,12 @@ namespace BookSwapApp.ViewModels
         }
 
         // Constructor that accepts a User object
-        public StatusRequestViewModel(User currentUser)
+        public StatusRequestViewModel(User currentUser, SwapRequest swapRequest)
         {
             _currentUser = currentUser;
             _swapRequestRepository = new SwapRequestRepository();
+
+            _swapRequest = swapRequest;
 
             CombinedRequests = new ObservableCollection<SwapRequest>();
 
@@ -51,29 +57,40 @@ namespace BookSwapApp.ViewModels
 
         private void LoadCombinedRequests()
         {
-            if(_currentUser != null)
+            MessageBox.Show("LoadCombinedRequests called", "Debugging"); // Debugging
+
+            if (_currentUser != null)
             {
-                // Ambil sent requests
+                CombinedRequests.Clear(); // Clear sebelum memuat ulang data
+
                 var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
                 foreach (var request in sentRequests)
                 {
-                    request.RequestType = "Sent";  // Menandai tipe request
                     CombinedRequests.Add(request);
                 }
 
-                // Ambil received requests
                 var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username);
                 foreach (var request in receivedRequests)
                 {
-                    request.RequestType = "Requested";  // Menandai tipe request
                     CombinedRequests.Add(request);
                 }
 
-                OnPropertyChanged(nameof(CombinedRequests)); // Update UI jika data berubah
+                // Debug log to output the content of CombinedRequests
+                //Debug.WriteLine("CombinedRequests content:");
+                //foreach (var request in CombinedRequests)
+                //{
+                //    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}");
+                //}
+
+                OnPropertyChanged(nameof(CombinedRequests));
             }
         }
+
+
         private void CompleteRequest(SwapRequest request)
         {
+            MessageBox.Show("CompleteRequest called", "Debugging"); // Debugging
+
             if (request != null)
             {
                 try
@@ -99,6 +116,7 @@ namespace BookSwapApp.ViewModels
         // Logika untuk menerima (Approve) request
         private void ApproveRequest(SwapRequest request)
         {
+            MessageBox.Show("ApproveRequest called", "Debugging"); // Debugging
             if (request != null)
             {
                 try

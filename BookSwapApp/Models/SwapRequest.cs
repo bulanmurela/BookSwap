@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace BookSwapApp.Models
 {
@@ -13,10 +16,8 @@ namespace BookSwapApp.Models
         public string RequestType { get; set; }
         public User Requester { get; set; }
         public User Owner { get; set; }
-        public string BookTitle { get; set; }
-        public Book Book { get; set; }
-        public string RequesterEmail { get; set; }  // New field
-        public string RequesterAddress { get; set; }  // New field
+        public Book Book { get; set; } 
+
         public string Status { get; set; }
         public DateTime RequestDate { get; set; }
         public DateTime? ResponseDate { get; set; }

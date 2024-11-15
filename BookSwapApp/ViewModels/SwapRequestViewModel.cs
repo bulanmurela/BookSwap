@@ -34,8 +34,8 @@ namespace BookSwapApp.ViewModels
                 SentRequests = _swapRequestRepository.GetSentRequests(currentUser.Username);
                 // Fetch received requests, and include requester details (email and address)
                 ReceivedRequests = _swapRequestRepository.GetReceivedRequests(currentUser.Username).Select(request => {
-                    request.RequesterEmail = request.Requester.Email; // Add Requester Email
-                    request.RequesterAddress = request.Requester.Address; // Add Requester Address
+                    request.Requester.Email = request.Requester.Email; // Add Requester Email
+                    request.Requester.Address = request.Requester.Address; // Add Requester Address
                     return request;
                 }).ToList();
             }
@@ -90,7 +90,6 @@ namespace BookSwapApp.ViewModels
             }
 
             MessageBox.Show("Swap request successfully created.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            LoadSwapRequests(currentUser);
             return true;
         }
 

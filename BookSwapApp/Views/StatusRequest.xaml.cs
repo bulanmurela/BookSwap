@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using BookSwapApp.Commands;
+using System.Diagnostics;
 
 namespace BookSwapApp.Views
 {
@@ -16,9 +17,11 @@ namespace BookSwapApp.Views
     {
         private NavigationService _navigationService;
         private readonly SwapRequestRepository _swapRequestRepository;
+        private SwapRequest _swapRequest;
         private readonly User _currentUser;
         private StatusRequestViewModel _viewModel;
         public ICommand CombinedRequestsCommand { get; private set; }
+        public SwapRequest SwapRequest { get => _swapRequest; set => _swapRequest = value; }
 
         public StatusRequest()
         {
@@ -27,18 +30,22 @@ namespace BookSwapApp.Views
             _swapRequestRepository = new SwapRequestRepository();
             _currentUser = new User { Username = "defaultUser" }; // Default user (ganti sesuai kebutuhan
             _viewModel = new StatusRequestViewModel();
-            DataContext = this;
+            DataContext = _viewModel;
 
             CombinedRequestsCommand = new RelayCommand(parameter => LoadCombinedRequests());
+
+
         }
 
-        public StatusRequest(User currentUser)
+        public StatusRequest(User currentUser, SwapRequest swapRequest)
         {
             InitializeComponent();
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             _swapRequestRepository = new SwapRequestRepository();
-            _viewModel = new StatusRequestViewModel(_currentUser);
-            DataContext = this;
+            _swapRequest = swapRequest;
+            _viewModel = new StatusRequestViewModel(_currentUser, swapRequest);
+            CombinedRequestsCommand = new RelayCommand(parameter => LoadCombinedRequests());
+            DataContext = _viewModel;
 
             LoadCombinedRequests();
         }
@@ -66,6 +73,10 @@ namespace BookSwapApp.Views
 
             // Set to ViewModel or directly to the ListView
             _viewModel.CombinedRequests = new ObservableCollection<SwapRequest>(combinedRequests);
+
+            Debug.WriteLine($"Sent requests count: {sentRequests.Count}");
+
+            StatusRequestsListView.ItemsSource = combinedRequests;
         }
 
 

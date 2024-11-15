@@ -8,6 +8,7 @@ using Dapper;
 using BookSwapApp.Helpers;
 using BookSwapApp.Models;
 using System.Windows;
+using System.Diagnostics;
 
 namespace BookSwapApp.Repositories
 {
@@ -108,29 +109,37 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-                        SELECT sr.id AS Id,
-                                b.title AS BookTitle,
-                                u.email AS OwnerEmail,
-                                u.address AS OwnerAddress,
-                                sr.status,
-                                sr.request_date AS RequestDate,
-                                'Sent' AS RequestType
-                        FROM public.SwapRequest sr
-                        JOIN public.Books b ON sr.book_id = b.id
-                        JOIN public.User u ON sr.owner_username = u.username
-                        WHERE sr.requester_username = @RequesterUsername";
+        SELECT sr.id AS Id,
+                b.title AS BookTitle,
+                u.email AS OwnerEmail,
+                u.address AS OwnerAddress,
+                sr.status,
+                sr.request_date AS RequestDate
+        FROM public.SwapRequest sr
+        JOIN public.Books b ON sr.book_id = b.id
+        JOIN public.User u ON sr.owner_username = u.username
+        WHERE sr.requester_username = @RequesterUsername";
 
-                return db.Query<SwapRequest, Book, User, SwapRequest>(
-                    query,
-                    (swapRequest, book, owner) =>
-                    {
-                        swapRequest.Book = book;
-                        swapRequest.Owner = owner;
-                        swapRequest.RequestType = "Sent";  // Menandai tipe request sebagai "Sent"
-                        return swapRequest;
-                    },
-                    new { RequesterUsername = requesterUsername },
-                    splitOn: "BookTitle,OwnerEmail").ToList();
+                Debug.WriteLine($"Executing GetSentRequests for requesterUsername: {requesterUsername}");
+
+                var results = db.Query<SwapRequest>(query, new { RequesterUsername = requesterUsername }).ToList();
+
+
+                // Set the request type to "Sent"
+                foreach (var request in results)
+                {
+                    request.RequestType = "Sent";
+                }
+
+                // Debugging output for CombinedRequests content
+                Debug.WriteLine("SentRequests content:");
+                foreach (var request in results)
+                {
+                    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
+                }
+
+                return results;
+
             }
         }
 
@@ -140,29 +149,35 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-                        SELECT sr.id AS Id,
-                                b.title AS BookTitle,
-                                u.email AS RequesterEmail,
-                                u.address AS RequesterAddress,
-                                sr.status,
-                                sr.request_date AS RequestDate,
-                                'Requested' AS RequestType  -- Menambahkan tipe request
-                        FROM public.SwapRequest sr
-                        JOIN public.Books b ON sr.book_id = b.id
-                        JOIN public.User u ON sr.requester_username = u.username
-                        WHERE sr.owner_username = @OwnerUsername";
+        SELECT sr.id AS Id,
+                b.title AS BookTitle,
+                u.email AS RequesterEmail,
+                u.address AS RequesterAddress,
+                sr.status,
+                sr.request_date AS RequestDate
+        FROM public.SwapRequest sr
+        JOIN public.Books b ON sr.book_id = b.id
+        JOIN public.User u ON sr.requester_username = u.username
+        WHERE sr.owner_username = @OwnerUsername";
 
-                return db.Query<SwapRequest, Book, User, SwapRequest>(
-                    query,
-                    (swapRequest, book, requester) =>
-                    {
-                        swapRequest.Book = book;
-                        swapRequest.Requester = requester;
-                        swapRequest.RequestType = "Requested";  // Menandai tipe request sebagai "Requested"
-                        return swapRequest;
-                    },
-                    new { OwnerUsername = ownerUsername },
-                    splitOn: "BookTitle,RequesterEmail").ToList();
+                Debug.WriteLine($"Executing GetReceivedRequests for ownerUsername: {ownerUsername}");
+
+                var results = db.Query<SwapRequest>(query, new { OwnerUsername = ownerUsername }).ToList();
+
+                // Set the request type to "Requested"
+                foreach (var request in results)
+                {
+                    request.RequestType = "Requested";
+                }
+
+                // Debugging output for CombinedRequests content
+                Debug.WriteLine("ReceivedRequests content:");
+                foreach (var request in results)
+                {
+                    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
+                }
+
+                return results;
             }
         }
 
