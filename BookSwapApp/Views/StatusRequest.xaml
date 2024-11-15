@@ -58,69 +58,44 @@
                 </TextBlock>
 
                 <!-- Tab Control for Sent and Received Requests -->
-                <TabControl Width="749" Background="Transparent" FontSize="16" >
-                    <!-- Sent Requests Tab (No changes needed here) -->
-                    <TabItem Header="Sent Requests">
-                        <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
-                            <ListView x:Name="SentRequestsGrid" ItemsSource="{Binding SentRequests}" Background="Transparent" FontSize="14" >
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding Id}" />
-                                        <GridViewColumn Header="Requested Book" Width="300" DisplayMemberBinding="{Binding Book.Title}" />
-                                        <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}" />
-                                        <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding RequestDate}" />
-                                        <GridViewColumn Header="Action" Width="100">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Content="Complete"
-                                                            Visibility="{Binding SwapActionVisibility}"
-                                                            Command="{Binding DataContext.CompleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                            CommandParameter="{Binding}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </Border>
-                    </TabItem>
+                <ListView x:Name="RequestsGrid" ItemsSource="{Binding CombinedRequests}" Background="Transparent" FontSize="14">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding Id}" />
+                            <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding RequestType}" />
+                            <GridViewColumn Header="Book Title" Width="220" DisplayMemberBinding="{Binding BookTitle}" />
+                            <GridViewColumn Header="Owner Email" Width="150" DisplayMemberBinding="{Binding OwnerEmail}" />
+                            <GridViewColumn Header="Owner Address" Width="150" DisplayMemberBinding="{Binding OwnerAddress, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Requester Email" Width="150" DisplayMemberBinding="{Binding RequesterEmail, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Requester Address" Width="150" DisplayMemberBinding="{Binding RequesterAddress, TargetNullValue='N/A'}" />
+                            <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}" />
+                            <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding RequestDate}" />
+                            <GridViewColumn Header="Action" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <!-- If Type is 'Sent' and status is 'Approved', show 'Complete' button -->
+                                            <Button Content="Complete"
+                                    Visibility="{Binding IsCompleteVisible}"
+                                    Command="{Binding DataContext.CompleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                    CommandParameter="{Binding}" />
 
-                    <!-- Received Requests Tab (Updated to show email, address, and buttons) -->
-                    <TabItem Header="Received Requests">
-                        <Border Background="#AAFFFFFF" CornerRadius="8" Padding="10">
-                            <ListView x:Name="ReceivedRequestsGrid" ItemsSource="{Binding ReceivedRequests}" Background="Transparent" FontSize="14">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Request ID" Width="100" DisplayMemberBinding="{Binding Id}" />
-                                        <GridViewColumn Header="Requested Book" Width="120" DisplayMemberBinding="{Binding Book.Title}" />
-                                        <GridViewColumn Header="Requester Email" Width="120" 
-                                                        DisplayMemberBinding="{Binding Requester.Email, TargetNullValue='N/A'}" />
-                                        <GridViewColumn Header="Requester Address" Width="120" 
-                                                        DisplayMemberBinding="{Binding Requester.Address, TargetNullValue='N/A'}" />
-                                        <GridViewColumn Header="Status" Width="80" DisplayMemberBinding="{Binding Status}" />
-                                        <GridViewColumn Header="Date" Width="80" DisplayMemberBinding="{Binding RequestDate}" />
-                                        <GridViewColumn Header="Actions" Width="150">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Button Content="Accept"
-                                                                Width="70" Margin="5"
-                                                                Command="{Binding DataContext.AcceptCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                                CommandParameter="{Binding}" />
-                                                        <Button Content="Deny"
-                                                                Width="70" Margin="5"
-                                                                Command="{Binding DataContext.DenyCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                                CommandParameter="{Binding}" />
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </Border>
-                    </TabItem>
-                </TabControl>
+                                            <!-- If Type is 'Requested', show 'Approve' and 'Deny' buttons -->
+                                            <Button Content="Approve"
+                                    Visibility="{Binding IsApproveVisible}"
+                                    Command="{Binding DataContext.ApproveCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                    CommandParameter="{Binding}" />
+                                            <Button Content="Deny"
+                                    Visibility="{Binding IsDenyVisible}"
+                                    Command="{Binding DataContext.DenyCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                    CommandParameter="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </StackPanel>
 
             <!-- Footer: Back button -->

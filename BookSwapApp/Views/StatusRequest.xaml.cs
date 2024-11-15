@@ -6,6 +6,9 @@ using BookSwapApp.Repositories;
 using BookSwapApp.Models;
 using BookSwapApp.ViewModels;
 using System.Linq;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using BookSwapApp.Commands;
 
 namespace BookSwapApp.Views
 {
@@ -14,7 +17,8 @@ namespace BookSwapApp.Views
         private NavigationService _navigationService;
         private readonly SwapRequestRepository _swapRequestRepository;
         private readonly User _currentUser;
-        private readonly StatusRequestViewModel _statusRequestViewModel;
+        private StatusRequestViewModel _viewModel;
+        public ICommand CombinedRequestsCommand { get; private set; }
 
         public StatusRequest()
         {
@@ -22,56 +26,48 @@ namespace BookSwapApp.Views
             _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
             _swapRequestRepository = new SwapRequestRepository();
             _currentUser = new User { Username = "defaultUser" }; // Default user (ganti sesuai kebutuhan
-            this.DataContext = new StatusRequestViewModel(_currentUser);
+            _viewModel = new StatusRequestViewModel();
+            DataContext = this;
+
+            CombinedRequestsCommand = new RelayCommand(parameter => LoadCombinedRequests());
         }
 
         public StatusRequest(User currentUser)
         {
             InitializeComponent();
+            _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            _swapRequestRepository = new SwapRequestRepository();
+            _viewModel = new StatusRequestViewModel(_currentUser);
+            DataContext = this;
 
-            // Check if currentUser is null
-            if (currentUser == null)
-            {
-                MessageBox.Show("Error: currentUser is null", "Initialization Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            _statusRequestViewModel = new StatusRequestViewModel(currentUser);
-            this.DataContext = new SwapRequestRepository(); // Set DataContext in code-behind
-
-            LoadSwapRequests();
+            LoadCombinedRequests();
         }
 
         // kode di bawah ini sudah ada di ViewModel
-        private void LoadSwapRequests()
+        private void LoadCombinedRequests()
         {
-            // Ensure data is refreshed after every load
-            SentRequestsGrid.ItemsSource = null;
-            ReceivedRequestsGrid.ItemsSource = null;
-
+            SwapRequestRepository swapRequestRepository = new SwapRequestRepository();
             // Load Sent Requests
-            var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
-            if (sentRequests != null)
+            var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username).Select(request =>
             {
-                SentRequestsGrid.ItemsSource = sentRequests;
-            }
-
-            // Load Received Requests with email and address info
-            var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username).Select(request =>
-            {
-                // Assuming you have logic to load requester email and address
-                if (request.Requester != null)
-                {
-                    request.RequesterEmail = request.Requester.Email;
-                    request.RequesterAddress = request.Requester.Address;
-                }
+                request.RequestType = "Sent";  // Mark type as 'Sent'
                 return request;
             }).ToList();
-            if (receivedRequests != null)
+
+            // Load Received Requests
+            var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username).Select(request =>
             {
-                ReceivedRequestsGrid.ItemsSource = receivedRequests;
-            }
+                request.RequestType = "Requested";  // Mark type as 'Requested'
+                return request;
+            }).ToList();
+
+            // Combine both lists into one
+            var combinedRequests = sentRequests.Concat(receivedRequests).ToList();
+
+            // Set to ViewModel or directly to the ListView
+            _viewModel.CombinedRequests = new ObservableCollection<SwapRequest>(combinedRequests);
         }
+
 
         private void GoToHome(object sender, RoutedEventArgs e)
         {

@@ -35,5 +35,10 @@ namespace BookSwapApp.Commands
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
+
+        private bool CanExecuteRequest(SwapRequest request)
+        {
+            return request != null && request.Status != "Approved" && request.Status != "Denied";
+        }
     }
 }
