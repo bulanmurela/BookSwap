@@ -60,7 +60,6 @@ namespace BookSwapApp.Views
 
         private void btnReqSwap_Click(object sender, RoutedEventArgs e)
         {
-            // Use the ViewModel to request a swap and pass in current user details
             if (_swapRequestViewModel != null)
             {
                 bool success = _swapRequestViewModel.RequestSwap(_selectedBook, _currentUser);
@@ -77,25 +76,14 @@ namespace BookSwapApp.Views
             }
         }
 
-
         private void GoToProfile(object sender, RoutedEventArgs e)
         {
             _navigationService.NavigateTo(typeof(Profil));
         }
 
-        private void GoToHome(object sender, ContextMenuEventArgs e)
+        private void btnHome_Click(object sender, RoutedEventArgs e)
         {
             _navigationService.NavigateTo(typeof(HomePage));
-        }
-
-        private void GoBack(object sender, ContextMenuEventArgs e)
-        {
-            _navigationService.GoBack();
-        }
-
-        private void IconGoBack(object sender, ContextMenuEventArgs e)
-        {
-            _navigationService.GoBack();
         }
     }
 }

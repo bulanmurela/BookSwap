@@ -22,7 +22,6 @@ namespace BookSwapApp.Models
 
         private List<Book> uploadedBooks;
         private List<SwapRequest> swapRequests;
-        private List<Review> reviewsWritten;
 
         public User() { }
 
@@ -40,7 +39,6 @@ namespace BookSwapApp.Models
             Points = 0;
             uploadedBooks = new List<Book>();
             swapRequests = new List<SwapRequest>();
-            reviewsWritten = new List<Review>();
         }
 
         public static string HashPassword(string plainPassword)

@@ -32,10 +32,10 @@ namespace BookSwapApp.ViewModels
             try
             {
                 SentRequests = _swapRequestRepository.GetSentRequests(currentUser.Username);
-                // Fetch received requests, and include requester details (email and address)
+                
                 ReceivedRequests = _swapRequestRepository.GetReceivedRequests(currentUser.Username).Select(request => {
-                    request.Requester.Email = request.Requester.Email; // Add Requester Email
-                    request.Requester.Address = request.Requester.Address; // Add Requester Address
+                    request.Requester.Email = request.Requester.Email; 
+                    request.Requester.Address = request.Requester.Address; 
                     return request;
                 }).ToList();
             }
@@ -53,7 +53,6 @@ namespace BookSwapApp.ViewModels
                 return false;
             }
 
-            // Pastikan owner sudah ada, jika tidak ambil dari database
             if (selectedBook.Owner == null)
             {
                 selectedBook.Owner = bookService.GetBookOwner(selectedBook.Id);
@@ -64,7 +63,6 @@ namespace BookSwapApp.ViewModels
                 }
             }
 
-            // Cek apakah pemilik buku dan pengguna saat ini adalah orang yang sama
             if (selectedBook.Owner.Username == currentUser.Username)
             {
                 MessageBox.Show("You cannot request to swap your own book.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -76,11 +74,10 @@ namespace BookSwapApp.ViewModels
                 Requester = currentUser,
                 Owner = selectedBook.Owner,
                 Book = selectedBook,
-                Status = "Notifying Owner", // Status awal
+                Status = "Notifying Owner", 
                 RequestDate = DateTime.Now
             };
 
-            // Coba membuat request swap
             bool isCreated = _swapRequestRepository.CreateSwapRequest(swapRequest);
 
             if (!isCreated)
@@ -93,15 +90,12 @@ namespace BookSwapApp.ViewModels
             return true;
         }
 
-
-
         public bool ApproveSwapRequest(SwapRequest request)
         {
             try
             {
                 request.Status = "Approved";
                 request.ResponseDate = DateTime.Now;
-                // Ensure the book ID is passed when approving a swap request
                 if (request.Book != null)
                 {
                     int bookId = request.Book.Id;
@@ -109,7 +103,7 @@ namespace BookSwapApp.ViewModels
 
                     if (success)
                     {
-                        LoadSwapRequests(request.Requester); // Reload requests to reflect changes
+                        LoadSwapRequests(request.Requester); 
                         return true;
                     }
                 }
@@ -123,14 +117,12 @@ namespace BookSwapApp.ViewModels
             }
         }
 
-        // Deny a swap request
         public bool DenySwapRequest(SwapRequest request)
         {
             try
             {
                 request.Status = "Denied";
                 request.ResponseDate = DateTime.Now;
-                // Ensure the book ID is passed when denying a swap request
                 if (request.Book != null)
                 {
                     int bookId = request.Book.Id;
@@ -138,7 +130,7 @@ namespace BookSwapApp.ViewModels
 
                     if (success)
                     {
-                        LoadSwapRequests(request.Requester); // Reload requests to reflect changes
+                        LoadSwapRequests(request.Requester); 
                         return true;
                     }
                 }

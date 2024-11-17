@@ -23,7 +23,6 @@ namespace BookSwapApp.Views
             _userRepository = new UserRepository();
             _currentUser = ((App)Application.Current).CurrentUser;
 
-            // Display user data on the profile page
             if (_currentUser != null)
             {
                 txtUsername.Text = _currentUser.Username;
@@ -31,11 +30,9 @@ namespace BookSwapApp.Views
                 txtAddress.Text = _currentUser.Address ?? "";
                 txtPoints.Text = _currentUser.Points.ToString();
 
-                // Load and display verified books
                 LoadVerifiedBooks();
             }
 
-            // Set address field as read-only by default
             txtAddress.IsReadOnly = true;
         }
 
@@ -48,41 +45,32 @@ namespace BookSwapApp.Views
             }
         }
 
-        // Handler for the Home button
         private void btnHomePage_Click(object sender, RoutedEventArgs e)
         {
-            _navigationService.NavigateTo(typeof(HomePage)); // Ensure HomePage has a parameterless constructor
+            _navigationService.NavigateTo(typeof(HomePage));
         }
 
-        // Handler for the Logout button
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
-            // Show a confirmation message box
             var result = MessageBox.Show("Are you sure you want to logout?", "Warning!", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                // If the user clicks "Yes", log out and navigate to the login page
-                _navigationService.NavigateTo(typeof(Login)); // Assumes Login is the name of the login page class
-                ((App)Application.Current).CurrentUser = null; // Clear the current user session
+                _navigationService.NavigateTo(typeof(Login)); 
+                ((App)Application.Current).CurrentUser = null; 
             }
-            // If the user clicks "No", do nothing and stay on the profile page
         }
 
-        // Handler for the Edit/Save button
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (isEditMode)
             {
-                // Save mode: save the updated address and revert button text
-                _currentUser.Address = txtAddress.Text; // Update current user's address
-                txtAddress.IsReadOnly = true;           // Make address field read-only
-                btnEdit.Content = "Edit";               // Change button text back to "Edit"
+                _currentUser.Address = txtAddress.Text; 
+                txtAddress.IsReadOnly = true;           
+                btnEdit.Content = "Edit";              
                 isEditMode = false;
 
-
-                // Save changes to the database
-                bool isSaved = _userRepository.UpdateUserAddress(_currentUser); // Save address to database
+                bool isSaved = _userRepository.UpdateUserAddress(_currentUser);
                 if (isSaved)
                 {
                     MessageBox.Show("Address updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -94,9 +82,8 @@ namespace BookSwapApp.Views
             }
             else
             {
-                // Edit mode: make the address field editable and change button text to "Save"
-                txtAddress.IsReadOnly = false;          // Make address field editable
-                btnEdit.Content = "Save";               // Change button text to "Save"
+                txtAddress.IsReadOnly = false;          
+                btnEdit.Content = "Save";               
                 isEditMode = true;
             }
         }

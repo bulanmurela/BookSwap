@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BookSwapApp.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="Login"
       Background="White">
 
@@ -54,7 +53,11 @@
                 </TextBlock>
 
                 <!-- Username TextBox -->
-                <TextBox x:Name="txtUsername" Text="Username" Width="300" Height="35" FontSize="16" Padding="5" Margin="0,20,0,0" HorizontalContentAlignment="Center" Cursor="IBeam">
+                <TextBox x:Name="txtUsername" Width="300" Height="35" FontSize="16" Padding="5" Margin="0,20,0,0" HorizontalContentAlignment="Center" Cursor="IBeam"
+                         Text="Username"
+                         Foreground="Gray"
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
@@ -71,7 +74,11 @@
                 </TextBox>
 
                 <!-- Password TextBox -->
-                <TextBox x:Name="txtPassword" Text="Password" Width="300" Height="35" FontSize="16" Padding="5" Margin="0,20,0,0" HorizontalContentAlignment="Center" Cursor="IBeam">
+                <TextBox x:Name="txtPassword" Width="300" Height="35" FontSize="16" Padding="5" Margin="0,20,0,0" HorizontalContentAlignment="Center" Cursor="IBeam"
+                         Text="Password"
+                         Foreground="Gray"
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus">          
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
@@ -107,11 +114,14 @@
                 <!-- Don't Have an Account section -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
                     <TextBlock Text="Don't Have an Account? " Foreground="White" FontSize="14" FontWeight="SemiBold"/>
-                    <TextBlock Text="Sign Up" Foreground="#FF81C8FF" FontSize="14" FontWeight="Bold" FontStyle="Italic" ContextMenuOpening="GoToSignupPage" Cursor="Arrow">
-                        <TextBlock.Effect>
-                            <DropShadowEffect Color="Black" Opacity="0.8" ShadowDepth="0"/>
-                        </TextBlock.Effect>
-                    </TextBlock>
+                    <!-- Signup Button -->
+                    <Button Content="Sign Up" FontSize="14" FontWeight="Bold" FontStyle="Italic" 
+                        Foreground="#FF81C8FF" Background="Transparent" BorderBrush="Transparent"
+                        Cursor="Hand" Click="SignUpButton_Click">
+                        <Button.Effect>
+                            <DropShadowEffect Color="Black" Opacity="0.5" ShadowDepth="0"/>
+                        </Button.Effect>
+                    </Button>
                 </StackPanel>
             </StackPanel>
 

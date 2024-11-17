@@ -50,7 +50,6 @@ namespace BookSwapApp.Models
 
         public void UpdateStatus(string newStatus)
         {
-            // Ensure that only valid statuses are allowed
             if (newStatus == "Notifying Owner" || newStatus == "Approved" || newStatus == "Denied" || newStatus == "Completed")
             {
                 Status = newStatus;

@@ -65,7 +65,6 @@ namespace BookSwapApp.Repositories
 
                 var books = db.Query<Book>(query).ToList();
 
-                // Set the cover image source for each book, if needed
                 foreach (var book in books)
                 {
                     book.SetCoverImageSource(book.CoverImage);
@@ -75,14 +74,13 @@ namespace BookSwapApp.Repositories
             }
         }
 
-        // Method for admin to verify the book and award points to the user
         public bool VerifyBook(int bookId, Admin admin, Book book)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 using (var transaction = db.BeginTransaction())
                 {
-                    // Step 1: Verify the book
+                    //Verify the book
                     var verifyQuery = @"
                         UPDATE public.Books 
                         SET verification_status = true
@@ -92,7 +90,7 @@ namespace BookSwapApp.Repositories
 
                     if (verifyResult > 0)
                     {
-                        // Step 2: Retrieve the book owner's user ID
+                        //Retrieve the book owner's user ID
                         var getUserQuery = @"
                             SELECT owner_username
                             FROM public.Books 
@@ -100,7 +98,7 @@ namespace BookSwapApp.Repositories
 
                         var ownerUsername = db.QuerySingle<string>(getUserQuery, new { BookId = bookId }, transaction: transaction);
 
-                        // Step 3: Update the user's points in the database
+                        //Update the user's points in the database
                         var updatePointsQuery = 
                             "UPDATE public.User " +
                             "SET points = points + 1 " +
@@ -109,14 +107,12 @@ namespace BookSwapApp.Repositories
 
                         transaction.Commit();
 
-                        // Call MarkAsVerified() to update the internal state of the Book object
                         book.MarkAsVerified();
 
                         MessageBox.Show("The book has been successfully verified by the admin, and 1 point has been added to the user.", "Verification Successful", MessageBoxButton.OK, MessageBoxImage.Information);
                         return true;
                     }
 
-                    // Rollback if verification failed
                     transaction.Rollback();
                     MessageBox.Show("Verification failed. Please try again.", "Verification Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
@@ -165,27 +161,26 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-            SELECT 
-                b.id, 
-                b.title, 
-                b.author, 
-                b.genre, 
-                b.condition, 
-                b.cover_image AS CoverImage, 
-                b.owner_username AS OwnerUsername, 
-                u.email AS OwnerEmail, 
-                u.address AS OwnerAddress
-            FROM 
-                public.Books b
-            JOIN 
-                public.User u ON b.owner_username = u.username
-            WHERE 
-                b.id = @BookId
-                AND b.verification_status = true";
+                            SELECT 
+                                b.id, 
+                                b.title, 
+                                b.author, 
+                                b.genre, 
+                                b.condition, 
+                                b.cover_image AS CoverImage, 
+                                b.owner_username AS OwnerUsername, 
+                                u.email AS OwnerEmail, 
+                                u.address AS OwnerAddress
+                            FROM 
+                                public.Books b
+                            JOIN 
+                                public.User u ON b.owner_username = u.username
+                            WHERE 
+                                b.id = @BookId
+                                AND b.verification_status = true";
 
                 var book = db.QuerySingleOrDefault<Book>(query, new { BookId = bookId });
 
-                // Set cover image source from byte array
                 if (book != null)
                 {
                     book.SetCoverImageSource(book.CoverImage);
@@ -206,14 +201,5 @@ namespace BookSwapApp.Repositories
                 return db.Query<User>(query, new { BookId = bookId }).FirstOrDefault();
             }
         }
-
-        //public List<Book> GetVisibleBooks()
-        //{
-        //    using (IDbConnection db = dbHelpers.OpenConnection())
-        //    {
-        //        var query = "SELECT * FROM public.Books WHERE is_visible = true";
-        //        return db.Query<Book>(query).ToList();
-        //    }
-        //}
     }
 }

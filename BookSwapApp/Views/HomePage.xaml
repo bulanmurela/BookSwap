@@ -37,14 +37,49 @@
                 <!-- Left side: Welcome message and points -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-                <!-- Right side: Sign in button and profile icon -->
+                <!-- Right side: Request Status button (on the left side of the upper-right corner) -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="0">
+                    <Button x:Name="btnStatus" Content="Request Status" FontSize="14" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" Margin="0,3,5,0" BorderBrush="{x:Null}" Click="btnStatus_Click" Width="138" Height="32">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+
+                <!-- Right side: Profile button (to the right of Request Status button) -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
                     <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
-                        <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" ContextMenuOpening="GoToProfile" Cursor="Arrow"/>
+                        <Button x:Name="btnProfile" Click="GoToProfile" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                            <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" Height="34" VerticalAlignment="Top"/>
+                        </Button>
                     </Border>
                 </StackPanel>
-                <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,506,7" />
-                <TextBlock Text=" | Points: " FontWeight="Bold" FontSize="20" Foreground="White" Margin="160,7,394,7" />
+                <TextBlock Text="Welcome!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,376,7" />
             </Grid>
 
             <!-- Main content section (Search bar, title, etc.) -->
@@ -58,7 +93,11 @@
 
                 <!-- Search bar and button -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20" Width="420">
-                    <TextBox x:Name="txtInsertKeyword" Text="Insert book title / author here" Width="300" Height="35" FontSize="16" Padding="5" VerticalAlignment="Center" Cursor="IBeam">
+                    <TextBox x:Name="txtInsertKeyword" Width="300" Height="35" FontSize="16" Padding="5" VerticalAlignment="Center" Cursor="IBeam"
+                             Text="Insert book title / author here"
+                             Foreground="Gray"
+                             GotFocus="TextBox_GotFocus"
+                             LostFocus="TextBox_LostFocus">
                         <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Setter Property="Template">
@@ -92,12 +131,12 @@
 
                 </StackPanel>
 
-                <ListView x:Name="BookList" Margin="20,10,20,20" Width="400" Height="200" SelectionChanged="BookList_SelectionChanged">
+                <ListView x:Name="BookList" Margin="20,10,20,20" Width="456" Height="200" SelectionChanged="BookList_SelectionChanged">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="200"/>
+                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="150"/>
                             <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author}" Width="150"/>
-                            <GridViewColumn Header="Genre" DisplayMemberBinding="{Binding Genre}" Width="100"/>
+                            <GridViewColumn Header="Genre" DisplayMemberBinding="{Binding Genre}" Width="150"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -121,21 +160,6 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-            <Button x:Name="btnStatus" Content="Status Request" FontSize="14" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" Margin="633,19,55,15" BorderBrush="{x:Null}" Click="btnStatus_Click">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
         </Grid>
     </Grid>
 </Page>

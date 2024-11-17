@@ -28,25 +28,59 @@
             </Grid.RowDefinitions>
 
             <!-- Header section with welcome message and profile icon -->
-            <Grid Grid.Row="0" Margin="10,10,10,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+             <Grid Grid.Row="0" Margin="10,12,10,8">
+                 <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*" />
+                     <ColumnDefinition Width="Auto" />
+                 </Grid.ColumnDefinitions>
 
-                <!-- Left side: Welcome message and points -->
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                 <!-- Left side: Welcome message and points -->
+                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-                <!-- Right side: Home button and profile icon -->
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
-                    <Button x:Name="lblHome" Content="Home" Foreground="White" FontSize="20" FontWeight="Bold" Background="Transparent" BorderBrush="Transparent" ContextMenuOpening="GoToHome" Cursor="Arrow"/>
-                    <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
-                        <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" ContextMenuOpening="GoToProfile" Cursor="Arrow"/>
-                    </Border>
-                </StackPanel>
-                <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,506,7" />
-                <TextBlock Text=" | Points: " FontWeight="Bold" FontSize="20" Foreground="White" Margin="160,7,394,7" />
-            </Grid>
+                 <!-- Right side: Home button (on the left side of the upper-right corner) -->
+                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="0">
+                     <Button x:Name="btnHome" Content="Home" FontSize="14" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" Margin="0,5,0,0" BorderBrush="{x:Null}" Click="btnHome_Click" Width="91" Height="32">
+                         <Button.Style>
+                             <Style TargetType="{x:Type Button}">
+                                 <Setter Property="Template">
+                                     <Setter.Value>
+                                         <ControlTemplate TargetType="{x:Type Button}">
+                                             <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                             </Border>
+                                         </ControlTemplate>
+                                     </Setter.Value>
+                                 </Setter>
+                             </Style>
+                         </Button.Style>
+                     </Button>
+                 </StackPanel>
+
+                 <!-- Right side: Profile button (to the right of Request Status button) -->
+                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
+                     <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
+                         <Button x:Name="btnProfile" Click="GoToProfile" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                             <Button.Style>
+                                 <Style TargetType="Button">
+                                     <Setter Property="Background" Value="Transparent"/>
+                                     <Setter Property="BorderBrush" Value="Transparent"/>
+                                     <Setter Property="BorderThickness" Value="0"/>
+                                     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                     <Setter Property="Template">
+                                         <Setter.Value>
+                                             <ControlTemplate TargetType="Button">
+                                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                             </ControlTemplate>
+                                         </Setter.Value>
+                                     </Setter>
+                                 </Style>
+                             </Button.Style>
+                             <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" Height="34" VerticalAlignment="Top"/>
+                         </Button>
+                     </Border>
+                 </StackPanel>
+                 <TextBlock Text="Check your book status here!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,376,7" />
+             </Grid>
 
             <!-- Content: Title and Tabs for Sent Requests and Received Requests -->
             <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,27,0,0" Grid.RowSpan="2">
@@ -60,7 +94,7 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Request ID" Width="70" DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Book Title" Width="220" DisplayMemberBinding="{Binding Book.Title}" />
+                            <GridViewColumn Header="Book Title" Width="150" DisplayMemberBinding="{Binding Book.Title}" />
                             <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding RequestType}" />
                             <GridViewColumn Header="Owner Email" Width="150" DisplayMemberBinding="{Binding Owner.Email}" />
                             <GridViewColumn Header="Owner Address" Width="150" DisplayMemberBinding="{Binding Owner.Address, TargetNullValue='N/A'}" />
@@ -68,7 +102,7 @@
                             <GridViewColumn Header="Requester Address" Width="150" DisplayMemberBinding="{Binding Requester.Address, TargetNullValue='N/A'}" />
                             <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}" />
                             <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding RequestDate, StringFormat='dd/MM/yyyy'}" />
-                            <GridViewColumn Header="Action" Width="200">
+                            <GridViewColumn Header="Action" Width="100">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -95,10 +129,7 @@
             </StackPanel>
 
             <!-- Footer: Back button -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10">
-                <Label x:Name="lblIconBack" Content="&lt;" FontSize="30" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" Height="55" ContextMenuOpening="IconGoBack" Cursor="Arrow"/>
-                <Label x:Name="lblBack" Content="Back" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" ContextMenuOpening="GoBack" Cursor="Arrow"/>
-            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10"/>
         </Grid>
     </Grid>
 </Page>

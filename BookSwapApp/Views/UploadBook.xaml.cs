@@ -7,6 +7,7 @@ using BookSwapApp.Services;
 using BookSwapApp.Helpers;
 using BookSwapApp.Models;
 using BookSwapApp.Repositories;
+using System.Windows.Media;
 
 namespace BookSwapApp.Views
 {
@@ -64,13 +65,10 @@ namespace BookSwapApp.Views
             try
             {
                 byte[] coverImageBytes = ConvertImageToByteArray(coverFilePath);
-                // Create a new Book object
                 Book book = new Book(title, author, genre, condition, user);
 
-                // Initialize the BookRepository
                 BookRepository bookRepository = new BookRepository();
 
-                // Call the UploadBook method in the repository
                 return bookRepository.UploadBook(currentUser, book, coverImageBytes);
 
             }
@@ -83,7 +81,7 @@ namespace BookSwapApp.Views
 
         private string SaveImageToServer(string sourceFilePath)
         {
-            string destinationFolder = @"C:\Server\BookCovers"; // Change this path as necessary
+            string destinationFolder = @"C:\Server\BookCovers"; // Ubah path sesuai kebutuhan
             string fileName = Path.GetFileName(sourceFilePath);
             string destinationPath = Path.Combine(destinationFolder, fileName);
 
@@ -108,12 +106,10 @@ namespace BookSwapApp.Views
                 return;
             }
 
-            // Assuming a method SaveBookData exists to save data to the database
             bool isSaved = SaveBookData(txtTitle.Text, txtAuthor.Text, txtGenre.Text, txtCondition.Text, currentUser, coverFilePath);
 
             if (isSaved)
             {
-                // Navigate back to the homepage
                 _navigationService.NavigateTo(typeof(HomePage));
             }
             else
@@ -122,5 +118,38 @@ namespace BookSwapApp.Views
             }
         }
 
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                if (textBox.Text == "Book Title" || textBox.Text == "Author" || textBox.Text == "Genre" || textBox.Text == "Condition")
+                {
+                    textBox.Text = "";
+                    textBox.Foreground = new SolidColorBrush(Colors.Black);
+                }
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    if (textBox.Name == "txtTitle")
+                        textBox.Text = "Title";
+                    else if (textBox.Name == "txtAuthor")
+                        textBox.Text = "Author";
+                    else if (textBox.Name == "txtGenre")
+                        textBox.Text = "Genre";
+                    else if (textBox.Name == "txtCondition")
+                        textBox.Text = "Condition";
+
+                    textBox.Foreground = new SolidColorBrush(Colors.Gray);
+                }
+            }
+        }
     }
 }

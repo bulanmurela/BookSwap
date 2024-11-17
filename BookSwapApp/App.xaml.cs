@@ -5,9 +5,6 @@ using BookSwapApp.Models;
 
 namespace BookSwapApp
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public User CurrentUser { get; set; }
