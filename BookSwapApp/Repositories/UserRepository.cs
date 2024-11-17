@@ -15,7 +15,6 @@ namespace BookSwapApp.Repositories
     {
         private readonly DatabaseHelpers dbHelpers = new DatabaseHelpers();
 
-        // Metode untuk mengambil pengguna berdasarkan username
         public User GetUserByUsername(string username)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
@@ -25,7 +24,6 @@ namespace BookSwapApp.Repositories
             }
         }
 
-        // Metode untuk menambahkan pengguna baru dengan password yang di-hash
         public bool Register(User user)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
@@ -43,7 +41,6 @@ namespace BookSwapApp.Repositories
             }
         }
 
-        // Metode Login untuk memverifikasi username dan password
         public virtual User Login(string username, string plainPassword)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
@@ -51,7 +48,6 @@ namespace BookSwapApp.Repositories
                 var query = "SELECT * FROM public.User WHERE Username = @Username";
                 var user = db.QueryFirstOrDefault<User>(query, new { Username = username });
 
-                // Verifikasi password yang diinput dengan password yang di-hash
                 if (user != null && user.VerifyPassword(plainPassword))
                 {
                     Console.WriteLine("Login berhasil.");
@@ -71,7 +67,7 @@ namespace BookSwapApp.Repositories
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
-                user.EarnPoints(points); // Perbarui poin pada objek `User`
+                user.EarnPoints(points); 
                 var query = "UPDATE public.User SET Points = @Points WHERE Id = @UserId";
                 var result = db.Execute(query, new
                 {
@@ -93,7 +89,7 @@ namespace BookSwapApp.Repositories
                     Address = user.Address,
                     Username = user.Username
                 });
-                return result > 0; // Returns true if at least one row was updated
+                return result > 0; 
             }
         }
 

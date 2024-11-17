@@ -15,7 +15,6 @@ namespace BookSwapApp.ViewModels
         private SwapRequest _swapRequest;
         private readonly User _currentUser;
 
-        // Observable collections for data binding
         public ObservableCollection<SwapRequest> CombinedRequests { get; set; }
         public ICommand CombinedRequestsCommand { get; set; }
         public ICommand CompleteCommand { get; }
@@ -23,7 +22,6 @@ namespace BookSwapApp.ViewModels
         public ICommand DenyCommand { get; }
         public SwapRequest SwapRequest { get => _swapRequest; set => _swapRequest = value; }
 
-        // Parameterless constructor (required for XAML)
         public StatusRequestViewModel()
         {
             _currentUser = ((App)Application.Current).CurrentUser;
@@ -38,7 +36,6 @@ namespace BookSwapApp.ViewModels
             LoadCombinedRequests();
         }
 
-        // Constructor that accepts a User object
         public StatusRequestViewModel(User currentUser, SwapRequest swapRequest)
         {
             _swapRequestRepository = new SwapRequestRepository();
@@ -66,7 +63,6 @@ namespace BookSwapApp.ViewModels
 
             CombinedRequests.Clear();
 
-            // Load and combine sent and received requests
             var sentRequests = _swapRequestRepository.GetSentRequests(_currentUser.Username);
             var receivedRequests = _swapRequestRepository.GetReceivedRequests(_currentUser.Username);
 
@@ -87,7 +83,7 @@ namespace BookSwapApp.ViewModels
                 request.IsCompleteVisible = Visibility.Collapsed;
                 CombinedRequests.Add(request);
             }
-            // Debug log to output the content of CombinedRequests
+           
             Debug.WriteLine("CombinedRequests content:");
             foreach (var request in CombinedRequests)
             {
@@ -124,7 +120,6 @@ namespace BookSwapApp.ViewModels
             }
         }
 
-        // Logika untuk menerima (Approve) request
         private void ApproveRequest(SwapRequest request)
         {
             MessageBox.Show("ApproveRequest called", "Debugging"); // Debugging
@@ -150,7 +145,6 @@ namespace BookSwapApp.ViewModels
             }
         }
 
-        // Logika untuk menolak (Deny) request
         private void DenyRequest(SwapRequest request)
         {
             if (request != null)
@@ -162,7 +156,7 @@ namespace BookSwapApp.ViewModels
                     if (isUpdated)
                     {
                         MessageBox.Show("Request denied successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoadCombinedRequests(); // Reload setelah update
+                        LoadCombinedRequests(); 
                     }
                     else
                     {
@@ -177,7 +171,6 @@ namespace BookSwapApp.ViewModels
             }
         }
 
-        // INotifyPropertyChanged implementation untuk menginformasikan perubahan properti ke UI
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -186,7 +179,6 @@ namespace BookSwapApp.ViewModels
         }
     }
 
-    // Implementasi RelayCommand untuk ICommand
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;

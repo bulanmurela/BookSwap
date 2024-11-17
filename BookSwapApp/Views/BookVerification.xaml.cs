@@ -20,9 +20,6 @@ using BookSwapApp.Models;
 
 namespace BookSwapApp.Views
 {
-    /// <summary>
-    /// Interaction logic for BookVerification.xaml
-    /// </summary>
     public partial class BookVerification : Page
     {
         private NavigationService _navigationService;

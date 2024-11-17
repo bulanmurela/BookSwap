@@ -10,6 +10,14 @@
       Background="White">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="797*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="103*"/>
+        </Grid.RowDefinitions>
         <!-- Set the background of the page -->
         <Grid.Background>
             <ImageBrush ImageSource="/Views/BookSwap_bg.png" Stretch="Fill" ViewboxUnits="RelativeToBoundingBox" ViewportUnits="RelativeToBoundingBox"/>
@@ -17,46 +25,50 @@
 
         <!-- Header with welcome message and points on the left -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0" Height="40">
-            <TextBlock Text="Welcome, User! " FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,20,0" />
-            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,20,0"/>
-            <TextBox x:Name="txtPoints" TextWrapping="Wrap" Text="" Width="46" Height="26" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}"/>
+            <TextBlock Text="BookSwap " FontWeight="Bold" FontSize="18" Foreground="White" Margin="20,10,0,0" />
+            <TextBlock Text="| Points: " FontWeight="Bold" FontSize="18" Foreground="White" Margin="0,10,0,0"/>
+            <TextBox x:Name="txtPoints" FontWeight="Bold" FontSize="18" Text="" Width="47" Margin="0,5,0,0" Background="Transparent" Foreground="White" BorderBrush="Transparent" Height="29"/>
+        </StackPanel>
+
+        <!-- Right side: Request Status button (on the left side of the upper-right corner) -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="0">
+            <Button x:Name="btnHome" Content="Home" FontSize="14" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" Margin="0,10,10,0" BorderBrush="{x:Null}" Click="btnHomePage_Click" Width="82" Height="32">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
 
         <!-- Profile icon on the right -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,17,0">
             <!-- Circular Profile Icon -->
         </StackPanel>
 
         <!-- Insert the uploaded image into the left rectangle -->
-        <Rectangle x:Name="recProfilLengkap" HorizontalAlignment="Left" Height="317" Margin="41,103,0,0" Stroke="Black" VerticalAlignment="Top" Width="476">
+        <Rectangle x:Name="recProfilLengkap" HorizontalAlignment="Left" Height="317" Margin="41,103,0,0" Stroke="Black" VerticalAlignment="Top" Width="476" Grid.RowSpan="2">
             <Rectangle.Fill>
                 <SolidColorBrush Color="White" Opacity="0.8"/>
             </Rectangle.Fill>
         </Rectangle>
-        <Label x:Name="lblUsername" Content="Username" HorizontalAlignment="Left" Height="29" Margin="77,121,0,0" VerticalAlignment="Top" Width="112" FontSize="18" FontWeight="SemiBold"/>
-        <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Height="32" Margin="77,198,0,0" VerticalAlignment="Top" Width="98" FontSize="18" FontWeight="SemiBold"/>
-        <Label x:Name="lblAddress" Content="Address" HorizontalAlignment="Left" Margin="77,282,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="SemiBold"/>
-        <Button x:Name="btnHomePage" Content="Home" HorizontalAlignment="Left" Margin="704,20,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="Bold" Foreground="White" Click="btnHomePage_Click">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
-        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="94,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="33" Background="{x:Null}"/>
-        <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Margin="94,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}"/>
-        <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Margin="94,322,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}"/>
+        <Label x:Name="lblUsername" Content="Username" HorizontalAlignment="Left" Height="29" Margin="77,121,0,0" VerticalAlignment="Top" Width="112" FontSize="18" FontWeight="SemiBold" Grid.RowSpan="2"/>
+        <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Height="32" Margin="77,57,0,0" VerticalAlignment="Top" Width="98" FontSize="18" FontWeight="SemiBold" Grid.Row="1"/>
+        <Label x:Name="lblAddress" Content="Address" HorizontalAlignment="Left" Margin="77,141,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="SemiBold" Grid.Row="1"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="94,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="33" Background="{x:Null}" Grid.Row="1"/>
+        <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Margin="94,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}" Grid.Row="1"/>
+        <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Margin="94,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" Height="34" Background="{x:Null}" Grid.Row="1"/>
 
         <!-- Verified Books ListView -->
-        <ListView x:Name="VerifiedBooksListView" Margin="44,430,44,20" VerticalAlignment="Top">
+        <ListView x:Name="VerifiedBooksListView" Margin="44,289,41,0" VerticalAlignment="Top" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="150"/>
@@ -65,7 +77,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="btnLogout" Content="Logout" HorizontalAlignment="Left" Margin="400,366,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="SemiBold" Foreground="White" Click="btnLogout_Click" FontSize="14">
+        <Button x:Name="btnLogout" Content="Logout" HorizontalAlignment="Left" Margin="400,225,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="SemiBold" Foreground="White" Click="btnLogout_Click" FontSize="14" Grid.Row="1">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -80,7 +92,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="86,366,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="SemiBold" Foreground="White" Click="btnEdit_Click" FontSize="14">
+        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="86,225,0,0" VerticalAlignment="Top" Height="38" Width="76" Background="#FF3665AA"  FontWeight="SemiBold" Foreground="White" Click="btnEdit_Click" FontSize="14" Grid.Row="1">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">

@@ -28,7 +28,7 @@ namespace BookSwapApp.Views
             InitializeComponent();
             _navigationService = new NavigationService(((MainWindow)Application.Current.MainWindow).MainFrame);
             _swapRequestRepository = new SwapRequestRepository();
-            _currentUser = ((App)Application.Current).CurrentUser; // Default user (ganti sesuai kebutuhan
+            _currentUser = ((App)Application.Current).CurrentUser; 
             _viewModel = new StatusRequestViewModel();
             this.DataContext = _viewModel;
 
@@ -87,26 +87,16 @@ namespace BookSwapApp.Views
             StatusRequestsListView.ItemsSource = _viewModel.CombinedRequests;
         }
 
+        private void GoToProfile(object sender, RoutedEventArgs e)
+        {
+            // Navigate to the Profile page
+            _navigationService.NavigateTo(typeof(Profil));
+        }
 
-        private void GoToHome(object sender, RoutedEventArgs e)
+        private void btnHome_Click(object sender, RoutedEventArgs e)
         {
             _navigationService.NavigateTo(typeof(HomePage));
         }
 
-        private void GoBack(object sender, ContextMenuEventArgs e)
-        {
-            _navigationService.GoBack();
-        }
-
-        private void IconGoBack(object sender, ContextMenuEventArgs e)
-        {
-            _navigationService.GoBack();
-        }
-
-        private void GoToProfile(object sender, ContextMenuEventArgs e)
-        {
-            _navigationService.NavigateTo(typeof(Profil));
-        }
-        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using BookSwapApp.Models;
 using BookSwapApp.Services;
 using BookSwapApp.Views;
@@ -28,21 +29,19 @@ namespace BookSwapApp.Views
             _bookService = new BookService();
         }
 
-        private void GoToProfile(object sender, ContextMenuEventArgs e)
+        private void GoToProfile(object sender, RoutedEventArgs e)
         {
-
             _navigationService.NavigateTo(typeof(Profil));
         }
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
-            string keyword = txtInsertKeyword.Text; // Assuming SearchBox is the name of the search input
+            string keyword = txtInsertKeyword.Text; 
             var books = _bookService.SearchVerifiedBooks(keyword);
 
             if (books.Any())
             {
-                // Display the list of books, e.g., in a ListView or DataGrid
-                BookList.ItemsSource = books; // Assuming BookList is a ListView or similar control in HomePage.xaml
+                BookList.ItemsSource = books; 
             }
             else
             {
@@ -50,7 +49,6 @@ namespace BookSwapApp.Views
             }
         }
 
-        // Event handler for when a book is selected from the list
         private void BookList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (BookList.SelectedItem is Book selectedBook)
@@ -79,17 +77,43 @@ namespace BookSwapApp.Views
             if (currentUser == null)
             {
                 MessageBox.Show("User information is missing. Please log in again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                _navigationService.NavigateTo(typeof(Login)); // Redirect to login if currentUser is null
+                _navigationService.NavigateTo(typeof(Login)); 
                 return;
             }
 
-            // Navigate to UploadBook with currentUser
             _navigationService.NavigateTo(typeof(UploadBook), currentUser, _navigationService);
         }
 
         private void btnStatus_Click(object sender, RoutedEventArgs e)
         {
             _navigationService.NavigateTo(typeof(StatusRequest));
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                if (textBox.Text == "Insert book title / author here")
+                {
+                    textBox.Text = "";
+                    textBox.Foreground = new SolidColorBrush(Colors.Black);
+                }
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    if (textBox.Name == "txtInsertKeyword")
+                        textBox.Text = "Insert book title / author here";
+                    textBox.Foreground = new SolidColorBrush(Colors.Gray);
+                }
+            }
         }
     }
 }

@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="SwapReq"
       Background="White">
 
@@ -27,7 +26,7 @@
             </Grid.RowDefinitions>
 
             <!-- Header section with welcome message and profile icon -->
-            <Grid Grid.Row="0" Margin="10,10,10,10">
+            <Grid Grid.Row="0" Margin="10,12,10,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -36,15 +35,49 @@
                 <!-- Left side: Welcome message and points -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-                <!-- Right side: Home button and profile icon -->
+                <!-- Right side: Request Status button (on the left side of the upper-right corner) -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="0">
+                    <Button x:Name="btnHome" Content="Home" FontSize="14" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" Margin="0,5,0,0" BorderBrush="{x:Null}" Click="btnHome_Click" Width="91" Height="32">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="15">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+
+                <!-- Right side: Profile button (to the right of Request Status button) -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1">
-                    <Button x:Name="lblHome" Content="Home" Foreground="White" FontSize="20" FontWeight="Bold" Background="Transparent" BorderBrush="Transparent" ContextMenuOpening="GoToHome" Cursor="Arrow"/>
                     <Border Width="38" Height="38" BorderBrush="White" BorderThickness="2" CornerRadius="25" Margin="10,0,0,0">
-                        <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" ContextMenuOpening="GoToProfile" Cursor="Arrow"/>
+                        <Button x:Name="btnProfile" Click="GoToProfile" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                            <Image x:Name="imgProfile" Source="/Views/profile.png" Stretch="Fill" Height="34" VerticalAlignment="Top"/>
+                        </Button>
                     </Border>
                 </StackPanel>
-                <TextBlock Text="Welcome, User!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,506,7" />
-                <TextBlock Text=" | Points: " FontWeight="Bold" FontSize="20" Foreground="White" Margin="160,7,394,7" />
+                <TextBlock Text="Request the book if it's to your liking!" FontWeight="Bold" FontSize="20" Foreground="White" Margin="10,7,376,7" />
             </Grid>
 
             <!-- Main content section: Book details and swap request button -->
@@ -127,10 +160,7 @@
             </StackPanel>
 
             <!-- Footer section (Back button) -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10,0,10" Width="81">
-                <Label x:Name="lblIconBack" Content="&lt;" FontSize="30" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" Height="55" ContextMenuOpening="IconGoBack" Cursor="Arrow"/>
-                <Label x:Name="lblBack" Content="Back" FontSize="18" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" ContextMenuOpening="GoBack" Cursor="Arrow"/>
-            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10,0,10" Width="81"/>
         </Grid>
     </Grid>
 </Page>

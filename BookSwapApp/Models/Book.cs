@@ -20,7 +20,7 @@ namespace BookSwapApp.Models
         public string Condition { get; private set; }
         public bool VerificationStatus { get; set; }
 
-        [NotMapped] // Prevent mapping in the database
+        [NotMapped] 
         public User Owner { get; internal set; }
         public string OwnerUsername { get; set; }
         public string OwnerEmail { get; set; }
@@ -34,14 +34,13 @@ namespace BookSwapApp.Models
             set
             {
                 _coverImage = value;
-                SetCoverImageSource(_coverImage); // Automatically set CoverImageSource
+                SetCoverImageSource(_coverImage); 
             }
         }
 
         [NotMapped]
         public BitmapImage CoverImageSource { get; private set; }
 
-        // Method to convert byte[] to BitmapImage
         private BitmapImage ConvertToImage(byte[] imageData)
         {
             if (imageData == null || imageData.Length == 0) return null;
@@ -53,12 +52,11 @@ namespace BookSwapApp.Models
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.StreamSource = ms;
                 bitmap.EndInit();
-                bitmap.Freeze(); // Freeze to make it thread-safe
+                bitmap.Freeze(); 
                 return bitmap;
             }
         }
 
-        // Method to set CoverImageSource using a byte array
         public void SetCoverImageSource(byte[] coverImage)
         {
             CoverImageSource = ConvertToImage(coverImage);

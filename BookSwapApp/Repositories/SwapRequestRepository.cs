@@ -16,7 +16,6 @@ namespace BookSwapApp.Repositories
     {
         private readonly DatabaseHelpers dbHelpers = new DatabaseHelpers();
 
-        // Method to create a new swap request
         public bool CreateSwapRequest(SwapRequest request)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
@@ -38,7 +37,6 @@ namespace BookSwapApp.Repositories
                     throw new ArgumentException($"Invalid status value: {request.Status}");
                 }
 
-                // Cek apakah requester memiliki cukup poin
                 var pointsQuery = "SELECT points FROM public.User WHERE username = @RequesterUsername";
                 var requesterPoints = db.QueryFirstOrDefault<int>(pointsQuery, new { RequesterUsername = request.Requester.Username });
 
@@ -58,11 +56,9 @@ namespace BookSwapApp.Repositories
 
                 if (result > 0)
                 {
-                    // Deduct 1 point from the requester
                     var pointQuery = "UPDATE public.User SET points = points - 1 WHERE username = @RequesterUsername";
                     db.Execute(pointQuery, new { RequesterUsername = request.Requester.Username });
 
-                    // Mark the book as hidden (unavailable) until the swap is accepted or denied
                     var hideBookQuery = "UPDATE public.Books SET is_visible = false WHERE id = @BookId";
                     db.Execute(hideBookQuery, new { BookId = request.Book.Id });
                 }
@@ -76,16 +72,16 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-                SELECT sr.id AS Id,
-                       sr.status AS Status,
-                       sr.request_date AS RequestDate,
-                       b.title AS Title,
-                       u.email AS Email,
-                       u.address AS Address
-                FROM public.SwapRequest sr
-                JOIN public.Books b ON sr.book_id = b.id
-                JOIN public.User u ON sr.owner_username = u.username
-                WHERE sr.requester_username = @RequesterUsername";
+                            SELECT sr.id AS Id,
+                                   sr.status AS Status,
+                                   sr.request_date AS RequestDate,
+                                   b.title AS Title,
+                                   u.email AS Email,
+                                   u.address AS Address
+                            FROM public.SwapRequest sr
+                            JOIN public.Books b ON sr.book_id = b.id
+                            JOIN public.User u ON sr.owner_username = u.username
+                            WHERE sr.requester_username = @RequesterUsername";
 
                 Debug.WriteLine($"Executing GetSentRequests for requesterUsername: {requesterUsername}");
 
@@ -101,13 +97,6 @@ namespace BookSwapApp.Repositories
                     new { RequesterUsername = requesterUsername },
                     splitOn: "Title,Email").ToList();
 
-                // Debugging output for CombinedRequests content
-                //Debug.WriteLine("SentRequests content:");
-                //foreach (var request in results)
-                //{
-                //    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
-                //}
-
                 return results;
             }
         }
@@ -117,16 +106,16 @@ namespace BookSwapApp.Repositories
             using (IDbConnection db = dbHelpers.OpenConnection())
             {
                 var query = @"
-                SELECT sr.id AS Id,
-                       sr.status AS Status,
-                       sr.request_date AS RequestDate,
-                       b.title AS Title,
-                       u.email AS Email,
-                       u.address AS Address
-                FROM public.SwapRequest sr
-                JOIN public.Books b ON sr.book_id = b.id
-                JOIN public.User u ON sr.requester_username = u.username
-                WHERE sr.owner_username = @OwnerUsername";
+                            SELECT sr.id AS Id,
+                                   sr.status AS Status,
+                                   sr.request_date AS RequestDate,
+                                   b.title AS Title,
+                                   u.email AS Email,
+                                   u.address AS Address
+                            FROM public.SwapRequest sr
+                            JOIN public.Books b ON sr.book_id = b.id
+                            JOIN public.User u ON sr.requester_username = u.username
+                            WHERE sr.owner_username = @OwnerUsername";
 
                 Debug.WriteLine($"Executing GetReceivedRequests for ownerUsername: {ownerUsername}");
 
@@ -142,18 +131,10 @@ namespace BookSwapApp.Repositories
                     new { OwnerUsername = ownerUsername },
                     splitOn: "Title,Email").ToList();
 
-                // Debugging output for CombinedRequests content
-                //Debug.WriteLine("ReceivedRequests content:");
-                //foreach (var request in results)
-                //{
-                //    Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
-                //}
-
                 return results;
             }
         }
 
-        // Method for the owner to respond to a swap request
         public bool UpdateSwapRequestStatus(int requestId, string newStatus, int bookId)
         {
             using (IDbConnection db = dbHelpers.OpenConnection())
@@ -190,7 +171,6 @@ namespace BookSwapApp.Repositories
                             var makeVisibleQuery = "UPDATE public.Books SET is_visible = true WHERE id = @BookId";
                             var updateVisibilityResult = db.Execute(makeVisibleQuery, new { BookId = fetchedBookId });
 
-                            // Logging the result of the update visibility operation
                             if (updateVisibilityResult > 0)
                             {
                                 Debug.WriteLine($"Successfully set is_visible to true for Denied book with BookId: {fetchedBookId}. Rows affected: {updateVisibilityResult}");
@@ -205,8 +185,6 @@ namespace BookSwapApp.Repositories
                             Debug.WriteLine($"BookId not found for requestId: {requestId}");
                         }
 
-
-                        // Return the point to the requester
                         var getRequesterQuery = @"
                                                 SELECT requester_username 
                                                 FROM public.SwapRequest 

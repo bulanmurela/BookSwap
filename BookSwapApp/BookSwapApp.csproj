@@ -9,12 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\booksample.jpg" />
-    <None Remove="Views\profile.png" />
+    <Compile Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+    <Page Remove="Data\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <None Remove="Views\profile.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Views\booksample.jpg" />
     <Resource Include="Views\BookSwap_bg.png" />
     <Resource Include="Views\profile.png" />
   </ItemGroup>

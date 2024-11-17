@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookSwapApp"
         mc:Ignorable="d"
-        Title="BookSwap" Height="450" Width="800" Background="{x:Null}">
+        Title="BookSwap" Height="450" Width="800" Background="{x:Null}"
+        WindowState="Maximized">
     <Grid>
         <!-- Frame sebagai tempat berpindah-pindah antara halaman -->
         <!-- Untuk menambahkan Button: <Button Content="Go to Profile" Click="BtnProfile_Click" /> -->
