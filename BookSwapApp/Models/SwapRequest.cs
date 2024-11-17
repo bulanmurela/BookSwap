@@ -17,8 +17,8 @@ namespace BookSwapApp.Models
         public User Requester { get; set; }
         public User Owner { get; set; }
         public Book Book { get; set; } 
-
         public string Status { get; set; }
+
         public DateTime RequestDate { get; set; }
         public DateTime? ResponseDate { get; set; }
 
@@ -29,7 +29,7 @@ namespace BookSwapApp.Models
         public Visibility IsDenyVisible { get; set; }
     
 
-    public Visibility SwapActionVisibility
+        public Visibility SwapActionVisibility
         {
             get
             {

@@ -86,7 +86,6 @@ namespace BookSwapApp.ViewModels
                 return false;
             }
 
-            MessageBox.Show("Swap request successfully created.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
         }
 

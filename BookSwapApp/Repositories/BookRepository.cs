@@ -42,7 +42,6 @@ namespace BookSwapApp.Repositories
                     CoverImage = coverImageBytes
                 });
 
-                MessageBox.Show($"The book '{book.Title}' has been successfully uploaded and is awaiting verification by the admin.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 return result > 0;
             }
         }

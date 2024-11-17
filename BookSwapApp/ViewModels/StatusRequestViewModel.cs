@@ -53,8 +53,6 @@ namespace BookSwapApp.ViewModels
 
         private void LoadCombinedRequests()
         {
-            MessageBox.Show("LoadCombinedRequests called", "Debugging"); // Debugging
-
             if (_currentUser == null || string.IsNullOrEmpty(_currentUser.Username))
             {
                 MessageBox.Show("User is not logged in.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -78,16 +76,10 @@ namespace BookSwapApp.ViewModels
             foreach (var request in receivedRequests)
             {
                 request.RequestType = "Requested";
-                request.IsApproveVisible = Visibility.Visible;
-                request.IsDenyVisible = Visibility.Visible;
+                request.IsApproveVisible = request.Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
+                request.IsDenyVisible = request.Status == "Notifying Owner" ? Visibility.Visible : Visibility.Collapsed;
                 request.IsCompleteVisible = Visibility.Collapsed;
                 CombinedRequests.Add(request);
-            }
-           
-            Debug.WriteLine("CombinedRequests content:");
-            foreach (var request in CombinedRequests)
-            {
-                Debug.WriteLine($"Id: {request.Id}, Book: {request.Book.Title}, Type: {request.RequestType}, Status: {request.Status}, Request Date: {request.RequestDate}");
             }
 
             OnPropertyChanged(nameof(CombinedRequests));
@@ -96,8 +88,6 @@ namespace BookSwapApp.ViewModels
 
         private void CompleteRequest(SwapRequest request)
         {
-            MessageBox.Show("CompleteRequest called", "Debugging"); // Debugging
-
             if (request != null)
             {
                 try
@@ -122,7 +112,6 @@ namespace BookSwapApp.ViewModels
 
         private void ApproveRequest(SwapRequest request)
         {
-            MessageBox.Show("ApproveRequest called", "Debugging"); // Debugging
             if (request != null)
             {
                 try
@@ -151,7 +140,6 @@ namespace BookSwapApp.ViewModels
             {
                 try
                 {
-                    Debug.WriteLine($"DenyRequest: Book Id is {request.Book?.Id}");
                     bool isUpdated = _swapRequestRepository.UpdateSwapRequestStatus(request.Id, "Denied", request.Book.Id);
                     if (isUpdated)
                     {
@@ -161,7 +149,6 @@ namespace BookSwapApp.ViewModels
                     else
                     {
                         MessageBox.Show("Failed to deny the request.", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        Debug.WriteLine("Update for SwapRequest or visibility failed.");
                     }
                 }
                 catch (Exception ex)

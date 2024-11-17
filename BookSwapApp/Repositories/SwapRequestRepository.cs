@@ -83,8 +83,6 @@ namespace BookSwapApp.Repositories
                             JOIN public.User u ON sr.owner_username = u.username
                             WHERE sr.requester_username = @RequesterUsername";
 
-                Debug.WriteLine($"Executing GetSentRequests for requesterUsername: {requesterUsername}");
-
                 var results = db.Query<SwapRequest, Book, User, SwapRequest>(
                     query,
                     (swapRequest, book, owner) =>
@@ -116,8 +114,6 @@ namespace BookSwapApp.Repositories
                             JOIN public.Books b ON sr.book_id = b.id
                             JOIN public.User u ON sr.requester_username = u.username
                             WHERE sr.owner_username = @OwnerUsername";
-
-                Debug.WriteLine($"Executing GetReceivedRequests for ownerUsername: {ownerUsername}");
 
                 var results = db.Query<SwapRequest, Book, User, SwapRequest>(
                     query,
@@ -151,7 +147,6 @@ namespace BookSwapApp.Repositories
                 }
 
                 var result = db.Execute(query, new { Status = newStatus, RequestId = requestId });
-                Debug.WriteLine($"Updated SwapRequest. Rows affected: {result}");
 
                 if (result > 0)
                 {
@@ -164,21 +159,10 @@ namespace BookSwapApp.Repositories
                                             WHERE id = @RequestId";
                         var fetchedBookId = db.QueryFirstOrDefault<int>(getBookIdQuery, new { RequestId = requestId });
 
-                        Debug.WriteLine($"BookId found for requestId {requestId}: {fetchedBookId}");
-
                         if (fetchedBookId > 0)
                         {
                             var makeVisibleQuery = "UPDATE public.Books SET is_visible = true WHERE id = @BookId";
                             var updateVisibilityResult = db.Execute(makeVisibleQuery, new { BookId = fetchedBookId });
-
-                            if (updateVisibilityResult > 0)
-                            {
-                                Debug.WriteLine($"Successfully set is_visible to true for Denied book with BookId: {fetchedBookId}. Rows affected: {updateVisibilityResult}");
-                            }
-                            else
-                            {
-                                Debug.WriteLine($"Failed to update is_visible for BookId: {fetchedBookId}. No rows were affected.");
-                            }
                         }
                         else
                         {
@@ -190,13 +174,11 @@ namespace BookSwapApp.Repositories
                                                 FROM public.SwapRequest 
                                                 WHERE id = @RequestId";
                         var requesterUsername = db.QueryFirstOrDefault<string>(getRequesterQuery, new { RequestId = requestId });
-                        Debug.WriteLine($"Requester username found: {requesterUsername}");
 
                         if (!string.IsNullOrEmpty(requesterUsername))
                         {
                             var returnPointQuery = "UPDATE public.User SET points = points + 1 WHERE username = @RequesterUsername";
                             var updatePointsResult = db.Execute(returnPointQuery, new { RequesterUsername = requesterUsername });
-                            Debug.WriteLine($"Returned 1 point to requester. Rows affected: {updatePointsResult}");
                         }
                         else
                         {
