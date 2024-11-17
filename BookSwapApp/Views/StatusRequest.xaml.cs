@@ -33,8 +33,6 @@ namespace BookSwapApp.Views
             this.DataContext = _viewModel;
 
             CombinedRequestsCommand = new RelayCommand(parameter => LoadCombinedRequests());
-
-
         }
 
         public StatusRequest(User currentUser, SwapRequest swapRequest)
@@ -80,9 +78,6 @@ namespace BookSwapApp.Views
 
             // Set to ViewModel or directly to the ListView
             _viewModel.CombinedRequests = new ObservableCollection<SwapRequest>(combinedRequests);
-
-            Debug.WriteLine($"Sent requests count: {sentRequests.Count}");
-            Debug.WriteLine($"Received requests count: {receivedRequests.Count}");
 
             StatusRequestsListView.ItemsSource = _viewModel.CombinedRequests;
         }

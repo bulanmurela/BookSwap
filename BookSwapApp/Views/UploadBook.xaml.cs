@@ -110,7 +110,10 @@ namespace BookSwapApp.Views
 
             if (isSaved)
             {
+
+                MessageBox.Show($"The book '{txtTitle.Text}' has been successfully uploaded and is awaiting verification by the admin.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 _navigationService.NavigateTo(typeof(HomePage));
+                this.Close();
             }
             else
             {
