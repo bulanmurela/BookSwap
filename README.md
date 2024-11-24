@@ -1,5 +1,6 @@
 # BookSwap
-BookSwap adalah aplikasi yang memberikan wadah bagi para pengguna untuk saling menukar buku yang dimiliki dengan menerapkan sistem poin. Poin digunakan untuk mengirimkan permintaan (_request_) penukaran buku dengan pengguna lain. Transaksi berjalan jika permintaan disetujui, yaitu jika kedua pihak saling menginginkan buku satu sama lain. 
+BookSwap adalah aplikasi yang memberikan wadah bagi para pengguna untuk saling menukar buku yang dimiliki dengan menerapkan sistem poin. Poin digunakan untuk mengirimkan permintaan (request) penukaran buku dengan pengguna lain dan didapatkan setelah buku yang diunggah telah diverifikasi oleh Admin. Pemilik buku berhak menyetujui (Approve) atau menolak (Deny) permintaan (request) yang dikirimkan. Transaksi berjalan jika permintaan (request) swap disetujui oleh pemilik buku. Poin pengirim permintaan (request) swap akan kembali jika permintaan ditolak oleh pemilik buku.
+
 
 ## Class Diagram
 Berikut adalah class diagram untuk aplikasi BookSwap

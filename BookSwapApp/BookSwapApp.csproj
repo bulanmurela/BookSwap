@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\eye-icon.svg" />
     <None Remove="Views\profile.png" />
   </ItemGroup>
 
@@ -27,6 +28,9 @@
 
   <ItemGroup>
     <Resource Include="Views\BookSwap_bg.png" />
+    <Resource Include="Views\eye-icon.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Views\profile.png" />
   </ItemGroup>
 

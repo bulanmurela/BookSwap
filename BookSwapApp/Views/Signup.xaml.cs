@@ -26,8 +26,8 @@ namespace BookSwapApp.Views
         {
             string email = txtEmail.Text;
             string username = txtUsername.Text;
-            string password = txtPassword.Text;
-            string confirmPassword = txtConfirmPassword.Text;
+            string password = pwdPassword.Password;
+            string confirmPassword = pwdConfirmPassword.Password;
 
             if (password != confirmPassword)
             {
@@ -57,12 +57,126 @@ namespace BookSwapApp.Views
             _navigationService.NavigateTo(typeof(Login));
         }
 
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            if (passwordBox == pwdPassword)
+            {
+                tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(passwordBox.Password)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            if (passwordBox == pwdConfirmPassword)
+            {
+                tbConfirmPasswordPlaceholder.Visibility = string.IsNullOrEmpty(passwordBox.Password)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            if (passwordBox == pwdPassword && string.IsNullOrEmpty(passwordBox.Password))
+            {
+                tbPasswordPlaceholder.Visibility = Visibility.Collapsed;
+            }
+            else if (passwordBox == pwdConfirmPassword && string.IsNullOrEmpty(passwordBox.Password))
+            {
+                tbConfirmPasswordPlaceholder.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            if (passwordBox == pwdPassword)
+            {
+                tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(pwdPassword.Password)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+            else if (passwordBox == pwdConfirmPassword)
+            {
+                tbConfirmPasswordPlaceholder.Visibility = string.IsNullOrEmpty(pwdConfirmPassword.Password)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        private void btnTogglePassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (pwdPassword.Visibility == Visibility.Visible)
+            {
+                txtPasswordVisible.Text = pwdPassword.Password;
+                pwdPassword.Visibility = Visibility.Collapsed;
+                txtPasswordVisible.Visibility = Visibility.Visible;
+                tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(txtPasswordVisible.Text)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+            else
+            {
+                pwdPassword.Password = txtPasswordVisible.Text;
+                txtPasswordVisible.Visibility = Visibility.Collapsed;
+                pwdPassword.Visibility = Visibility.Visible;
+                tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(pwdPassword.Password)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        private void btnToggleConfirmPassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (pwdConfirmPassword.Visibility == Visibility.Visible)
+            {
+                txtConfirmPasswordVisible.Text = pwdConfirmPassword.Password;
+                pwdConfirmPassword.Visibility = Visibility.Collapsed;
+                txtConfirmPasswordVisible.Visibility = Visibility.Visible;
+                tbConfirmPasswordPlaceholder.Visibility = string.IsNullOrEmpty(txtConfirmPasswordVisible.Text)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+            else
+            {
+                pwdConfirmPassword.Password = txtConfirmPasswordVisible.Text;
+                txtConfirmPasswordVisible.Visibility = Visibility.Collapsed;
+                pwdConfirmPassword.Visibility = Visibility.Visible;
+                tbConfirmPasswordPlaceholder.Visibility = string.IsNullOrEmpty(pwdConfirmPassword.Password)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        private void Placeholder_Clicked(object sender, RoutedEventArgs e)
+        {
+            TextBlock placeholder = sender as TextBlock;
+
+            if (placeholder != null)
+            {
+                if (placeholder == tbPasswordPlaceholder)
+                {
+                    pwdPassword.Focus();
+                }
+                else if (placeholder == tbConfirmPasswordPlaceholder)
+                {
+                    pwdConfirmPassword.Focus();
+                }
+            }
+        }
+
+
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox textBox = sender as TextBox;
             if (textBox != null)
             {
-                if (textBox.Text == "Email" || textBox.Text == "Username" || textBox.Text == "Password" || textBox.Text == "Confirm Password")
+                if (textBox.Text == "Email" || textBox.Text == "Username")
                 {
                     textBox.Text = "";
                     textBox.Foreground = new SolidColorBrush(Colors.Black);
@@ -81,15 +195,10 @@ namespace BookSwapApp.Views
                         textBox.Text = "Email";
                     else if (textBox.Name == "txtUsername")
                         textBox.Text = "Username";
-                    else if (textBox.Name == "txtPassword")
-                        textBox.Text = "Password";
-                    else if (textBox.Name == "txtConfirmPassword")
-                        textBox.Text = "Confirm Password";
 
                     textBox.Foreground = new SolidColorBrush(Colors.Gray);
                 }
             }
         }
-
     }
 }
