@@ -24,7 +24,9 @@ namespace BookSwapApp.Views
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsername.Text;
-            string password = txtPassword.Text;
+            string password = pwdPassword.Visibility == Visibility.Visible
+                ? pwdPassword.Password
+                : txtPasswordVisible.Text;
 
             Admin admin = new Admin();
             if (admin.AdminLogin(username, password))
@@ -83,5 +85,51 @@ namespace BookSwapApp.Views
                 }
             }
         }
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(pwdPassword.Password)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
+        private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbPasswordPlaceholder.Visibility = Visibility.Collapsed;
+        }
+
+        private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(pwdPassword.Password)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
+        private void Placeholder_Clicked(object sender, RoutedEventArgs e)
+        {
+            pwdPassword.Focus();
+        }
+
+        private void btnTogglePassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (pwdPassword.Visibility == Visibility.Visible)
+            {
+                txtPasswordVisible.Text = pwdPassword.Password;
+                pwdPassword.Visibility = Visibility.Collapsed;
+                txtPasswordVisible.Visibility = Visibility.Visible;
+                tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(txtPasswordVisible.Text)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+            else
+            {
+                pwdPassword.Password = txtPasswordVisible.Text;
+                txtPasswordVisible.Visibility = Visibility.Collapsed;
+                pwdPassword.Visibility = Visibility.Visible;
+                tbPasswordPlaceholder.Visibility = string.IsNullOrEmpty(pwdPassword.Password)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
     }
 }

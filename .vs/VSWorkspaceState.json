@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\BookSwapApp",
+    "\\BookSwapApp\\ViewModels",
+    "\\BookSwapApp\\Views"
   ],
-  "SelectedNode": "\\BookSwapApp.sln",
+  "SelectedNode": "\\BookSwapApp\\ViewModels\\BookVerificationViewModel.cs",
   "PreviewInSolutionExplorer": false
 }
